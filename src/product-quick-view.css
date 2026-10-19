@@ -11,13 +11,13 @@
   background: #ffffffd1;
   color: #0b1628;
   box-shadow: 0 24px 90px #204c8b20;
-  backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 .pqv-dialog::backdrop {
   background: #3a83f71a;
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 .pqv-header {
   display: flex;
