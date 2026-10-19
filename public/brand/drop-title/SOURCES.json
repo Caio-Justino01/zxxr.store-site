@@ -1,0 +1,27 @@
+{
+  "officialLogo": {
+    "file": "grafite-tag-vermelho.svg",
+    "source": "entrega/ZAAR_IDENTIDADE_v1/01_SVG/04_GRAFITE/grafite-tag-vermelho.svg",
+    "correspondingUserReference": "grafite-tag-vermelho-fundo-offwhite.png",
+    "process": "Copy of the official transparent vector equivalent. Original paths and #B5122B color preserved; no tracing or raster background removal."
+  },
+  "newDropLettering": {
+    "file": "new-drop-grafite-vermelho.svg",
+    "process": "New lettering drawn directly as editable filled SVG paths to accompany the supplied ZXXR tag. Pointed terminals, variable stroke width and matching red; no font dependency or image generation.",
+    "editableGlyphs": [
+      "letter-n",
+      "letter-e",
+      "letter-w",
+      "letter-d",
+      "letter-r",
+      "letter-o",
+      "letter-p",
+      "tag-underline"
+    ]
+  },
+  "activePresentation": {
+    "lettering": "new-drop-grafite-preto-sem-linha.svg",
+    "logo": "grafite-tag-preto-sem-linha.svg",
+    "process": "Black variants preserve every letter path and transform. Only the separate original underline paths were removed. One continuous black underline is rendered beneath the complete New Drop ZXXR heading in DropTitle.tsx. Original red assets remain unchanged."
+  }
+}

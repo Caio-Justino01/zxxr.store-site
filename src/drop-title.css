@@ -1,0 +1,43 @@
+/* Own heading metrics take priority over older generic hero h1 rules. */
+.dt-title.dt-title {
+  position: relative;
+  color: #000;
+  display: grid;
+  grid-template-columns: minmax(0, 1.78fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(8px, 1.3vw, 20px);
+  width: 100%;
+  max-width: 1170px;
+  margin: 24px auto 0;
+  padding: 0;
+  line-height: 1;
+  letter-spacing: normal;
+  white-space: normal;
+  text-shadow: none;
+}
+.dt-title .dt-lettering,
+.dt-title .dt-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  max-width: 100%;
+  object-fit: contain;
+}
+.dt-title .dt-underline {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(7px, 1.6vw, 22px);
+  pointer-events: none;
+}
+.dt-title .dt-lettering {
+  translate: 0 -2%;
+}
+@media (max-width: 700px) {
+  .dt-title.dt-title {
+    gap: 7px;
+    margin-top: 25px;
+  }
+}

@@ -1,0 +1,119 @@
+.music-section.music-artist {
+  padding-block: clamp(56px, 7vw, 100px);
+}
+
+.music-artist .music-heading,
+.music-artist .artist-layout,
+.music-artist .spotify-embed {
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.music-artist .artist-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+  gap: clamp(48px, 9vw, 130px);
+  align-items: center;
+  margin-top: clamp(36px, 5vw, 64px);
+}
+
+.music-artist .music-copy {
+  min-width: 0;
+}
+
+.music-artist .music-copy h2 {
+  margin: 0;
+  font-size: clamp(42px, 4.6vw, 66px);
+}
+
+.music-artist .music-copy > .artist-bio {
+  max-width: 52ch;
+  margin: 24px 0 12px;
+  color: #55534e;
+  font-size: 14px;
+  line-height: 1.85;
+  text-wrap: pretty;
+}
+
+.music-artist .artist-bio-source {
+  display: inline-block;
+  margin-bottom: 26px;
+  color: #66635e;
+  font-size: 10px;
+  line-height: 1.6;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.music-artist .artist-portrait {
+  width: min(100%, 271px);
+  margin: 0;
+  justify-self: end;
+}
+
+.music-artist .artist-portrait > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 271 / 320;
+  object-fit: contain;
+  background: #d9d7cf;
+}
+
+.music-artist .artist-portrait figcaption {
+  display: grid;
+  gap: 7px;
+  padding-top: 17px;
+}
+
+.music-artist .artist-portrait strong {
+  font-family: Archivo, sans-serif;
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.music-artist .artist-portrait figcaption > span {
+  color: #55534e;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.music-artist .artist-portrait figcaption > a {
+  margin-top: 2px;
+  color: #66635e;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.music-artist .artist-bio-source:hover,
+.music-artist .artist-portrait figcaption > a:hover {
+  color: var(--red);
+}
+
+.music-artist a:focus-visible,
+.music-artist button:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 5px;
+}
+
+@media (max-width: 700px) {
+  .music-artist .artist-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+  }
+
+  .music-artist .artist-portrait {
+    justify-self: start;
+  }
+
+  .music-artist .music-copy > .artist-bio {
+    font-size: 13px;
+    max-width: 48ch;
+  }
+
+  .music-artist .spotify-link,
+  .music-artist .inline-player-button {
+    max-width: 100%;
+  }
+}

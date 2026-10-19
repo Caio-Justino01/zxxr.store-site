@@ -1,0 +1,34 @@
+{
+  "artist": "Razz",
+  "spotifyArtistId": "3KuwSQKBjfgg0OnFi57bYN",
+  "profileUrl": "https://open.spotify.com/intl-pt/artist/3KuwSQKBjfgg0OnFi57bYN",
+  "verifiedOn": "2026-10-19",
+  "evidence": "Artist profile and About text read in the public Spotify interface for this exact artist ID; biography displayed as posted by Razz.",
+  "portrait": {
+    "file": "razz-spotify.webp",
+    "sourceUrl": "https://i.scdn.co/image/ab6761610000939b2718068fe2da3e759c8903f7",
+    "width": 271,
+    "height": 320,
+    "bytes": 19516,
+    "sha256": "8935c6ec8fb62530a318de76e2d91f725bdd06ae7e9d7a7aaa941b1a655e0dec",
+    "process": "Exact local copy of the observed Spotify image. No crop, filter, retouching, generative edit or upscaling; displayed with a maximum CSS width of 271px.",
+    "photographerCredit": null,
+    "creditNote": "No photographer name was visible in the profile evidence supplied for implementation. On-page credit links to the artist profile."
+  },
+  "biography": {
+    "sourceUrl": "https://open.spotify.com/intl-pt/artist/3KuwSQKBjfgg0OnFi57bYN",
+    "sourceAttribution": "Posted by Razz on Spotify",
+    "process": "A 62-word adaptation in original Portuguese wording, linked on the page as Bio adaptada do Spotify. The source biography is not reproduced in full.",
+    "retainedFacts": [
+      "Born in Belo Horizonte, Minas Gerais",
+      "Raised in Nova Lima, Minas Gerais",
+      "Repertoire includes Escolhas, Controla, Emoção and Rockstar",
+      "Creative work connects music, drawing and fashion"
+    ],
+    "excluded": [
+      "Unverified listener statistics",
+      "Unverified release dates",
+      "Biographies or photographs of similarly named artists"
+    ]
+  }
+}

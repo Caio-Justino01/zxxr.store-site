@@ -1,0 +1,20 @@
+.gradient-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  background: linear-gradient(135deg, #f5faff 0%, #8fcaff 46%, #3a83f7 100%);
+}
+
+.gradient-backdrop canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gradient-backdrop canvas[hidden] {
+  display: none;
+}

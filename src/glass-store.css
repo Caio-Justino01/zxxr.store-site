@@ -1,0 +1,35 @@
+/* One viewport-sized shader continues behind the collection and glass stories. */
+.collection-world {
+  position: relative;
+  isolation: isolate;
+  background: #8fcaff;
+}
+.collection-sky {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.collection-sky > .gradient-backdrop {
+  position: sticky;
+  inset: auto;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+}
+.collection-world > .cloud-collection,
+.collection-world > .ps-section {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+.endnote > img.endnote-mascot {
+  width: 150px;
+  height: 126px;
+}
+@media (max-width: 700px) {
+  .endnote > img.endnote-mascot {
+    width: 120px;
+    height: 101px;
+  }
+}

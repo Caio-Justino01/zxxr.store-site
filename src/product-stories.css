@@ -1,0 +1,318 @@
+.ps-section {
+  position: relative;
+  background: transparent;
+  color: #0b1628;
+  padding: clamp(64px, 8vw, 112px) 0 72px;
+  scroll-margin-top: 24px;
+}
+.ps-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 clamp(22px, 4.3vw, 64px);
+}
+.ps-section-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: end;
+  gap: clamp(28px, 4vw, 64px);
+  padding-bottom: 52px;
+}
+.ps-section-title {
+  max-width: 620px;
+  margin: 0;
+  font-family: Archivo, Inter, sans-serif;
+  font-weight: 900;
+  font-size: clamp(38px, 4.3vw, 66px);
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+}
+.ps-intro {
+  max-width: 430px;
+  width: 100%;
+  justify-self: center;
+  padding-bottom: 3px;
+}
+.ps-intro-copy {
+  max-width: 350px;
+  margin: 0 0 16px;
+  font-size: clamp(15px, 1.35vw, 18px);
+  line-height: 1.6;
+  letter-spacing: -0.02em;
+}
+.ps-edition-note {
+  margin: 0;
+  color: #0b1628;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.ps-stories {
+  display: grid;
+  gap: clamp(24px, 3.5vw, 48px);
+}
+.ps-story {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+  padding: clamp(28px, 3.5vw, 48px);
+  overflow: hidden;
+  border: 1px solid #ffffff61;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #ffffff42, #ffffff0d 55%), #ffffff21;
+  color: #0b1628;
+  box-shadow:
+    inset 0 1px 0 #ffffff42,
+    0 18px 60px #133a6a14;
+  backdrop-filter: blur(24px) saturate(1.08);
+  -webkit-backdrop-filter: blur(24px) saturate(1.08);
+}
+.ps-story::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 15% 20%, #ffffff13, transparent 65%);
+}
+.ps-story-reverse {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+}
+.ps-story-reverse .ps-images {
+  order: 2;
+}
+.ps-story-reverse .ps-copy {
+  order: 1;
+}
+.ps-images {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(14px, 1.8vw, 28px);
+  min-width: 0;
+}
+.ps-images::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -25% -10%;
+  pointer-events: none;
+  background: radial-gradient(ellipse, #eef6ff2e, transparent 68%);
+}
+.ps-figure {
+  min-width: 0;
+  margin: 0;
+}
+.ps-photo-frame {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.ps-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+.ps-photo-frame:hover .ps-photo {
+  transform: translateY(-3px) scale(1.02);
+}
+.ps-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: #0b1628;
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+.ps-caption span {
+  font-size: 14px;
+}
+.ps-copy {
+  width: 100%;
+  max-width: 430px;
+  justify-self: center;
+}
+.ps-meta {
+  margin: 0 0 16px;
+  color: #0b1628;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.ps-product-title {
+  margin: 0;
+  font-family: Archivo, Inter, sans-serif;
+  font-weight: 900;
+  font-size: clamp(32px, 3.5vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -0.05em;
+  overflow-wrap: break-word;
+}
+.ps-price {
+  margin: 18px 0 20px;
+  font-size: 20px;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+.ps-description {
+  max-width: 395px;
+  margin: 0;
+  color: #0b1628;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.ps-product-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: min(100%, 216px);
+  min-height: 48px;
+  margin-top: 28px;
+  padding: 12px 16px;
+  border: 1px solid #0b16284d;
+  border-radius: 12px;
+  background: #ffffff33;
+  color: #0b1628;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+}
+.ps-product-link:hover {
+  background: #ffffff66;
+}
+.ps-product-link svg {
+  flex-shrink: 0;
+  width: 21px;
+  height: 21px;
+  transition: translate 0.2s ease;
+}
+.ps-product-link:hover svg {
+  translate: 4px 0;
+}
+.ps-product-link:focus-visible,
+.ps-photo-frame:focus-visible {
+  outline: 2px solid #0b1628;
+  outline-offset: 5px;
+}
+.ps-photo-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  min-height: 120px;
+  text-align: center;
+  color: #0b1628;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.ps-photo-error small {
+  font-size: 10px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (max-width: 900px) {
+  .ps-section-header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-bottom: 38px;
+  }
+  .ps-intro {
+    max-width: none;
+    justify-self: start;
+  }
+  .ps-intro-copy {
+    max-width: 490px;
+    margin-bottom: 10px;
+  }
+  .ps-story,
+  .ps-story-reverse {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .ps-story-reverse .ps-images,
+  .ps-story-reverse .ps-copy {
+    order: initial;
+  }
+  .ps-copy {
+    max-width: 560px;
+    justify-self: start;
+  }
+  .ps-meta {
+    margin-bottom: 12px;
+  }
+  .ps-product-title {
+    font-size: clamp(34px, 6vw, 48px);
+  }
+  .ps-description {
+    max-width: 500px;
+  }
+}
+@media (max-width: 520px) {
+  .ps-section {
+    padding-top: 62px;
+    padding-bottom: 44px;
+  }
+  .ps-inner {
+    padding-inline: 16px;
+  }
+  .ps-images {
+    gap: 12px;
+  }
+  .ps-story,
+  .ps-story-reverse {
+    gap: 28px;
+    padding: 28px 20px;
+    border-radius: 24px;
+  }
+  .ps-section-title {
+    font-size: 38px;
+    max-width: 330px;
+  }
+  .ps-intro-copy {
+    font-size: 15px;
+  }
+  .ps-product-title {
+    font-size: 34px;
+  }
+  .ps-price {
+    margin-block: 14px 18px;
+  }
+  .ps-description {
+    font-size: 13px;
+    line-height: 1.75;
+  }
+  .ps-product-link {
+    margin-top: 24px;
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ps-product-link svg,
+  .ps-photo {
+    transition: none;
+  }
+  .ps-photo-frame:hover .ps-photo {
+    transform: none;
+  }
+}
