@@ -1,18 +1,7 @@
 import { productById } from "../config/products.ts";
 import type { CartItem } from "./cart.ts";
-
-const brl = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
-
-function validPrice(price: number | undefined): price is number {
-  return typeof price === "number" && Number.isFinite(price) && price >= 0;
-}
-
-export function formatPrice(price?: number): string {
-  return validPrice(price) ? brl.format(price) : "Preço a definir";
-}
+import { validPrice } from "./format-price.ts";
+export { formatPrice } from "./format-price.ts";
 
 export function cartSubtotal(items: readonly CartItem[]): number {
   const cents = items.reduce((subtotal, item) => {

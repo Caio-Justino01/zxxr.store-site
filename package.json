@@ -8,8 +8,11 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5274",
+    "dev:store": "vite --mode store --host 127.0.0.1 --port 5275",
     "check": "tsc --noEmit",
     "build": "npm run check && vite build",
+    "build:store": "npm run check && vite build --mode store",
+    "prepare:prelaunch": "node scripts/prepare-prelaunch-assets.mjs",
     "test": "node --test tests/*.test.ts",
     "preview": "vite preview --host 127.0.0.1 --port 4174"
   },

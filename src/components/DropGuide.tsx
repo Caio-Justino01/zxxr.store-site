@@ -18,7 +18,22 @@ const steps = [
   },
 ];
 
-export function DropGuide() {
+const previewSteps = [
+  {
+    title: "Entre no ensaio.",
+    text: "Veja as peças em movimento, nas fotos de quem veste o drop.",
+  },
+  {
+    title: "Sinta cada detalhe.",
+    text: "As estampas já estão nas ruas. O restante chega em breve.",
+  },
+  {
+    title: "Conheça quem cria.",
+    text: "Desça mais um pouco e encontre a música de Razz.",
+  },
+];
+
+export function DropGuide({ prelaunch = false }: { prelaunch?: boolean }) {
   const root = useRef<HTMLElement>(null);
   useGuideReading(root);
   return (
@@ -50,13 +65,18 @@ export function DropGuide() {
                 </span>
               ))}
             </h2>
-            <p>Escolha a estampa, confira as medidas e monte sua sacola.</p>
+            <p>
+              {prelaunch
+                ? "O primeiro olhar é seu. Explore o ensaio do drop Desejos."
+                : "Escolha a estampa, confira as medidas e monte sua sacola."}
+            </p>
             <a className="dg-action" href="#o-drop">
-              Encontrar minha peça <Arrow />
+              {prelaunch ? "Explorar o ensaio" : "Encontrar minha peça"}{" "}
+              <Arrow />
             </a>
           </div>
           <ol className="dg-steps">
-            {steps.map((step, index) => (
+            {(prelaunch ? previewSteps : steps).map((step, index) => (
               <li data-guide-step key={step.title}>
                 <span className="dg-step-number" aria-hidden="true">
                   0{index + 1}

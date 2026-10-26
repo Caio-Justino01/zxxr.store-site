@@ -154,8 +154,8 @@
   --photo-ratio: 0.8;
   --photo-angle: -9deg;
   --photo-drift-x: -0.75;
-  --photo-drift-y: 4.8;
-  top: var(--photo-safe-space);
+  --photo-drift-y: -0.8;
+  top: var(--photo-stack-edge, var(--photo-safe-space));
   left: -1.6vw;
 }
 .ps-photo-stack-chairs {
@@ -163,8 +163,8 @@
   --photo-ratio: 0.6669;
   --photo-angle: 9deg;
   --photo-drift-x: 0.9;
-  --photo-drift-y: -4.2;
-  bottom: var(--photo-safe-space);
+  --photo-drift-y: -0.8;
+  bottom: var(--photo-stack-edge, var(--photo-safe-space));
   left: 7vw;
 }
 .ps-photo-stack-beach {
@@ -175,6 +175,22 @@
   --photo-drift-y: 6;
   bottom: var(--photo-safe-space);
   right: -1.8vw;
+}
+@media (min-width: 761px) {
+  .ps-overview-stage {
+    --photo-stack-edge: clamp(40px, 6svh, 72px);
+    /* Reserve a gap for the rotated frames throughout the scroll movement. */
+    --photo-stack-height: min(
+      34svh,
+      calc(
+        (100svh - var(--site-header-height, 88px) - 2 * var(--photo-stack-edge) - 48px) / 2.15 - 12px
+      )
+    );
+  }
+  .ps-photo-stack-garden,
+  .ps-photo-stack-chairs {
+    --photo-max-height: var(--photo-stack-height);
+  }
 }
 .ps-stage-inner {
   display: grid;

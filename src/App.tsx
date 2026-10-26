@@ -202,7 +202,7 @@ function Collection() {
         <div className="collection-sky">
           <GradientBackdrop />
         </div>
-        <CloudCollection />
+        <CloudCollection products={products} priceLabel={formatPrice} />
       </div>
       <DropEditorial
         onAdd={(product, size) =>

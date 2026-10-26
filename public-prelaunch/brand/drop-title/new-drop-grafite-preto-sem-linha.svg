@@ -1,0 +1,49 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1380"
+  height="310"
+  viewBox="0 0 1380 310"
+  role="img"
+  aria-label="New Drop"
+>
+  <title>New Drop — lettering para a edição ZXXR</title>
+  <desc>
+    Lettering original desenhado em curvas editáveis para acompanhar a tag
+    oficial ZXXR. Sem fonte tipográfica, imagem raster ou fundo.
+  </desc>
+  <g fill="#000000" fill-rule="evenodd">
+    <g id="word-new">
+      <path
+        id="letter-n"
+        d="M10 270 Q29 168 51 63 L69 44 L88 53 Q103 123 128 207 Q145 114 181 24 Q174 124 150 267 L128 282 Q91 197 70 110 Q53 184 35 256 Z"
+      />
+      <path
+        id="letter-e"
+        d="M225 72 Q278 59 348 47 L340 70 Q291 82 250 88 L238 143 Q282 129 322 126 L314 149 Q277 158 234 170 L220 235 Q272 226 327 216 L319 243 Q270 259 192 274 Q210 177 225 72 Z"
+      />
+      <path
+        id="letter-w"
+        d="M353 68 L378 49 Q385 147 394 211 Q425 152 453 72 L470 43 Q481 151 505 210 Q542 126 588 29 Q567 143 526 255 L495 276 Q468 215 455 139 Q433 207 405 277 L376 269 Q356 176 353 68 Z"
+      />
+    </g>
+    <g id="word-drop" transform="translate(55 0)">
+      <path
+        id="letter-d"
+        d="M622 67 Q690 24 753 74 C805 122 786 216 729 255 Q689 282 592 278 L600 248 Q617 160 622 67 Z M648 91 L620 244 Q685 238 728 205 C768 169 763 106 719 88 Q685 77 648 91 Z"
+      />
+      <path
+        id="letter-r"
+        d="M818 71 Q887 46 948 35 Q959 33 956 47 Q937 87 853 132 L858 147 Q891 144 914 136 L969 245 L947 260 L882 172 L849 181 L839 266 L819 283 L826 184 Q797 181 785 173 L788 157 L830 163 L835 83 L817 88 Z M858 78 L854 112 Q900 85 924 65 Q891 69 858 78 Z"
+      />
+      <path
+        id="letter-o"
+        d="M1064 49 C1119 37 1140 82 1122 151 Q1100 230 1042 263 C1009 284 978 275 975 241 Q969 207 989 145 Q1011 71 1064 49 Z M1061 78 Q1034 86 1014 142 Q990 208 1004 238 Q1017 253 1046 230 Q1080 201 1096 144 Q1116 80 1083 75 Q1074 74 1061 78 Z"
+      />
+      <path
+        id="letter-p"
+        d="M1160 74 Q1225 51 1295 46 Q1303 45 1295 58 Q1268 103 1197 138 L1187 256 L1166 277 L1163 158 Q1144 163 1130 165 L1137 146 L1166 140 Z M1197 89 L1195 111 Q1248 88 1263 67 Q1222 76 1197 89 Z"
+      />
+    </g>
+
+  </g>
+</svg>

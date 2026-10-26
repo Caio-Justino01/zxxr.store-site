@@ -9,25 +9,23 @@ import {
 } from "react";
 import { Link, useNavigate } from "react-router";
 import gsap from "gsap";
-import { productById, type Product } from "../config/products";
+import type { Product } from "../config/products";
 import { getHeroLayout } from "../lib/hero-layout";
 import { useSuspendedHover } from "../lib/use-suspended-hover";
 import { useHeroScroll } from "../lib/use-hero-scroll";
-import { formatPrice } from "../lib/pricing";
+import { FrozenSurface } from "./FrozenSurface";
 import { Arrow } from "./Icons";
 import { DropTitle } from "./DropTitle";
 import { TouchRoulette } from "./TouchRoulette";
 
 const INTRO_KEY = "zxxr-desejos-intro-v1";
-const heroProducts = [
+const heroOrder = [
   "boca",
   "spiritual-gangsta",
   "flores",
   "zxxr-rosa",
   "me-preservando",
-]
-  .map(productById)
-  .filter((product): product is Product => product !== undefined);
+];
 let introSeenInMemory = false;
 let rememberedRouletteIndex = 0;
 function hasSeenIntro() {
@@ -68,7 +66,7 @@ function CollectionImage({
       alt={
         decorative
           ? ""
-          : `Camiseta oversized ${product.name}, ${side === "back" ? "costas" : "frente"}, imagem original`
+          : `Camiseta ${product.name}, ${side === "back" ? "costas" : "frente"}, ${product.source ? "imagem original" : "prévia congelada"}`
       }
       width="923"
       height="700"
@@ -80,7 +78,22 @@ function CollectionImage({
   );
 }
 
-export function CloudCollection() {
+export function CloudCollection({
+  products,
+  prelaunch = false,
+  priceLabel,
+}: {
+  products: Product[];
+  prelaunch?: boolean;
+  priceLabel?: (price?: number) => string;
+}) {
+  const heroProducts = useMemo(
+    () =>
+      heroOrder
+        .map((id) => products.find((product) => product.id === id))
+        .filter((product): product is Product => Boolean(product)),
+    [products],
+  );
   const navigate = useNavigate();
   const root = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -412,7 +425,11 @@ export function CloudCollection() {
               />
             </span>
           </div>
-          <p className="dh-edition">Peças limitadas, feitas sob encomenda.</p>
+          <p className="dh-edition">
+            {prelaunch
+              ? "Primeiro drop. Revelação em breve."
+              : "Peças limitadas, feitas sob encomenda."}
+          </p>
         </div>
       </div>
       <div
@@ -536,13 +553,21 @@ export function CloudCollection() {
           aria-live="polite"
           aria-atomic="true"
         >
-          {displayed ? (
+          {prelaunch ? (
+            <FrozenSurface kind="inline">
+              <span className="frozen-inline-shapes" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+            </FrozenSurface>
+          ) : displayed ? (
             <>
               <div className="dh-product-name">
                 <span>{displayed.color} · Oversized</span>
                 <strong>{displayed.name}</strong>
               </div>
-              <span className="dh-price">{formatPrice(displayed.price)}</span>
+              <span className="dh-price">{priceLabel?.(displayed.price)}</span>
               <Link
                 className="dh-explore"
                 to={`/produto/${displayed.id}`}
