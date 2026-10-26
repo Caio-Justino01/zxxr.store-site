@@ -2,6 +2,8 @@
 
 Loja da edição Razz: cinco camisetas sob encomenda, por R$ 100,00 cada. O primeiro lote usa sacola local e atendimento pelo WhatsApp, sem plataforma de e-commerce paga. O site mantém as peças livres na hero, os capítulos com galerias e o fundo animado aprovado, com todas as imagens originais nítidas.
 
+Prévia de validação publicada no Cloudflare Pages em 26/10/2026: [zxxr-store.pages.dev](https://zxxr-store.pages.dev/). O fluxo está marcado como teste. Capturas do resultado público e o registro da conferência ficam em `docs/previews/pre-venda-whatsapp/`.
+
 ## Rodar
 
 Node.js 22.18 ou superior.

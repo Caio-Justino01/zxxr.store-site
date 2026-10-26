@@ -1,0 +1,19 @@
+{
+  "url": "https://zxxr-store.pages.dev/",
+  "codeCommit": "c102cd12af511a636162f88265163eabbb140249",
+  "mobile": {
+    "height": 2071,
+    "scrollWidth": 390,
+    "width": 390
+  },
+  "verified": [
+    "Direct product and checkout routes",
+    "Same product and size grouped, different sizes separate",
+    "Quantity changes and item removal",
+    "Cart persisted after reload",
+    "Three pieces from two designs show subtotal BRL 300.00",
+    "Checkout remains visibly marked as a test",
+    "Original clear images, no frozen asset directory in build"
+  ],
+  "payment": "Manual confirmation in WhatsApp; no payment integration or payment confirmation is simulated"
+}
