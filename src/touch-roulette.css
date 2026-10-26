@@ -1,0 +1,107 @@
+.tr-roulette {
+  width: 100%;
+  min-width: 0;
+  position: relative;
+}
+.tr-viewport {
+  --tr-piece-width: min(74vw, 480px);
+  --tr-stage-height: 430px;
+  width: 100%;
+  height: var(--tr-stage-height);
+  position: relative;
+  overflow: clip;
+  touch-action: pan-y;
+  cursor: grab;
+  -webkit-tap-highlight-color: transparent;
+}
+.tr-dragging {
+  cursor: grabbing;
+}
+.tr-position {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  width: var(--tr-piece-width);
+  transform-origin: 50% 8%;
+  will-change: transform;
+}
+.tr-shirt {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  cursor: inherit;
+  text-decoration: none;
+  touch-action: pan-y;
+}
+.tr-shirt img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 923/700;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 16px 12px #082c4f24);
+}
+.tr-shirt:focus-visible,
+.tr-controls button:focus-visible {
+  outline: 2px solid #0b1628;
+  outline-offset: 4px;
+  border-radius: 5px;
+}
+.tr-image-error {
+  aspect-ratio: 923/700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  font-size: 20px;
+}
+.tr-image-error small {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.tr-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  margin: 0 auto 4px;
+}
+.tr-controls button {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #0b16284a;
+  border-radius: 50%;
+  background: #f5faff24;
+  font-size: 20px;
+  line-height: 1;
+  color: #0b1628;
+  cursor: pointer;
+}
+.tr-controls button:disabled {
+  cursor: default;
+}
+.tr-controls span {
+  min-width: 42px;
+  text-align: center;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.tr-roulette[data-enabled="false"] {
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tr-position {
+    will-change: auto;
+  }
+}

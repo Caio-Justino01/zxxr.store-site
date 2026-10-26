@@ -1,0 +1,27 @@
+.drop-campaign-banner {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: clip;
+  scroll-margin-top: var(--site-header-height, 104px);
+}
+.drop-campaign-banner picture,
+.drop-campaign-banner img {
+  display: block;
+  width: 100%;
+}
+.drop-campaign-banner img {
+  height: auto;
+  aspect-ratio: 12 / 5;
+  object-fit: cover;
+  border-radius: 0;
+}
+@media (max-width: 767px) {
+  .drop-campaign-banner img {
+    aspect-ratio: 3 / 4;
+  }
+}

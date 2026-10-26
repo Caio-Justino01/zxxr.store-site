@@ -1,4 +1,4 @@
-/* Own heading metrics take priority over older generic hero h1 rules. */
+/* Preserve the approved tag proportions independently of generic hero headings. */
 .dt-title.dt-title {
   position: relative;
   color: #000;
@@ -7,9 +7,9 @@
   align-items: center;
   gap: clamp(8px, 1.3vw, 20px);
   width: 100%;
-  max-width: 1170px;
-  margin: 24px auto 0;
-  padding: 0;
+  max-width: 1100px;
+  margin: 22px auto 0;
+  padding: 0 0 clamp(9px, 1.1vw, 16px);
   line-height: 1;
   letter-spacing: normal;
   white-space: normal;
@@ -22,7 +22,7 @@
   height: auto;
   min-width: 0;
   max-width: 100%;
-  object-fit: contain;
+  overflow: visible;
 }
 .dt-title .dt-underline {
   position: absolute;
@@ -35,9 +35,14 @@
 .dt-title .dt-lettering {
   translate: 0 -2%;
 }
+.dt-title:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 8px;
+}
 @media (max-width: 700px) {
   .dt-title.dt-title {
     gap: 7px;
-    margin-top: 25px;
+    margin-top: 20px;
+    padding-bottom: 9px;
   }
 }

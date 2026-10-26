@@ -2,14 +2,17 @@ import {
   useEffect,
   useId,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   type KeyboardEvent,
   type PointerEvent,
+  type CSSProperties,
 } from "react";
 import { Link } from "react-router";
 import gsap from "gsap";
 import type { Product } from "../config/products";
+import { getProductGallery } from "../config/product-gallery";
 import {
   clampViewerPan,
   clampViewerZoom,
@@ -18,22 +21,25 @@ import {
 } from "../lib/viewer";
 import "../viewer-v5.css";
 
-type Side = "front" | "back";
+type Side = string;
 type ImageStatus = "loading" | "ready" | "error";
-const sides: Side[] = ["front", "back"];
-const initialStatus = (): Record<Side, ImageStatus> => ({
-  front: "loading",
-  back: "loading",
-});
+const initialStatus = (views: string[]): Record<Side, ImageStatus> =>
+  Object.fromEntries(views.map((view) => [view, "loading"]));
 
 export function GarmentViewer({
   product,
-  initialView = "front",
+  initialView,
+  compact = false,
 }: {
   product: Product;
   initialView?: Side;
+  compact?: boolean;
 }) {
-  const [side, setSide] = useState<Side>(initialView);
+  const gallery = useMemo(() => getProductGallery(product), [product]);
+  const sides = useMemo(() => gallery.map((image) => image.id), [gallery]);
+  const startingView = initialView && sides.includes(initialView) ? initialView : sides[0];
+  const [side, setSide] = useState<Side>(startingView);
+  const selectedImage = gallery.find((image) => image.id === side) ?? gallery[0];
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState<ViewerPoint>({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -43,7 +49,7 @@ export function GarmentViewer({
   });
   const [images, setImages] = useState({
     productId: product.id,
-    statuses: initialStatus(),
+    statuses: initialStatus(sides),
     sizes: {} as Partial<Record<Side, ViewerSize>>,
   });
   const [reduced, setReduced] = useState(
@@ -81,14 +87,14 @@ export function GarmentViewer({
   useLayoutEffect(() => {
     drag.current = null;
     setDragging(false);
-    setSide(initialView);
+    setSide(startingView);
     setZoom(1);
     setPan({ x: 0, y: 0 });
-  }, [product.id, initialView]);
+  }, [product.id, startingView]);
 
   useLayoutEffect(() => {
-    setImages({ productId: product.id, statuses: initialStatus(), sizes: {} });
-  }, [product.id]);
+    setImages({ productId: product.id, statuses: initialStatus(sides), sizes: {} });
+  }, [product.id, sides]);
 
   useLayoutEffect(() => {
     const node = viewport.current;
@@ -130,7 +136,7 @@ export function GarmentViewer({
     return () => {
       transition.kill();
     };
-  }, [side, product.id, reduced]);
+  }, [side, product.id, reduced, sides]);
 
   const stopPan = () => {
     const pointer = drag.current?.pointer;
@@ -145,7 +151,7 @@ export function GarmentViewer({
     setZoom(1);
     setPan({ x: 0, y: 0 });
   };
-  const restore = () => selectSide("front");
+  const restore = () => selectSide(startingView);
   const changeZoom = (next: number) => {
     stopPan();
     const value = clampViewerZoom(Math.round(next * 100) / 100);
@@ -226,7 +232,8 @@ export function GarmentViewer({
           );
       } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         event.preventDefault();
-        selectSide(side === "front" ? "back" : "front");
+        const direction = event.key === "ArrowRight" ? 1 : -1;
+        selectSide(sides[(sides.indexOf(side) + direction + sides.length) % sides.length]);
       }
     }
   };
@@ -240,7 +247,7 @@ export function GarmentViewer({
       const current =
         previous.productId === product.id
           ? previous
-          : { productId: product.id, statuses: initialStatus(), sizes: {} };
+          : { productId: product.id, statuses: initialStatus(sides), sizes: {} };
       return {
         ...current,
         statuses: { ...current.statuses, [view]: next },
@@ -260,13 +267,13 @@ export function GarmentViewer({
   };
 
   return (
-    <section className="gv-viewer" aria-label={`Imagens de ${product.name}`}>
+    <section className={`gv-viewer ${compact ? "gv-compact" : ""}`} aria-label={`Imagens de ${product.name}`}>
       <div
         ref={viewport}
-        className={`gv-stage ${isZoomed ? "gv-zoomed" : ""} ${dragging ? "gv-panning" : ""}`}
+        className={`gv-stage ${selectedImage.campaign ? "gv-campaign" : "gv-original"} ${isZoomed ? "gv-zoomed" : ""} ${dragging ? "gv-panning" : ""}`}
         tabIndex={0}
         role="group"
-        aria-label={`${product.name}, ${side === "front" ? "frente" : "costas"}`}
+        aria-label={`${product.name}, ${selectedImage.label.toLowerCase()}`}
         aria-describedby={hintId}
         aria-busy={status === "loading"}
         onPointerDown={down}
@@ -277,6 +284,7 @@ export function GarmentViewer({
         onKeyDown={keyDown}
         data-view={side}
         data-zoom={zoom.toFixed(2)}
+        style={{ "--gv-image-ratio": selectedImage.width / selectedImage.height } as CSSProperties}
       >
         <div
           className="gv-image-stack"
@@ -284,27 +292,33 @@ export function GarmentViewer({
             transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
           }}
         >
-          {sides.map((view) => (
+          {gallery.map((image) => (
             <img
-              key={`${product.id}-${view}`}
+              key={`${product.id}-${image.id}`}
               ref={(node) => {
-                if (node) imageNodes.current[view] = node;
-                else delete imageNodes.current[view];
+                if (node) imageNodes.current[image.id] = node;
+                else delete imageNodes.current[image.id];
               }}
-              className={`gv-image gv-image-${view}`}
-              src={view === "front" ? product.front : product.back}
-              alt={`${product.name}, ${view === "front" ? "frente" : "costas"}, referência original`}
-              aria-hidden={view !== side}
+              className={`gv-image ${image.campaign ? "gv-campaign-image" : "gv-original-image"}`}
+              style={{ opacity: image.id === side ? 1 : 0 }}
+              src={image.src}
+              srcSet={image.srcSet}
+              sizes="(max-width: 760px) 90vw, (max-width: 1200px) 48vw, 640px"
+              width={image.width}
+              height={image.height}
+              alt={image.alt}
+              aria-hidden={image.id !== side}
               draggable={false}
               decoding="async"
-              loading="eager"
-              onLoad={(event) => imageState(view, "ready", event.currentTarget)}
+              loading={compact ? "lazy" : "eager"}
+              onLoad={(event) => imageState(image.id, "ready", event.currentTarget)}
               onError={(event) =>
-                imageState(view, "error", event.currentTarget)
+                imageState(image.id, "error", event.currentTarget)
               }
             />
           ))}
         </div>
+        <span className="gv-photo-label liquid-glass" aria-hidden="true">{selectedImage.label}<span>{sides.indexOf(side) + 1} / {sides.length}</span></span>
         {status === "loading" && (
           <span className="gv-status" role="status">
             Carregando imagem…
@@ -324,25 +338,15 @@ export function GarmentViewer({
           </div>
         )}
       </div>
+      <div className="gv-thumbnails" role="group" aria-label={`Galeria de ${product.name}`}>
+        {gallery.map((image) => (
+          <button type="button" key={image.id} className={`gv-thumbnail ${image.campaign ? "gv-thumbnail-campaign" : ""}`} aria-label={`Ver ${image.label.toLowerCase()} de ${product.name}`} aria-pressed={side === image.id} onClick={() => selectSide(image.id)}>
+            <span className="gv-thumbnail-frame"><img src={image.src} alt="" width="72" height="72" loading="lazy" decoding="async" /></span>
+            <span>{image.label}</span>
+          </button>
+        ))}
+      </div>
       <div className="gv-toolbar">
-        <div className="gv-sides" role="group" aria-label="Vista da peça">
-          <button
-            type="button"
-            className="gv-control"
-            aria-pressed={side === "front"}
-            onClick={() => selectSide("front")}
-          >
-            Frente
-          </button>
-          <button
-            type="button"
-            className="gv-control"
-            aria-pressed={side === "back"}
-            onClick={() => selectSide("back")}
-          >
-            Costas
-          </button>
-        </div>
         <div className="gv-actions">
           <button
             type="button"

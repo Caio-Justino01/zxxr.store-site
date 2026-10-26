@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useReducer,
   useRef,
   useState,
@@ -13,9 +14,10 @@ import {
   Routes,
   useLocation,
   useNavigate,
+  useNavigationType,
   useParams,
 } from "react-router";
-import { products, productById, sizes, type Size } from "./config/products";
+import { products, productById, type Size } from "./config/products";
 import {
   cartReducer,
   readCart,
@@ -28,13 +30,13 @@ import { Arrow, BagIcon } from "./components/Icons";
 import { CloudCollection } from "./components/CloudCollection";
 import { GarmentViewer } from "./components/GarmentViewer";
 import { ProductPhoto } from "./components/ProductPhoto";
+import { ProductSpecifications } from "./components/ProductSpecifications";
+import { ProductSizeSelector } from "./components/ProductSizeSelector";
+import "./product-page.css";
 import { MusicSection } from "./components/MusicSection";
-import { ProductStories } from "./components/ProductStories";
+import { DropGuide } from "./components/DropGuide";
+import { DropEditorial } from "./components/DropEditorial";
 import { GradientBackdrop } from "./components/GradientBackdrop";
-import {
-  ProductQuickView,
-  type QuickViewSelection,
-} from "./components/ProductQuickView";
 import { cartSubtotal, formatPrice } from "./lib/pricing";
 const BagContext = createContext<{
   items: CartItem[];
@@ -42,23 +44,83 @@ const BagContext = createContext<{
 }>(null!);
 
 function RouteEffects() {
-  const { pathname, hash } = useLocation();
-  useEffect(() => {
-    if (hash) {
-      requestAnimationFrame(() =>
+  const { pathname, hash, key } = useLocation();
+  const navigationType = useNavigationType();
+  const positions = useRef(new Map<string, { left: number; top: number }>());
+
+  useLayoutEffect(() => {
+    const previous = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    return () => {
+      window.history.scrollRestoration = previous;
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    const saved = positions.current.get(key) ?? { left: 0, top: 0 };
+    let scrollFrame = 0;
+    let restoreFrame = 0;
+    let layoutFrame = 0;
+    let pendingPosition: { left: number; top: number } | null = null;
+    const saveScroll = () => {
+      // Capture now: cleanup must not read the next route's scroll position.
+      pendingPosition = { left: window.scrollX, top: window.scrollY };
+      if (scrollFrame) return;
+      scrollFrame = requestAnimationFrame(() => {
+        scrollFrame = 0;
+        if (pendingPosition) positions.current.set(key, pendingPosition);
+        pendingPosition = null;
+      });
+    };
+    const restoreScroll = () => {
+      if (hash) {
+        let id = hash.slice(1);
+        try {
+          id = decodeURIComponent(id);
+        } catch {
+          // A malformed encoded hash can still match a literal element id.
+        }
         document
-          .getElementById(hash.slice(1))
-          ?.scrollIntoView({ behavior: "instant", block: "start" }),
-      );
-    } else window.scrollTo({ top: 0, behavior: "instant" });
+          .getElementById(id)
+          ?.scrollIntoView({ behavior: "instant", block: "start" });
+      } else {
+        window.scrollTo({
+          ...(navigationType === "POP" ? saved : { left: 0, top: 0 }),
+          behavior: "instant",
+        });
+      }
+      positions.current.set(key, { left: window.scrollX, top: window.scrollY });
+      if (navigationType !== "POP" && !hash) {
+        document
+          .querySelector<HTMLElement>("main h1")
+          ?.focus({ preventScroll: true });
+      }
+    };
+
+    window.addEventListener("scroll", saveScroll, { passive: true });
+    if (navigationType !== "POP" && !hash) restoreScroll();
+    else {
+      // Let the destination's layout and hero measurements settle first.
+      layoutFrame = requestAnimationFrame(() => {
+        restoreFrame = requestAnimationFrame(restoreScroll);
+      });
+    }
+    return () => {
+      window.removeEventListener("scroll", saveScroll);
+      cancelAnimationFrame(scrollFrame);
+      cancelAnimationFrame(layoutFrame);
+      cancelAnimationFrame(restoreFrame);
+      if (pendingPosition) positions.current.set(key, pendingPosition);
+    };
+  }, [key, pathname, hash, navigationType]);
+
+  useEffect(() => {
     document.title = pathname.startsWith("/produto/")
       ? `${productById(pathname.split("/")[2])?.name ?? "Peça"} · ZXXR Store`
       : pathname === "/sacola"
         ? "Sua sacola · ZXXR Store"
-        : "ZXXR Store · Primeiro drop";
-    const heading = document.querySelector<HTMLElement>("main h1");
-    heading?.focus({ preventScroll: true });
-  }, [pathname, hash]);
+        : "Desejos · New Drop ZXXR · Razz";
+  }, [pathname]);
   return null;
 }
 function Header() {
@@ -123,7 +185,7 @@ function Footer() {
       </p>
       <div>
         <span>zxxr.store</span>
-        <small>Prévia do primeiro drop · 2026</small>
+        <small>Primeiro drop · Edição Razz</small>
       </div>
       <a href="#top" aria-label="Voltar ao topo">
         ↑
@@ -134,7 +196,6 @@ function Footer() {
 
 function Collection() {
   const { dispatch } = useContext(BagContext);
-  const [selection, setSelection] = useState<QuickViewSelection | null>(null);
   return (
     <main id="top">
       <div className="collection-world">
@@ -142,37 +203,13 @@ function Collection() {
           <GradientBackdrop />
         </div>
         <CloudCollection />
-        <ProductStories
-          onExplore={(product, side) =>
-            setSelection({ product, side, focusOrder: false })
-          }
-          onOrder={(product, side) =>
-            setSelection({ product, side, focusOrder: true })
-          }
-        />
       </div>
-      <section
-        className="drop-guide"
-        id="como-funciona"
-        aria-labelledby="guide-title"
-      >
-        <div className="guide-heading">
-          <img src="/brand/mascot-black.svg" alt="" width="46" height="42" />
-          <h2 id="guide-title">Seu próximo drop.</h2>
-        </div>
-        <div>
-          <h3>Encontre sua estampa</h3>
-          <p>Escolha sua peça e veja frente e costas de perto.</p>
-        </div>
-        <div>
-          <h3>Escolha seu tamanho</h3>
-          <p>Corte oversized. Do P ao GG.</p>
-        </div>
-        <div>
-          <h3>Feita sob encomenda</h3>
-          <p>Cinco peças. Edição limitada, criada por Razz.</p>
-        </div>
-      </section>
+      <DropEditorial
+        onAdd={(product, size) =>
+          dispatch({ type: "add", productId: product.id, size })
+        }
+      />
+      <DropGuide />
       <MusicSection />
       <section className="endnote">
         <p>EDIÇÃO RAZZ. SOB ENCOMENDA.</p>
@@ -187,13 +224,6 @@ function Collection() {
           Voltar à coleção <span>↑</span>
         </a>
       </section>
-      <ProductQuickView
-        selection={selection}
-        onClose={() => setSelection(null)}
-        onAdd={(product, size) =>
-          dispatch({ type: "add", productId: product.id, size })
-        }
-      />
     </main>
   );
 }
@@ -203,12 +233,12 @@ function ProductPage() {
     product = productById(slug),
     { dispatch } = useContext(BagContext),
     navigate = useNavigate();
-  const [size, setSize] = useState<Size | null>(null),
+  const [size, setSize] = useState<Size | null>("M"),
     [error, setError] = useState(false),
     [added, setAdded] = useState(false);
   const sizeGroup = useRef<HTMLFieldSetElement>(null);
   useEffect(() => {
-    setSize(null);
+    setSize("M");
     setAdded(false);
     setError(false);
   }, [slug]);
@@ -244,11 +274,7 @@ function ProductPage() {
           <p className="drop-label">Edição Razz / Peça {product.number}</p>
           <h1 tabIndex={-1}>{product.name}</h1>
           <p className="product-description">{product.description}</p>
-          <div className="color-line">
-            <span className={product.dark ? "swatch dark" : "swatch"} />
-            {product.color}
-            <span>Modelagem oversized</span>
-          </div>
+          <ProductSpecifications product={product} />
           <div className="price-line">
             <span>{formatPrice(product.price)}</span>
             <small>Limitada · sob encomenda</small>
@@ -258,29 +284,19 @@ function ProductPage() {
             ref={sizeGroup}
             aria-describedby={error ? "size-error" : "size-note"}
           >
-            <legend>Selecione o tamanho</legend>
-            <div>
-              {sizes.map((s) => (
-                <button
-                  key={s}
-                  aria-pressed={size === s}
-                  onClick={() => {
-                    setSize(s);
-                    setError(false);
-                    setAdded(false);
-                  }}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
+            <legend className="ps-sr-only">Tamanho da peça</legend>
+            <ProductSizeSelector value={size} onChange={(s) => {
+              setSize(s);
+              setError(false);
+              setAdded(false);
+            }} />
             {error ? (
               <p id="size-error" className="size-error" role="alert">
                 Escolha um tamanho para adicionar à sacola.
               </p>
             ) : (
               <p id="size-note">
-                Grade provisória. Medidas disponíveis no lançamento.
+                Consulte a tabela para comparar com uma camiseta sua.
               </p>
             )}
           </fieldset>
@@ -298,32 +314,14 @@ function ProductPage() {
               </Link>
             )}
           </div>
-          <details open>
-            <summary>
-              Sobre a peça <span>+</span>
-            </summary>
-            <p>
-              Estampa autoral de Razz. Corte amplo, ombros deslocados e presença
-              de frente e de costas.
-            </p>
-          </details>
           <details>
             <summary>
-              Sobre esta prévia <span>+</span>
+              Como cuidar <span>+</span>
             </summary>
             <p>
-              As imagens preservam os mockups originais da coleção. Medidas e
-              caimento finais serão confirmados com a peça física. Suas escolhas
-              ficam salvas neste navegador; as vendas ainda não estão abertas.
+              Lave a peça do avesso e evite passar o ferro diretamente sobre a estampa.
+              Siga as instruções da etiqueta para conservar a malha e as cores.
             </p>
-            <a
-              href={"/media/source/" + product.source}
-              target="_blank"
-              rel="noreferrer"
-              className="text-link"
-            >
-              Ver mockup original ↗
-            </a>
           </details>
         </section>
       </div>
@@ -394,7 +392,7 @@ function Bag() {
                       {formatPrice(p.price)} <small>cada</small>
                     </strong>
                     <div className="quantity-row">
-                      <div className="quantity-control">
+                      <div className="quantity-control liquid-glass">
                         <button
                           aria-label={`Diminuir quantidade de ${p.name}, ${item.size}`}
                           disabled={item.quantity === 1}
@@ -436,16 +434,13 @@ function Bag() {
               );
             })}
           </div>
-          <aside className="bag-summary">
+          <aside className="bag-summary liquid-glass">
             <span className="red-dot" />
             <h2>
-              Primeiro drop.
-              <br />
-              Em breve.
+              Sua seleção.
             </h2>
             <p>
-              Você está explorando uma prévia da ZXXR Store. Suas escolhas ficam
-              salvas neste navegador.
+              Confira as estampas, os tamanhos e as quantidades das suas peças.
             </p>
             <dl>
               <div>
@@ -457,12 +452,8 @@ function Bag() {
                 <dd>{formatPrice(cartSubtotal(items))}</dd>
               </div>
             </dl>
-            <p className="bag-limits">
-              Pagamento, entrega e disponibilidade serão liberados no
-              lançamento.
-            </p>
             <Link to="/" className="add-button">
-              Explorar mais peças <Arrow />
+              Continuar comprando <Arrow />
             </Link>
           </aside>
         </div>

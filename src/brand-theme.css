@@ -1,0 +1,347 @@
+/* ZAAR visual presentation, page 6. These tokens style the interface.
+   The hero keeps its approved blue shader and CSS fallback.
+   Product sections and image surfaces stay pure white, as requested. */
+:root {
+  --brand-ink: #101010;
+  --brand-paper: #f1ede3;
+  --brand-red: #b5122b;
+  --brand-pink: #eb1478;
+  --brand-white: #fff;
+  --brand-muted: #69665f;
+  --brand-surface: #f7f4ed;
+  --brand-line: #1010101c;
+  --site-header-height: 88px;
+  --ink: var(--brand-ink);
+  --red: var(--brand-red);
+  --pink: var(--brand-pink);
+  --line: var(--brand-line);
+  --glass-fill: linear-gradient(155deg, #ffffffe0, #f1ede370 48%, #ffffff80);
+  --glass-rim: #ffffffb3;
+  --glass-shadow:
+    0 5px 22px #10101009, 0 1px 3px #10101008, inset 0 1px 1px #fff,
+    inset 0 -1px 1px #10101016;
+  color: var(--brand-ink);
+  background: var(--brand-paper);
+}
+body,
+#root {
+  background: var(--brand-paper);
+  color: var(--brand-ink);
+}
+::selection {
+  color: var(--brand-ink);
+  background: #eb147830;
+}
+.bag-page,
+.not-found,
+.drop-guide,
+.endnote,
+.site-footer,
+.music-section {
+  background: var(--brand-paper);
+  color: var(--brand-ink);
+}
+.site-header,
+.site-header.collection-header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  height: var(--site-header-height);
+  background: var(--brand-white);
+  color: var(--brand-ink);
+  border-bottom: 1px solid var(--brand-line);
+  --glass-fill: linear-gradient(155deg, #fff, #ffffffc9 48%, #fffffff0);
+}
+html {
+  scroll-padding-top: calc(var(--site-header-height) + 16px);
+}
+.ps-stage {
+  top: var(--site-header-height);
+  min-height: calc(100svh - var(--site-header-height));
+}
+.ps-chapter[data-layout="flow"] > .ps-stage,
+.ps-section[data-motion="static"] .ps-stage {
+  top: 0;
+}
+.ps-section {
+  --ps-ink: var(--brand-ink);
+  --ps-muted: var(--brand-muted);
+}
+.ps-section,
+.ps-stage,
+.ps-story,
+.ps-story .ps-stage,
+.product-main,
+.other-pieces {
+  background: var(--brand-white);
+  color: var(--brand-ink);
+}
+.dh-garment img,
+.dh-preview img {
+  filter: drop-shadow(0 14px 10px #10101026);
+}
+.dh-info,
+.dh-drop-meta,
+.dh-bottom,
+.dh-price,
+.gv-viewer,
+.product-info,
+.product-specifications,
+.product-size-selector > legend,
+.ps-story .ps-price {
+  color: var(--brand-ink);
+}
+.dh-explore,
+.gv-toolbar {
+  border-color: var(--brand-line);
+}
+.ps-story .ps-copy {
+  border-color: #ffffffb3;
+  background: linear-gradient(145deg, #ffffffed, #ffffffbd);
+  box-shadow:
+    0 12px 40px #10101006,
+    inset 0 1px 1px #fff;
+  color: var(--brand-ink);
+}
+.ps-story .ps-description,
+.ps-story .ps-purchase-links,
+.product-facts dt,
+.product-size-chart caption,
+.product-size-chart thead th,
+.product-size-chart-body > p,
+.gv-hint,
+.gv-zoom-value,
+.gv-photo-label > span,
+.pqv-color,
+.pqv-limited {
+  color: var(--brand-muted);
+}
+.gv-stage,
+.gv-thumbnail-frame,
+.ps-image-window,
+.bag-item > a,
+.native-photo {
+  background: var(--brand-white);
+}
+.gv-compact .gv-stage {
+  box-shadow:
+    0 12px 38px #10101010,
+    0 2px 4px #10101006;
+}
+.gv-thumbnail-frame {
+  border-color: #1010100d;
+  box-shadow: 0 3px 10px #10101008;
+}
+.gv-thumbnail {
+  color: var(--brand-muted);
+}
+.gv-thumbnail[aria-pressed="true"] > span:last-child {
+  color: var(--brand-ink);
+  background: #b5122b12;
+}
+.gv-thumbnail[aria-pressed="true"] > span:last-child::before {
+  background: var(--brand-red);
+}
+.gv-thumbnail:hover:not([aria-pressed="true"]) > span:last-child {
+  color: var(--brand-ink);
+  background: #10101008;
+}
+.product-size-selector > div > button {
+  color: var(--brand-ink);
+  border-color: #ffffffb3;
+  box-shadow:
+    0 3px 12px #10101008,
+    inset 0 1px 1px #fff;
+}
+.product-size-selector button[aria-pressed="true"] {
+  color: var(--brand-paper);
+  background: var(--brand-ink);
+  border-color: transparent;
+  box-shadow: none;
+}
+.product-size-selector button:hover:not([aria-pressed="true"]) {
+  border-color: #10101040;
+}
+.product-facts > div,
+.product-size-chart :is(th, td),
+.ps-story .ps-order-row {
+  border-color: var(--brand-line);
+}
+.product-size-chart {
+  background: #ffffff70;
+  border-color: #ffffffb3;
+  box-shadow:
+    inset 0 1px 1px #fff,
+    0 6px 20px #10101005;
+}
+.ps-piece-pill {
+  --glass-fill: linear-gradient(145deg, #ffffffc9, #f7f4ed70 42%, #e3ded366);
+  --glass-rim: #ffffffc2;
+  --glass-shadow:
+    0 5px 18px #10101009, 0 1px 3px #1010100b, inset 0 1px 1px #fff,
+    inset 0 -1px 2px #10101021;
+}
+.liquid-glass,
+.site-header nav,
+.site-header .bag-link,
+.dh-info:has(.dh-product-name),
+.pqv-dialog,
+.pqv-close,
+.pqv-sizes button:not([aria-pressed="true"]),
+.gv-control:not([aria-pressed="true"]),
+.gv-zoom-controls,
+.tr-controls button,
+.ps-gallery-controls button {
+  color: var(--brand-ink);
+}
+.liquid-glass:hover {
+  background-color: #ffffff6b;
+  box-shadow: var(--glass-shadow);
+}
+.liquid-glass:active {
+  background-color: #10101009;
+}
+.ps-product-link,
+.pqv-add:not(:disabled),
+.add-button:not(.added):not(:disabled) {
+  color: var(--brand-paper);
+  border-color: #ffffff24;
+  background: linear-gradient(145deg, #34332f, #101010);
+  box-shadow:
+    0 5px 16px #10101013,
+    inset 0 1px 1px #ffffff30;
+}
+.ps-story .ps-product-link:hover {
+  background: linear-gradient(145deg, #45423b, #101010);
+}
+.pqv-dialog {
+  --glass-fill: linear-gradient(145deg, #fffffffa, #fffffff0);
+  box-shadow:
+    var(--glass-shadow),
+    0 24px 90px #10101026;
+}
+.pqv-dialog::backdrop {
+  background: #10101024;
+}
+.pqv-visual .gv-stage {
+  background: var(--brand-white);
+}
+.pqv-description,
+.pqv-links a {
+  color: var(--brand-ink);
+}
+.pqv-sizes button[aria-pressed="true"],
+.pqv-visual .gv-control[aria-pressed="true"] {
+  color: var(--brand-paper);
+  background: var(--brand-ink);
+  border-color: var(--brand-ink);
+}
+.pqv-visual .gv-control:hover:not(:disabled):not([aria-pressed="true"]) {
+  background: #f1ede3b3;
+}
+.gv-viewer .gv-thumbnail:focus-visible,
+.product-size-selector button:focus-visible,
+.product-size-chart > summary:focus-visible,
+.gv-stage:focus-visible,
+.pqv-dialog button:focus-visible,
+.pqv-dialog a:focus-visible {
+  outline-color: var(--brand-red);
+}
+.brand-sticker {
+  display: inline-block;
+  width: 84px;
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+  line-height: 0;
+}
+.brand-sticker img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 3px #1010100c);
+}
+.ps-overview-stage > .ps-brand-sticker {
+  position: absolute;
+  z-index: 1;
+  top: 32px;
+  right: clamp(36px, 7vw, 120px);
+  width: 96px;
+  transform: rotate(11deg);
+}
+.ps-overview-tiles {
+  --tile: rgba(181, 18, 43, 0.02);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  touch-action: pan-y;
+  mask-image: linear-gradient(transparent, #000 10%, #000 88%, transparent);
+  -webkit-mask-image: linear-gradient(
+    transparent,
+    #000 10%,
+    #000 88%,
+    transparent
+  );
+}
+.ps-overview-tiles .tiles-cell {
+  border-top-width: 0.5px;
+  border-right-width: 0.5px;
+  border-color: rgba(16, 16, 16, 0.04);
+}
+@media (forced-colors: active) {
+  .ps-overview-tiles {
+    display: none;
+  }
+}
+.ps-closing-sticker {
+  width: 160px;
+  align-self: center;
+  transform: rotate(-7deg);
+}
+.music-brand-sticker {
+  width: 64px;
+  transform: rotate(-11deg);
+  margin-right: 9px;
+}
+@media (max-width: 760px) {
+  .ps-overview-stage > .ps-brand-sticker {
+    top: 48px;
+    right: 28px;
+    width: 76px;
+  }
+  .ps-closing-sticker {
+    width: 128px;
+  }
+}
+@media (max-width: 699px) {
+  :root {
+    --site-header-height: 78px;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass,
+  .site-header nav,
+  .site-header .bag-link,
+  .dh-info:has(.dh-product-name),
+  .pqv-dialog,
+  .pqv-close,
+  .pqv-sizes button:not([aria-pressed="true"]),
+  .gv-control:not([aria-pressed="true"]),
+  .gv-zoom-controls,
+  .tr-controls button,
+  .ps-gallery-controls button {
+    background: var(--brand-surface);
+  }
+  .ps-story .ps-copy {
+    background: var(--brand-white);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (forced-colors: active) {
+  .gv-thumbnail[aria-pressed="true"] > span:last-child {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

@@ -26,7 +26,7 @@ export const products: Product[] = [
     color: "Off-white",
     dark: false,
     description:
-      "Presença que não precisa pedir licença. Frente discreta, expressão nas costas.",
+      "Assinatura pequena no peito e a boca com o R em destaque nas costas. Off-white para deixar o desenho falar.",
     line: "O som também veste.",
     note: "Uma boca aberta. Uma assinatura. O resto é volume.",
     source: "IMG_3296 1.jpg",
@@ -47,7 +47,7 @@ export const products: Product[] = [
     color: "Off-white",
     dark: false,
     description:
-      "Flores em vermelho, espalhadas pela frente. Leveza com atitude própria.",
+      "Três flores vermelhas atravessam a frente. Nas costas, a assinatura de Razz aparece junto à gola.",
     line: "Florescem outros caminhos.",
     note: "Vermelho sobre off-white. Um gesto que ocupa o seu espaço.",
     source: "IMG_3282 1.jpg",
@@ -67,7 +67,7 @@ export const products: Product[] = [
     color: "Off-white",
     dark: false,
     description:
-      "“Me preservando, não me encontre.” Uma frase nas costas. Um recado para quem entende.",
+      "“Me preservando, não me encontre.” A frase em vermelho percorre os ombros; a frente leva uma assinatura discreta.",
     line: "O silêncio tem presença.",
     note: "Às vezes, vestir uma ideia é tudo que você precisa dizer.",
     source: "IMG_3283 1.jpg",
@@ -87,7 +87,7 @@ export const products: Product[] = [
     color: "Preto estonado",
     dark: true,
     description:
-      "Vermelho no preto estonado. A assinatura de Razz em uma peça de presença direta.",
+      "Spiritual Gangsta ocupa a parte de cima das costas em vermelho. A lavagem estonada dá variação ao preto da peça.",
     line: "Na sua frequência.",
     note: "Da música para a rua. Feita para acompanhar o seu próprio ritmo.",
     source: "IMG_3281 1.jpg",
@@ -107,7 +107,7 @@ export const products: Product[] = [
     color: "Preto estonado",
     dark: true,
     description:
-      "Rosa e branco sobre preto estonado. A assinatura ZXXR percorre as costas em diagonal.",
+      "Quatro letras em rosa, contorno branco e uma diagonal que atravessa as costas. Na frente, a marca aparece menor.",
     line: "Uma assinatura em movimento.",
     note: "Letras em rosa, contorno branco e o corte amplo da edição Razz.",
     source: "IMG_3271 1.jpg",

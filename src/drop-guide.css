@@ -1,0 +1,183 @@
+.drop-guide-cta {
+  position: relative;
+  z-index: 4;
+  background: var(--brand-paper, #f1ede3);
+  color: #101010;
+  border-top: 1px solid #10101014;
+  scroll-margin-top: 0;
+}
+.drop-guide-cta[data-guide-mode="sticky"] {
+  min-height: 180svh;
+}
+.drop-guide-cta .dg-stage {
+  top: 88px;
+  padding: clamp(48px, 7vh, 88px) 6%;
+  display: grid;
+  align-items: center;
+}
+.drop-guide-cta[data-guide-mode="sticky"] .dg-stage {
+  position: sticky;
+  min-height: calc(100svh - 88px);
+}
+.dg-content {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(56px, 9vw, 150px);
+  align-items: center;
+}
+.dg-mark {
+  width: 42px;
+  height: 38px;
+  object-fit: contain;
+  margin-bottom: 30px;
+}
+.dg-intro h2 {
+  font:
+    550 clamp(46px, 5.5vw, 82px) / 1.04 Inter,
+    sans-serif;
+  letter-spacing: -0.065em;
+}
+.dg-title-line {
+  display: block;
+  white-space: nowrap;
+}
+[data-guide-letter] {
+  opacity: var(--guide-letter, 1);
+}
+.dg-intro > p {
+  max-width: 320px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #69665f;
+  margin: 24px 0 30px;
+}
+.dg-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 17px 24px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 550;
+  background: linear-gradient(145deg, #34332f, #101010);
+  color: #f5f5f7;
+  border: 1px solid #ffffff40;
+  box-shadow:
+    0 5px 18px #10101014,
+    inset 0 1px 1px #ffffff30;
+}
+.dg-action:hover {
+  background: #34332f;
+}
+.dg-action svg {
+  width: 18px;
+  height: 18px;
+}
+.dg-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dg-steps li {
+  display: flex;
+  gap: 22px;
+  padding: 29px 0;
+  border-bottom: 1px solid #1010101c;
+  opacity: var(--guide-step, 1);
+  transform: translateY(var(--guide-shift, 0px));
+}
+.dg-steps li:first-child {
+  border-top: 1px solid #1010101c;
+}
+.dg-step-number {
+  font-size: 12px;
+  padding-top: 4px;
+  color: #69665f;
+  font-variant-numeric: tabular-nums;
+}
+.dg-steps h3 {
+  font-size: clamp(19px, 1.7vw, 24px);
+  font-weight: 550;
+  letter-spacing: -0.04em;
+  line-height: 1.3;
+}
+.dg-steps p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #69665f;
+  max-width: 300px;
+  margin-top: 9px;
+}
+.drop-guide-cta:focus-within [data-guide-letter],
+.drop-guide-cta:focus-within [data-guide-step],
+.drop-guide-cta[data-guide-mode="flow"] [data-guide-letter],
+.drop-guide-cta[data-guide-mode="flow"] [data-guide-step] {
+  opacity: 1;
+  transform: none;
+}
+@media (max-width: 700px) {
+  .drop-guide-cta .dg-stage {
+    top: 72px;
+    padding: 36px 7%;
+  }
+  .drop-guide-cta[data-guide-mode="sticky"] .dg-stage {
+    min-height: calc(100svh - 72px);
+  }
+  .dg-content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .dg-mark {
+    width: 34px;
+    height: 30px;
+    margin-bottom: 20px;
+  }
+  .dg-intro h2 {
+    font-size: clamp(40px, 9vw, 60px);
+  }
+  .dg-title-line {
+    display: inline;
+    white-space: normal;
+  }
+  .dg-title-line + .dg-title-line::before {
+    content: " ";
+  }
+  .dg-intro > p {
+    font-size: 13px;
+    margin: 18px 0 22px;
+    max-width: 300px;
+  }
+  .dg-action {
+    padding: 14px 20px;
+    font-size: 12px;
+  }
+  .dg-steps li {
+    padding: 20px 0;
+    gap: 18px;
+  }
+  .dg-steps h3 {
+    font-size: 19px;
+  }
+  .dg-steps p {
+    font-size: 12px;
+    margin-top: 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .drop-guide-cta[data-guide-mode="sticky"] {
+    min-height: auto;
+  }
+  .drop-guide-cta[data-guide-mode="sticky"] .dg-stage {
+    position: static;
+    min-height: auto;
+  }
+  .drop-guide-cta [data-guide-letter],
+  .drop-guide-cta [data-guide-step] {
+    opacity: 1;
+    transform: none;
+  }
+}
