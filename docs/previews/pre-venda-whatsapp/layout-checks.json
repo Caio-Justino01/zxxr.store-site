@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "label": "mobile-320",
+      "fieldsFit": true,
+      "scrollWidth": 320,
+      "width": 320
+    },
+    {
+      "label": "mobile-390",
+      "fieldsFit": true,
+      "scrollWidth": 390,
+      "width": 390
+    },
+    {
+      "label": "desktop-1440",
+      "fieldsFit": true,
+      "scrollWidth": 1440,
+      "width": 1440
+    },
+    {
+      "label": "desktop-1920",
+      "fieldsFit": true,
+      "scrollWidth": 1920,
+      "width": 1920
+    }
+  ],
+  "whatsappHandoff": "Verified at api.whatsapp.com with the test recipient, both products, sizes, subtotal and CEP. No message sent."
+}

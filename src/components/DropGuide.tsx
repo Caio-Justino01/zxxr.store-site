@@ -10,7 +10,7 @@ const steps = [
   },
   {
     title: "Escolha seu tamanho.",
-    text: "Compare as medidas e encontre o seu caimento.",
+    text: "Veja o caimento nas fotos e selecione do P ao GG.",
   },
   {
     title: "Leve para a sacola.",

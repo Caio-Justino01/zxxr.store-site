@@ -1,8 +1,10 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Link } from "react-router";
-import { sizes, type Product, type Size } from "../config/products";
+import { type Product, type Size } from "../config/products";
 import { formatPrice } from "../lib/pricing";
 import { GarmentViewer } from "./GarmentViewer";
+import { ProductSpecifications } from "./ProductSpecifications";
+import { ProductSizeSelector } from "./ProductSizeSelector";
 import "../product-quick-view.css";
 
 export type QuickViewSelection = {
@@ -47,7 +49,7 @@ function QuickViewDialog({
   const silentClose = useRef(false);
   const backdropStart = useRef(false);
   const addedSize = useRef<Size | null>(null);
-  const [size, setSize] = useState<Size | null>(null);
+  const [size, setSize] = useState<Size | null>("M");
   const [error, setError] = useState(false);
   const [added, setAdded] = useState(false);
   const titleId = useId();
@@ -173,25 +175,14 @@ function QuickViewDialog({
           <h2 id={titleId}>{product.name}</h2>
           <p className="pqv-price">{formatPrice(product.price)}</p>
           <p className="pqv-description">{product.description}</p>
+          <ProductSpecifications product={product} />
           <p className="pqv-limited">Peças limitadas, feitas sob encomenda.</p>
           <fieldset
             className="pqv-sizes"
             aria-describedby={error ? errorId : undefined}
           >
-            <legend>Escolha seu tamanho</legend>
-            <div>
-              {sizes.map((option, index) => (
-                <button
-                  key={option}
-                  ref={index === 0 ? firstSize : undefined}
-                  type="button"
-                  aria-pressed={size === option}
-                  onClick={() => chooseSize(option)}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
+            <legend className="ps-sr-only">Tamanho da peça</legend>
+            <ProductSizeSelector value={size} onChange={chooseSize} firstButtonRef={firstSize} />
           </fieldset>
           {error && (
             <p className="pqv-error" id={errorId} role="alert">

@@ -9,12 +9,15 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5274",
     "dev:store": "vite --mode store --host 127.0.0.1 --port 5275",
+    "dev:prelaunch": "vite --mode prelaunch --host 127.0.0.1 --port 5276",
     "check": "tsc --noEmit",
     "build": "npm run check && vite build",
     "build:store": "npm run check && vite build --mode store",
     "prepare:prelaunch": "node scripts/prepare-prelaunch-assets.mjs",
+    "prepare:store": "node scripts/prepare-store-assets.mjs",
     "test": "node --test tests/*.test.ts",
-    "preview": "vite preview --host 127.0.0.1 --port 4174"
+    "preview": "vite preview --host 127.0.0.1 --port 4174",
+    "deploy:free:preview": "npm run build && wrangler pages deploy dist --project-name=zxxr-store --branch=pre-venda-whatsapp"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -35,6 +38,7 @@
     "sharp": "^0.35.5",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2",
-    "vite": "8.3.4"
+    "vite": "8.3.4",
+    "wrangler": "4.153.0"
   }
 }

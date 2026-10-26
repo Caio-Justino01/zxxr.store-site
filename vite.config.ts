@@ -5,19 +5,19 @@ import tailwind from "@tailwindcss/vite";
 import fs from "node:fs";
 import path from "node:path";
 export default defineConfig(({ mode }) => ({
-  publicDir: mode === "store" ? "public" : "public-prelaunch",
+  publicDir: mode === "prelaunch" ? "public-prelaunch" : "public-store",
   plugins: [
     react(),
     tailwind(),
     {
       name: "store-entry",
       transformIndexHtml(html) {
-        return mode === "store"
-          ? html.replace("/src/main.tsx", "/src/store-main.tsx")
+        return mode === "prelaunch"
+          ? html.replace("/src/main.tsx", "/src/prelaunch-main.tsx")
           : html;
       },
       generateBundle(_options, bundle) {
-        if (mode === "store") return;
+        if (mode !== "prelaunch") return;
         for (const entry of Object.values(bundle)) {
           if (entry.type !== "chunk") continue;
           for (const id of entry.moduleIds) {
@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => ({
         audit();
       },
       configureServer(server) {
-        if (mode === "store") return;
+        if (mode !== "prelaunch") return;
         server.middlewares.use((req, res, next) => {
           // Old clear product URLs must not fall through to the development SPA.
           if (
@@ -71,7 +71,7 @@ export default defineConfig(({ mode }) => ({
   },
   server: { strictPort: true },
   build: {
-    outDir: mode === "store" ? "dist-store" : "dist",
+    outDir: mode === "prelaunch" ? "dist-prelaunch" : "dist",
     rollupOptions: {
       output: {
         manualChunks(id) {

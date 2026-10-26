@@ -38,6 +38,8 @@ import { DropGuide } from "./components/DropGuide";
 import { DropEditorial } from "./components/DropEditorial";
 import { GradientBackdrop } from "./components/GradientBackdrop";
 import { cartSubtotal, formatPrice } from "./lib/pricing";
+import { PreorderCheckout } from "./components/PreorderCheckout";
+import { preorder } from "./config/preorder";
 const BagContext = createContext<{
   items: CartItem[];
   dispatch: React.Dispatch<CartAction>;
@@ -119,7 +121,9 @@ function RouteEffects() {
       ? `${productById(pathname.split("/")[2])?.name ?? "Peça"} · ZXXR Store`
       : pathname === "/sacola"
         ? "Sua sacola · ZXXR Store"
-        : "Desejos · New Drop ZXXR · Razz";
+        : pathname === "/encomenda"
+          ? "Seu pedido · ZXXR Store"
+          : "Desejos · New Drop ZXXR · Razz";
   }, [pathname]);
   return null;
 }
@@ -249,6 +253,7 @@ function ProductPage() {
   }, [added]);
   if (!product) return <NotFound />;
   const add = () => {
+    if (!preorder.open) return;
     if (!size) {
       setError(true);
       sizeGroup.current?.querySelector("button")?.focus();
@@ -296,15 +301,16 @@ function ProductPage() {
               </p>
             ) : (
               <p id="size-note">
-                Consulte a tabela para comparar com uma camiseta sua.
+                Selecione o tamanho para adicionar à sacola.
               </p>
             )}
           </fieldset>
           <button
             className={`add-button ${added ? "added" : ""}`}
             onClick={add}
+            disabled={!preorder.open}
           >
-            <span>{added ? "Adicionada à sacola" : "Adicionar à sacola"}</span>
+            <span>{!preorder.open ? "Encomendas encerradas" : added ? "Adicionada à sacola" : "Adicionar à sacola"}</span>
             {added ? <span>✓</span> : <BagIcon />}
           </button>
           <div className="add-status" aria-live="polite">
@@ -452,9 +458,11 @@ function Bag() {
                 <dd>{formatPrice(cartSubtotal(items))}</dd>
               </div>
             </dl>
-            <Link to="/" className="add-button">
-              Continuar comprando <Arrow />
+            <Link to="/encomenda" className="add-button">
+              Continuar com o pedido <Arrow />
             </Link>
+            <p className="bag-checkout-note">Frete e prazo de produção confirmados no atendimento, antes do pagamento.</p>
+            <Link to="/#o-drop" className="bag-continue">Continuar comprando</Link>
           </aside>
         </div>
       ) : (
@@ -509,6 +517,7 @@ export default function App() {
             <Route path="/" element={<Collection />} />
             <Route path="/produto/:slug" element={<ProductPage />} />
             <Route path="/sacola" element={<Bag />} />
+            <Route path="/encomenda" element={<PreorderCheckout items={items} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

@@ -12,6 +12,7 @@ import { DropCampaignBanner } from "./DropCampaignBanner";
 import { GarmentViewer } from "./GarmentViewer";
 import { ProductSpecifications } from "./ProductSpecifications";
 import { ProductSizeSelector } from "./ProductSizeSelector";
+import { preorder } from "../config/preorder";
 import "../drop-editorial.css";
 import "../drop-product-gallery.css";
 
@@ -151,14 +152,14 @@ export function DropEditorial({ onAdd }: Props) {
                     <button
                       type="button"
                       className="ps-product-link liquid-glass"
-                      disabled={added[product.id]}
+                      disabled={added[product.id] || !preorder.open}
                       onClick={() => {
                         onAdd(product, selectedSizes[product.id] ?? "M");
                         setAdded((previous) => ({ ...previous, [product.id]: true }));
                       }}
                       aria-label={`Adicionar ${product.name}, tamanho ${selectedSizes[product.id] ?? "M"}, à sacola`}
                     >
-                      <span>{added[product.id] ? "Adicionado à sacola" : "Adicionar à sacola"}</span>
+                      <span>{!preorder.open ? "Encomendas encerradas" : added[product.id] ? "Adicionado à sacola" : "Adicionar à sacola"}</span>
                       {added[product.id] ? <span aria-hidden="true">✓</span> : <Arrow />}
                     </button>
                   </div>
