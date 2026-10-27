@@ -23,10 +23,13 @@ function Profile() {
     [error, setError] = useState("");
   const profile = useForm<{ name: string; phone: string }>();
   const address = useForm<Address>({ defaultValues: emptyAddress });
-  const cep = useCep((values) => {
-    for (const [key, value] of Object.entries(values))
-      address.setValue(key as keyof Address, value);
-  });
+  const cep = useCep(
+    (values) => {
+      for (const [key, value] of Object.entries(values))
+        address.setValue(key as keyof Address, value);
+    },
+    () => address.getValues(),
+  );
   useEffect(() => {
     if (resource.data) profile.reset(resource.data.profile);
   }, [resource.data, profile.reset]);
@@ -35,11 +38,11 @@ function Profile() {
     setError("");
     const parsed = profileSchema.safeParse(values);
     if (!parsed.success) {
-      for (const [index,i] of parsed.error.issues.entries())
+      for (const [index, i] of parsed.error.issues.entries())
         profile.setError(
           i.path[0] as "name" | "phone",
           { message: i.message },
-          { shouldFocus: index===0 },
+          { shouldFocus: index === 0 },
         );
       return;
     }
@@ -58,11 +61,11 @@ function Profile() {
     setError("");
     const parsed = addressSchema.safeParse(values);
     if (!parsed.success) {
-      for (const [index,i] of parsed.error.issues.entries())
+      for (const [index, i] of parsed.error.issues.entries())
         address.setError(
           i.path[0] as keyof Address,
           { message: i.message },
-          { shouldFocus: index===0 },
+          { shouldFocus: index === 0 },
         );
       return;
     }

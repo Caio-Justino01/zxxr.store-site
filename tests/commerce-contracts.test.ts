@@ -87,7 +87,7 @@ test("messages use only public order fields and never claim payment", () => {
     quote_released: false,
     shipping_cents: 3000,
     total_cents: 13000,
-    production_deadline: null,
+    production_deadline: "RASCUNHO DE PRAZO",
     payment_state: "pending",
     notes: [{ body: "NOTA INTERNA" }],
     id: "test",
@@ -97,4 +97,5 @@ test("messages use only public order fields and never claim payment", () => {
   assert.match(message, /Frete e total: a confirmar/);
   assert.ok(!message.includes("NOTA INTERNA"));
   assert.ok(!message.includes("130,00"));
+  assert.ok(!message.includes("RASCUNHO DE PRAZO"));
 });

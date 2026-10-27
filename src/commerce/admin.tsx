@@ -350,7 +350,10 @@ function AdminList() {
               <div>
                 <strong>{o.customer.name}</strong>
                 <small>
-                  {o.items.reduce((n, i) => n + i.quantity, 0)} peças
+                  {o.items.reduce((n, i) => n + i.quantity, 0)}{" "}
+                  {o.items.reduce((n, i) => n + i.quantity, 0) === 1
+                    ? "peça"
+                    : "peças"}
                 </small>
               </div>
               <span className={`order-status status-${o.stage}`}>

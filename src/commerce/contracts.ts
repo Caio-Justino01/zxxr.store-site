@@ -251,7 +251,7 @@ export function orderMessage(
     order.quote_released
       ? `Frete: ${brl(order.shipping_cents!)} · Total: ${brl(order.total_cents!)}`
       : "Frete e total: a confirmar no atendimento.",
-    order.production_deadline
+    order.quote_released && order.production_deadline
       ? `Prazo combinado: ${order.production_deadline}`
       : "",
     order.quote_released &&

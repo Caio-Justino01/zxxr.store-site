@@ -50,8 +50,10 @@ function Checkout({
     [error, setError] = useState("");
   const [addresses, setAddresses] = useState<Address[]>([]);
   const requestKey = useRef<{ signature: string; key: string } | null>(null);
-  const stepHeading=useRef<HTMLHeadingElement>(null);
-  useEffect(()=>{stepHeading.current?.focus({preventScroll:true});},[step]);
+  const stepHeading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    stepHeading.current?.focus({ preventScroll: true });
+  }, [step]);
   const form = useForm<Form>({
     defaultValues: {
       name: "",
@@ -70,10 +72,13 @@ function Checkout({
     setError: fieldError,
     formState: { errors, isSubmitting },
   } = form;
-  const cep = useCep((values) => {
-    for (const [key, value] of Object.entries(values))
-      setValue(`address.${key}` as any, value as string);
-  });
+  const cep = useCep(
+    (values) => {
+      for (const [key, value] of Object.entries(values))
+        setValue(`address.${key}` as any, value as string);
+    },
+    () => getValues("address"),
+  );
   useEffect(() => {
     let live = true;
     api<{ profile: { name: string; phone: string }; addresses: Address[] }>(
@@ -109,11 +114,11 @@ function Checkout({
         phone: values.phone,
       });
       if (!parsed.success) {
-        for (const [index,i] of parsed.error.issues.entries())
+        for (const [index, i] of parsed.error.issues.entries())
           fieldError(
             i.path[0] as "name" | "phone",
             { message: i.message },
-            { shouldFocus: index===0 },
+            { shouldFocus: index === 0 },
           );
         return;
       }
@@ -125,15 +130,16 @@ function Checkout({
     if (step === 1) {
       const parsed = addressSchema.safeParse(values.address);
       if (!parsed.success) {
-        for (const [index,i] of parsed.error.issues.entries())
+        for (const [index, i] of parsed.error.issues.entries())
           fieldError(
             `address.${String(i.path[0])}` as any,
             { message: i.message },
-            { shouldFocus: index===0 },
+            { shouldFocus: index === 0 },
           );
         return;
       }
       setValue("address", parsed.data);
+      cep.cancel();
       setStep(2);
       return;
     }
@@ -232,7 +238,9 @@ function Checkout({
             {error && <Notice error>{error}</Notice>}
             {step === 0 && (
               <>
-                <h2 ref={stepHeading} tabIndex={-1}>Como falamos com você?</h2>
+                <h2 ref={stepHeading} tabIndex={-1}>
+                  Como falamos com você?
+                </h2>
                 <label>
                   Seu nome
                   <input
@@ -269,7 +277,9 @@ function Checkout({
             )}
             {step === 1 && (
               <>
-                <h2 ref={stepHeading} tabIndex={-1}>Onde sua peça chega?</h2>
+                <h2 ref={stepHeading} tabIndex={-1}>
+                  Onde sua peça chega?
+                </h2>
                 {addresses.length > 0 && (
                   <label>
                     Usar endereço salvo
@@ -310,7 +320,9 @@ function Checkout({
             )}
             {step === 2 && (
               <>
-                <h2 ref={stepHeading} tabIndex={-1}>Confira sua escolha.</h2>
+                <h2 ref={stepHeading} tabIndex={-1}>
+                  Confira sua escolha.
+                </h2>
                 <div className="account-review">
                   <p>
                     <strong>{getValues("name")}</strong>

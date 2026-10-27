@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import { addressSchema, type Address } from "./contracts";
+import { mergeCepLookup } from "./cep";
 export const emptyAddress: Address = {
   recipient: "",
   cep: "",
@@ -82,11 +83,21 @@ export function AddressFields({
     </div>
   );
 }
-export function useCep(apply: (values: Partial<Address>) => void) {
+export function useCep(
+  apply: (values: Partial<Address>) => void,
+  current: () => Address,
+) {
   const [hint, setHint] = useState("");
+  const sequence = useRef(0);
+  const cancel = useCallback(() => {
+    sequence.current++;
+  }, []);
+  useEffect(() => cancel, [cancel]);
   async function lookup(value: string) {
+    const request = ++sequence.current;
     const cep = value.replace(/\D/g, "");
     if (cep.length !== 8) return;
+    const before = { ...current() };
     setHint("Consultando CEP…");
     try {
       const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`, {
@@ -95,19 +106,23 @@ export function useCep(apply: (values: Partial<Address>) => void) {
       if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.erro) throw new Error();
-      apply({
-        cep,
-        street: data.logradouro || "",
-        neighborhood: data.bairro || "",
-        city: data.localidade || "",
-        state: data.uf,
-      });
+      if (request !== sequence.current) return;
+      apply(
+        mergeCepLookup(before, current(), {
+          cep,
+          street: data.logradouro || "",
+          neighborhood: data.bairro || "",
+          city: data.localidade || "",
+          state: data.uf,
+        }),
+      );
       setHint("Confira o endereço e preencha o número.");
     } catch {
+      if (request !== sequence.current) return;
       setHint(
         "Não foi possível consultar o CEP. Você pode preencher o endereço abaixo.",
       );
     }
   }
-  return { lookup, hint };
+  return { lookup, hint, cancel };
 }
