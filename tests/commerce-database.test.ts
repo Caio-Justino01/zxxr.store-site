@@ -72,6 +72,15 @@ test("PostgreSQL migration, private catalog and customer registration", async ()
       "utf8",
     ),
   );
+  await db.exec(
+    await readFile(
+      new URL(
+        "../supabase/migrations/202610270001_operational_orders.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
   for (const [id, email] of [
     [customer, "customer@example.test"],
     [other, "other@example.test"],
@@ -343,6 +352,7 @@ test("a private database snapshot restores orders, identities and access in an i
     for (const name of [
       "202610260001_store.sql",
       "202610260002_order_hardening.sql",
+      "202610270001_operational_orders.sql",
     ])
       await restored.exec(
         await readFile(
@@ -392,4 +402,46 @@ test("a private database snapshot restores orders, identities and access in an i
   } finally {
     await restored.close();
   }
+});
+
+test("launch keeps fixtures archived and only real orders feed customer and staff operations", async () => {
+  await db.exec(
+    "reset role; update public.store_settings set test_mode=false, open=true",
+  );
+  await actor(customer);
+  assert.deepEqual(await rpc("list_orders"), []);
+  const live = await rpc("create_order", [
+    request,
+    "20000000-0000-4000-8000-000000000020",
+  ]);
+  assert.equal(live.test_mode, false);
+  assert.equal(live.payment_state, "pending");
+  assert.equal(live.total_cents, null);
+  assert.deepEqual(
+    (await rpc("list_orders")).map((o: any) => o.id),
+    [live.id],
+  );
+  await actor(other);
+  assert.deepEqual(await rpc("list_orders"), []);
+  await actor(owner, "aal2");
+  const operational = await rpc("list_orders", [
+    { admin: true, testMode: true },
+  ]);
+  assert.deepEqual(
+    operational.map((o: any) => o.id),
+    [live.id],
+  );
+  assert.equal(
+    operational.filter((o: any) => o.payment_state === "paid").length,
+    0,
+  );
+  assert.equal((await rpc("order_detail", [order.id, true])).test_mode, true);
+  await db.exec("reset role");
+  const archived = await db.query<{ count: number }>(
+    "select count(*)::int as count from public.orders where test_mode",
+  );
+  assert.ok(
+    archived.rows[0].count > 0,
+    "Historical fixtures must be preserved",
+  );
 });

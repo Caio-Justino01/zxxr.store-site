@@ -11,6 +11,7 @@ import {
   safeReturnTo,
 } from "../src/commerce/contracts.ts";
 import { dbError, HttpError, readBody, requireSameOrigin } from "./http.ts";
+import { storeModesMatch } from "./store-mode.ts";
 
 export type Env = {
   SUPABASE_URL?: string;
@@ -337,11 +338,22 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
         ...catalog,
         testMode: env.STORE_MODE !== "live" || catalog.testMode,
         contact: contact.success ? contact.data : null,
-        open: catalog.open && contact.success,
+        open:
+          catalog.open &&
+          contact.success &&
+          storeModesMatch(env.STORE_MODE, catalog.testMode),
       });
     }
-    if (/^(?:profile|addresses|orders|admin)(?:\/|$)/.test(route))
+    if (/^(?:profile|addresses|orders|admin)(?:\/|$)/.test(route)) {
       await getUser();
+      const catalog = await rpc<{ testMode: boolean }>("store_catalog");
+      if (!storeModesMatch(env.STORE_MODE, catalog.testMode))
+        throw new HttpError(
+          503,
+          "Este endereço não está liberado para acessar os pedidos da loja. Acesse www.zxxr.store.",
+          "store_mode_mismatch",
+        );
+    }
     if (route === "profile" && request.method === "GET") {
       await getUser();
       return json(await rpc("my_profile"));
@@ -360,12 +372,6 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
         throw new HttpError(503, "O atendimento de pedidos está indisponível.");
       const key = z.uuid().parse(request.headers.get("Idempotency-Key"));
       const body = orderInputSchema.parse(await readBody(request));
-      const catalog = await rpc<{ testMode: boolean }>("store_catalog");
-      if (env.STORE_MODE !== "live" && !catalog.testMode)
-        throw new HttpError(
-          503,
-          "Este ambiente está em validação. Não é possível registrar pedidos reais.",
-        );
       return json(
         await rpc("create_order", { p_request: body, p_key: key }),
         201,
