@@ -8,6 +8,8 @@
 - 84 testes aprovados, TypeScript e build aprovados. A checagem automatizada preserva também os pixels das frentes/costas originais.
 - Prévia conferida em 1440 e 390 px: imagem v2 carregada, quadro vertical preservado e ausência de rolagem horizontal. Capturas em `docs/previews/ensaio10/previa-ensaio-v2-1440.png` e `previa-ensaio-v2-390.png`.
 - Implantação de validação: https://ba420b7a.zxxr-store.pages.dev.
+- Publicação: código `299eb0b` no GitHub e implantação https://faa11d41.zxxr-store.pages.dev na Cloudflare.
+- Domínio www.zxxr.store conferido: URL `ensaiodrop1zxxrfoto10-v2-1086.webp` carregada, inclusão na sacola habilitada e sem aviso de teste. Captura pública em `docs/previews/ensaio10/publicado-ensaio-v2-1440.png`.
 
 ## Prompt final
 
