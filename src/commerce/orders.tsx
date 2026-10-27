@@ -54,7 +54,7 @@ export function OrderFacts({
     <>
       <dl className="account-totals">
         <div>
-          <dt>Subtotal das peças</dt>
+          <dt>Subtotal das camisetas</dt>
           <dd>{brl(order.subtotal_cents)}</dd>
         </div>
         <div>
@@ -172,7 +172,7 @@ function OrderList() {
   return (
     <AccountShell
       title="Meus pedidos."
-      intro="Do primeiro desejo até chegar à sua porta."
+      intro="Confira o andamento, as condições e o atendimento de cada pedido."
     >
       {loading ? (
         <Busy />
@@ -221,10 +221,10 @@ function OrderList() {
       ) : (
         <section className="account-empty">
           <img src="/brand/mascot-black.svg" alt="" width="84" height="80" />
-          <h2>Seu primeiro desejo começa aqui.</h2>
-          <p>Quando registrar uma encomenda, ela aparece neste espaço.</p>
+          <h2>Você ainda não tem pedidos</h2>
+          <p>Depois de registrar seu pedido, acompanhe o andamento aqui.</p>
           <Link className="account-button primary" to="/#o-drop">
-            Encontrar minha peça
+            Ver camisetas
           </Link>
         </section>
       )}

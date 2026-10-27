@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useCommerce } from "./CommerceProvider";
 import { errorMessage } from "./client";
@@ -47,7 +47,7 @@ export function AccountShell({
     <main id="top" className="account-page">
       <header className="account-heading">
         <Link to="/#o-drop" className="back-link">
-          ← Voltar às peças
+          ← Ver camisetas
         </Link>
         <h1 ref={titleRef} tabIndex={-1}>
           {title}
@@ -56,8 +56,8 @@ export function AccountShell({
       </header>
       {session.user && (
         <nav className="account-nav" aria-label="Sua conta">
-          <Link to="/conta/pedidos">Meus pedidos</Link>
-          <Link to="/conta/dados">Meus dados</Link>
+          <NavLink to="/conta/pedidos">Meus pedidos</NavLink>
+          <NavLink to="/conta/dados">Meus dados</NavLink>
           {session.user.active && session.user.role !== "customer" && (
             <Link to="/painel/pedidos">Painel da equipe</Link>
           )}
@@ -70,7 +70,7 @@ export function AccountShell({
               }
             }}
           >
-            Sair
+            Sair da conta
           </button>
         </nav>
       )}
@@ -110,7 +110,7 @@ export function Protected({
     );
   if (!session.user)
     return (
-      <AccountShell title="Guarde suas escolhas.">
+      <AccountShell title="Entre na sua conta">
         <p>Entre para registrar seu pedido e acompanhar cada etapa.</p>
         <Link
           className="account-button primary"

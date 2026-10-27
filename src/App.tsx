@@ -11,7 +11,6 @@ import {
 } from "react";
 import {
   Link,
-  NavLink,
   Route,
   Routes,
   useLocation,
@@ -41,6 +40,13 @@ import { DropEditorial } from "./components/DropEditorial";
 import { GradientBackdrop } from "./components/GradientBackdrop";
 import { cartSubtotal, formatPrice } from "./lib/pricing";
 import { useCommerce } from "./commerce/CommerceProvider";
+import { StoreHeader } from "./components/StoreHeader";
+import { StoreFooter } from "./components/StoreFooter";
+import { StoreTestNotice } from "./components/StoreInformation";
+import { storefront } from "./config/storefront";
+const HelpPage = lazy(() =>
+  import("./components/HelpPage").then((m) => ({ default: m.HelpPage })),
+);
 const CheckoutPage = lazy(() =>
   import("./commerce/checkout").then((m) => ({ default: m.CheckoutPage })),
 );
@@ -95,6 +101,7 @@ function RouteEffects() {
     let scrollFrame = 0;
     let restoreFrame = 0;
     let layoutFrame = 0;
+    let anchorObserver: MutationObserver | undefined;
     let pendingPosition: { left: number; top: number } | null = null;
     const saveScroll = () => {
       // Capture now: cleanup must not read the next route's scroll position.
@@ -114,9 +121,23 @@ function RouteEffects() {
         } catch {
           // A malformed encoded hash can still match a literal element id.
         }
-        document
-          .getElementById(id)
-          ?.scrollIntoView({ behavior: "instant", block: "start" });
+        const scrollToAnchor = () => {
+          const target = document.getElementById(id);
+          if (!target) return false;
+          target.scrollIntoView({ behavior: "instant", block: "start" });
+          anchorObserver?.disconnect();
+          return true;
+        };
+        if (!scrollToAnchor()) {
+          // Lazy routes can finish loading after the first layout frames.
+          anchorObserver = new MutationObserver(() => {
+            scrollToAnchor();
+          });
+          anchorObserver.observe(document.getElementById("main-content")!, {
+            childList: true,
+            subtree: true,
+          });
+        }
       } else {
         window.scrollTo({
           ...(navigationType === "POP" ? saved : { left: 0, top: 0 }),
@@ -143,6 +164,7 @@ function RouteEffects() {
       window.removeEventListener("scroll", saveScroll);
       cancelAnimationFrame(scrollFrame);
       cancelAnimationFrame(layoutFrame);
+      anchorObserver?.disconnect();
       cancelAnimationFrame(restoreFrame);
       if (pendingPosition) positions.current.set(key, pendingPosition);
     };
@@ -159,9 +181,11 @@ function RouteEffects() {
             ? "Painel da equipe · ZXXR Store"
             : pathname.startsWith("/conta")
               ? "Minha conta · ZXXR Store"
-              : pathname === "/entrar" || pathname === "/cadastro"
-                ? "Sua conta · ZXXR Store"
-                : "Desejos · New Drop ZXXR · Razz";
+              : pathname === "/ajuda"
+                ? "Central de ajuda · ZXXR Store"
+                : pathname === "/entrar" || pathname === "/cadastro"
+                  ? "Sua conta · ZXXR Store"
+                  : "Desejos · New Drop ZXXR · Razz";
     const robots = document.querySelector('meta[name="robots"]');
     robots?.setAttribute(
       "content",
@@ -174,89 +198,6 @@ function RouteEffects() {
   }, [pathname]);
   return null;
 }
-function Header() {
-  const { items } = useContext(BagContext);
-  const { session } = useCommerce();
-  const location = useLocation();
-  const scrollSection = (id: string) => {
-    if (location.pathname === "/")
-      requestAnimationFrame(() =>
-        document
-          .getElementById(id)
-          ?.scrollIntoView({ behavior: "instant", block: "start" }),
-      );
-  };
-  const count = items.reduce((n, i) => n + i.quantity, 0);
-  return (
-    <header
-      className={`site-header ${location.pathname === "/" ? "collection-header" : ""}`}
-    >
-      <Link to="/" className="brand" aria-label="ZXXR Store, início">
-        <img
-          src="/brand/store-black.svg"
-          alt="ZXXR Store"
-          width="112"
-          height="55"
-        />
-      </Link>
-      <nav aria-label="Menu principal">
-        <NavLink to="/" end>
-          As peças
-        </NavLink>
-        <Link to="/#o-drop" onClick={() => scrollSection("o-drop")}>
-          O drop
-        </Link>
-        <Link to="/#som" onClick={() => scrollSection("som")}>
-          Som
-        </Link>
-      </nav>
-      <div className="header-account-actions">
-        <NavLink
-          to={session.user ? "/conta/pedidos" : "/entrar"}
-          className="header-account-link"
-        >
-          Minha conta
-        </NavLink>
-        <NavLink to="/sacola" className="bag-link">
-          <BagIcon />
-          <span>Sacola</span>
-          <span className="bag-count">{String(count).padStart(2, "0")}</span>
-        </NavLink>
-      </div>
-    </header>
-  );
-}
-function Footer() {
-  return (
-    <footer className="site-footer">
-      <Link to="/" aria-label="Voltar ao início">
-        <img
-          className="footer-mascot"
-          src="/brand/mascot-black.svg"
-          alt="Bonequinho ZXXR"
-          width="72"
-          height="62"
-        />
-      </Link>
-      <p>
-        Da música para a rua.
-        <br />
-        Uma criação de Razz.
-      </p>
-      <div>
-        <span>zxxr.store</span>
-        <small>Primeiro drop · Edição Razz</small>
-        <Link className="footer-privacy" to="/privacidade">
-          Privacidade
-        </Link>
-      </div>
-      <a href="#top" aria-label="Voltar ao topo">
-        ↑
-      </a>
-    </footer>
-  );
-}
-
 function Collection() {
   const { dispatch } = useContext(BagContext);
   return (
@@ -283,8 +224,8 @@ function Collection() {
           width="150"
           height="126"
         />
-        <a className="text-link" href="#top">
-          Voltar à coleção <span>↑</span>
+        <a className="text-link" href="#o-drop">
+          Ver camisetas <span>↑</span>
         </a>
       </section>
     </main>
@@ -323,9 +264,9 @@ function ProductPage() {
   };
   return (
     <main id="top" className="product-main">
-      <Link to="/" className="back-link">
+      <Link to={storefront.camisetas} className="back-link">
         <Arrow back />
-        Voltar à coleção
+        Ver camisetas
       </Link>
       <div className="product-grid">
         <section
@@ -421,8 +362,11 @@ function ProductPage() {
               </Link>
             ))}
         </div>
-        <button className="text-link" onClick={() => navigate("/")}>
-          Voltar à coleção <Arrow />
+        <button
+          className="text-link"
+          onClick={() => navigate(storefront.camisetas)}
+        >
+          Ver camisetas <Arrow />
         </button>
       </section>
     </main>
@@ -434,16 +378,17 @@ function Bag() {
     count = items.reduce((n, i) => n + i.quantity, 0);
   return (
     <main id="top" className="bag-page">
-      <Link to="/" className="back-link">
+      <Link to={storefront.camisetas} className="back-link">
         <Arrow back />
-        Continuar explorando
+        Continuar comprando
       </Link>
       <div className="bag-heading">
         <h1 tabIndex={-1}>
-          Sua sacola<span>({String(count).padStart(2, "0")})</span>
+          Sua sacola<span>({count})</span>
         </h1>
-        <p>O próximo som é seu.</p>
+        <p>Confira suas camisetas, tamanhos e quantidades.</p>
       </div>
+      <StoreTestNotice />
       {items.length ? (
         <div className="bag-layout">
           <div className="bag-items">
@@ -509,7 +454,7 @@ function Bag() {
           </div>
           <aside className="bag-summary liquid-glass">
             <span className="red-dot" />
-            <h2>Sua seleção.</h2>
+            <h2>Resumo do pedido</h2>
             <p>
               Confira as estampas, os tamanhos e as quantidades das suas peças.
             </p>
@@ -519,16 +464,24 @@ function Bag() {
                 <dd>{count}</dd>
               </div>
               <div>
-                <dt>Subtotal</dt>
+                <dt>Subtotal das camisetas</dt>
                 <dd>{formatPrice(cartSubtotal(items))}</dd>
+              </div>
+              <div>
+                <dt>Frete</dt>
+                <dd>A confirmar</dd>
+              </div>
+              <div>
+                <dt>Total do pedido</dt>
+                <dd>Após atendimento</dd>
               </div>
             </dl>
             <Link to="/encomenda" className="add-button">
-              Continuar com o pedido <Arrow />
+              Continuar para o pedido <Arrow />
             </Link>
             <p className="bag-checkout-note">
-              Frete e prazo de produção confirmados no atendimento, antes do
-              pagamento.
+              {storefront.deliveryNote} A finalização do atendimento é pelo
+              WhatsApp.
             </p>
             <Link to="/#o-drop" className="bag-continue">
               Continuar comprando
@@ -538,10 +491,10 @@ function Bag() {
       ) : (
         <div className="empty-bag">
           <img src="/brand/logo-black.svg" alt="" width="230" height="100" />
-          <h2>Espaço para a sua próxima ideia.</h2>
+          <h2>Sua sacola está vazia</h2>
           <p>Escolha uma das cinco peças da edição Razz.</p>
-          <Link to="/" className="add-button">
-            Conhecer as peças <Arrow />
+          <Link to={storefront.camisetas} className="add-button">
+            Ver camisetas <Arrow />
           </Link>
         </div>
       )}
@@ -582,7 +535,7 @@ export default function App() {
         <a className="skip-link" href="#main-content">
           Pular para o conteúdo
         </a>
-        <Header />
+        <StoreHeader count={items.reduce((n, item) => n + item.quantity, 0)} />
         <div id="main-content">
           <Suspense
             fallback={
@@ -617,11 +570,12 @@ export default function App() {
               <Route path="/painel/equipe" element={<TeamPage />} />
               <Route path="/painel/configuracoes" element={<SettingsPage />} />
               <Route path="/privacidade" element={<PrivacyPage />} />
+              <Route path="/ajuda" element={<HelpPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </div>
-        <Footer />
+        <StoreFooter />
         <RouteEffects />
       </>
     </BagContext.Provider>

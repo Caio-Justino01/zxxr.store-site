@@ -68,12 +68,12 @@ export function AuthPage() {
     : recovery
       ? "Recupere seu acesso."
       : signup
-        ? "Entre para o drop."
-        : "Bom ter você aqui.";
+        ? "Crie sua conta"
+        : "Entre na sua conta";
   return (
     <AccountShell
       title={title}
-      intro="Suas escolhas, seus pedidos e cada etapa da ZXXR em um só lugar."
+      intro="Registre seu pedido e acompanhe o andamento em um só lugar."
     >
       <div className="auth-layout">
         <section className="auth-card">
@@ -220,12 +220,12 @@ export function AuthPage() {
         </section>
         <aside className="auth-editorial">
           <img src="/brand/mascot-black.svg" alt="" width="96" height="86" />
-          <h2>O som também veste.</h2>
+          <h2>Seu pedido, de perto.</h2>
           <p>
             Salve seu pedido. Combine os detalhes com a gente. Acompanhe até
             chegar.
           </p>
-          <Link to="/#o-drop">Conhecer as peças</Link>
+          <Link to="/#o-drop">Ver camisetas</Link>
         </aside>
       </div>
     </AccountShell>

@@ -210,14 +210,14 @@ function Checkout({
       <AccountShell title="Vamos escolher sua peça?">
         <p>Sua sacola está vazia.</p>
         <Link className="account-button primary" to="/#o-drop">
-          Explorar o drop
+          Ver camisetas
         </Link>
       </AccountShell>
     );
   return (
     <AccountShell
-      title="Quase sua."
-      intro="Registre suas escolhas. A gente confirma os detalhes com você."
+      title="Registrar pedido"
+      intro="Preencha seus dados e confira as camisetas. Entrega e pagamento são confirmados no WhatsApp."
     >
       {catalog?.testMode && (
         <Notice>
@@ -321,7 +321,7 @@ function Checkout({
             {step === 2 && (
               <>
                 <h2 ref={stepHeading} tabIndex={-1}>
-                  Confira sua escolha.
+                  Revise seu pedido.
                 </h2>
                 <div className="account-review">
                   <p>
@@ -404,7 +404,7 @@ function Checkout({
           </form>
         </section>
         <aside className="account-card order-summary">
-          <h2>Sua seleção.</h2>
+          <h2>Resumo do pedido</h2>
           {lines.map((line) => (
             <div
               className="account-order-line"
@@ -431,7 +431,7 @@ function Checkout({
           {catalog ? (
             <dl className="account-totals">
               <div>
-                <dt>Subtotal</dt>
+                <dt>Subtotal das camisetas</dt>
                 <dd>{brl(subtotal)}</dd>
               </div>
               <div>

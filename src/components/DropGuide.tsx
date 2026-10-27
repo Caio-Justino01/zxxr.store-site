@@ -14,7 +14,7 @@ const steps = [
   },
   {
     title: "Leve para a sacola.",
-    text: "Adicione sua escolha e continue explorando o drop.",
+    text: "Confira a sacola e registre seu pedido. O atendimento continua no WhatsApp.",
   },
 ];
 
@@ -68,11 +68,10 @@ export function DropGuide({ prelaunch = false }: { prelaunch?: boolean }) {
             <p>
               {prelaunch
                 ? "O primeiro olhar é seu. Explore o ensaio do drop Desejos."
-                : "Escolha a estampa, confira as medidas e monte sua sacola."}
+                : "Escolha sua camiseta, selecione o tamanho e monte sua sacola."}
             </p>
             <a className="dg-action" href="#o-drop">
-              {prelaunch ? "Explorar o ensaio" : "Encontrar minha peça"}{" "}
-              <Arrow />
+              {prelaunch ? "Explorar o ensaio" : "Ver camisetas"} <Arrow />
             </a>
           </div>
           <ol className="dg-steps">
