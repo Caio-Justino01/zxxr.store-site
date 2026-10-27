@@ -23,7 +23,7 @@ async function directory(relative) {
 for (const name of ["brand", "fonts", "media/artist", "media/reference-v3"]) await directory(name);
 const campaign = [
   ...[640, 1120, 1680].map(w => `ensaiodrop1zxxrfoto01-${w}.webp`),
-  ...[["02",1087],["07",1086],["08-v2",1122],["10-v4",1086]].flatMap(([id,width]) => [640,width].map(w => `ensaiodrop1zxxrfoto${id}-${w}.webp`)),
+  ...[["02",1087],["07-v2",1086],["08-v2",1122],["10-v4",1086]].flatMap(([id,width]) => [640,width].map(w => `ensaiodrop1zxxrfoto${id}-${w}.webp`)),
   ...["garden","chairs","beach"].flatMap(id => [480,800].map(w => `collage-${id}-v1-${w}.webp`)),
   ...["960","1440","1920","portrait-640","portrait-1086"].map(s => `ensaiodrop1zxxrfoto06-banner-v1-${s}.webp`),
 ];

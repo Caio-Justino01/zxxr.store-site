@@ -65,6 +65,7 @@ const campaign: Record<string, GalleryImage[]> = {
       1448,
       "Ensaio",
       "Camiseta Emoção off-white sobre a traseira de uma Mercedes, com a estampa original nas costas.",
+      "-v2",
     ),
   ],
   "zxxr-rosa": [
