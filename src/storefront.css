@@ -121,9 +121,9 @@
 }
 .store-payment-methods {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 104px));
-  gap: 12px;
-  max-width: 336px;
+  grid-template-columns: repeat(4, minmax(0, 92px));
+  gap: 8px;
+  max-width: 392px;
   list-style: none;
   padding: 0;
   margin: 10px 0 12px;
@@ -158,6 +158,14 @@
   display: block;
   width: 72px;
   max-width: calc(100% - 16px);
+  height: auto;
+  object-fit: contain;
+}
+.store-payment-mark .store-card-brand-logo {
+  display: block;
+  width: 80px;
+  max-width: calc(100% - 8px);
+  max-height: 48px;
   height: auto;
   object-fit: contain;
 }
