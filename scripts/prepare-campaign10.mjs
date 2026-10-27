@@ -4,9 +4,13 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const source = process.argv[2];
+const revision = process.argv[3] ?? "";
+if (revision && !/^v[1-9]\d*$/.test(revision))
+  throw new Error("Invalid revision. Use v2, v3, ...");
+const suffix = revision ? `-${revision}` : "";
 if (!source)
   throw new Error(
-    "Usage: node scripts/prepare-campaign10.mjs <approved-master.png>",
+    "Usage: node scripts/prepare-campaign10.mjs <approved-master.png> [v2]",
   );
 const root = fileURLToPath(new URL("../", import.meta.url));
 const metadata = await sharp(source).metadata();
@@ -19,7 +23,9 @@ for (const directory of ["public", "public-store"]) {
     await sharp(source)
       .resize({ width })
       .webp({ quality: 92, effort: 6 })
-      .toFile(path.join(target, `ensaiodrop1zxxrfoto10-${width}.webp`));
+      .toFile(
+        path.join(target, `ensaiodrop1zxxrfoto10${suffix}-${width}.webp`),
+      );
 }
 console.log(
   "Campaign 10 exported: 640/1086 WebP. Master and original artwork preserved.",

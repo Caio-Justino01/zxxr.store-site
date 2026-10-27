@@ -1,5 +1,7 @@
 # Ensaio 10 e nomes do catálogo — 27/10/2026
 
+Atualização: a posição da estampa foi corrigida na versão v2. Consulte [o registro da correção](CORRECAO-ESTAMPA-ZXXR-V2.md) para o mestre e os arquivos em uso.
+
 ## Alterações
 
 - Nomes confirmados: Emoção (`boca`), Flores (`flores`), Yaji (`me-preservando`), Spiritual Gangsta (`spiritual-gangsta`) e ZXXR (`zxxr-rosa`). IDs, URLs anteriores, SKUs, tamanhos e preços preservados.
