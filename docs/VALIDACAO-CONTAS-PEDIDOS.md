@@ -2,7 +2,9 @@
 
 Atualizado em 27/10/2026. Ambiente de teste, sem cobrança, produção ou postagem reais.
 
-Prévia: https://contas-pedidos.zxxr-store.pages.dev/
+Ambiente público de teste: https://www.zxxr.store/
+
+Endereço anterior de validação: https://contas-pedidos.zxxr-store.pages.dev/
 
 ## Evidências concluídas
 
@@ -39,4 +41,4 @@ Manter `STORE_MODE=test` e `store_settings.test_mode=true` nesta prévia. O núm
 
 Confirmar contato definitivo, remetente do domínio e seus registros DNS, suporte da marca no Google, informações comerciais e prazo de produção. Definir o ambiente de produção separado e repetir os testes reais de acesso e convite antes de aceitar encomendas reais. Não inferir frete, prazo ou condições de pagamento.
 
-O domínio público existente não foi substituído por esta prévia. A publicação usa Pages Functions e segredos exclusivos do ambiente `preview`, sem alterar as variáveis de produção.
+Após confirmação explícita do dono, o domínio público passou a mostrar esta loja em modo de teste. A publicação usa Pages Functions, com configuração de servidor também no ambiente que atende o domínio; `STORE_MODE=test` e a marcação do banco permanecem ativos. Consulte [a conferência do domínio](PUBLICACAO-DOMINIO-TESTE.md).
