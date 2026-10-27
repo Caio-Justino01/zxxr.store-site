@@ -1,5 +1,7 @@
 # Validação da prévia de contas e pedidos
 
+> Estado atual (27/10/2026): as encomendas reais foram abertas por solicitação do dono. Consulte [a configuração e as evidências do lançamento](LANCAMENTO-LOJA.md). As referências a modo de teste abaixo descrevem a etapa anterior.
+
 Atualizado em 27/10/2026. Ambiente de teste, sem cobrança, produção ou postagem reais.
 
 Ambiente público de teste: https://www.zxxr.store/

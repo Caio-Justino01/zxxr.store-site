@@ -1,5 +1,7 @@
 # ZXXR — publicação do domínio para testes
 
+> Estado atual (27/10/2026): as encomendas reais foram abertas por solicitação do dono. Consulte [a configuração e as evidências do lançamento](LANCAMENTO-LOJA.md). As referências a modo de teste abaixo descrevem a etapa anterior.
+
 27/10/2026. O dono confirmou substituir a página pública anterior pela loja completa em modo de teste, para testar inclusive no celular. Nenhuma cobrança ou produção real foi habilitada.
 
 ## Endereço e hospedagem

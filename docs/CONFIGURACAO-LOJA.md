@@ -1,5 +1,7 @@
 # Configuração e publicação
 
+> Operação atual: produção aberta em www.zxxr.store. [Estado do lançamento](LANCAMENTO-LOJA.md). O projeto Supabase existente agora contém a operação real; a prévia foi bloqueada para dados privados. Novos testes completos devem usar uma base separada.
+
 ## Serviços e ambientes
 
 Frontend: React/Vite existente. Backend: Cloudflare Pages Functions. Banco e identidade: Supabase Auth/PostgreSQL. SMTP: Brevo gratuito, somente e-mails de acesso. Nenhum plano pago, pagamento integrado ou serviço automático de WhatsApp.
