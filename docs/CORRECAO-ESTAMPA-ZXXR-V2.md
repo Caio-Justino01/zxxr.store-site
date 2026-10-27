@@ -1,5 +1,7 @@
 # Correção da estampa ZXXR — ensaio 10 v2
 
+> Esta revisão foi substituída pela [v3, com a estampa mais próxima da lateral esquerda](CORRECAO-ESTAMPA-ZXXR-V3.md). O mestre v2 foi preservado.
+
 - Pedido: corrigir a posição da estampa na fotografia da mesa de sinuca, comparando com a camiseta original.
 - Edição feita com a ferramenta integrada imagegen. A aplicação foi deslocada para baixo e para a lateral, com diagonal menos inclinada e ponta inferior próxima da barra. A composição da cena foi mantida; os arquivos originais de frente e costas não foram modificados.
 - Mestre salvo no workspace: `work/ensaio-drop-qc/foto-10-zxxr-sinuca/ensaiodrop1zxxrfoto10-com-estampa-v2.png` (1086 × 1448). A versão anterior foi preservada.

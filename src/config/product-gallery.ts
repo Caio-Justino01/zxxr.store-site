@@ -74,7 +74,7 @@ const campaign: Record<string, GalleryImage[]> = {
       1448,
       "Ensaio",
       "Camiseta ZXXR em preto estonado sobre a mesa de sinuca azul, com quatro símbolos em rosa e contorno branco nas costas.",
-      "-v2",
+      "-v3",
     ),
   ],
 };
