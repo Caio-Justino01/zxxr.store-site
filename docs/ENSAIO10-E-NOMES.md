@@ -5,7 +5,7 @@
 - Nomes confirmados: Emoção (`boca`), Flores (`flores`), Yaji (`me-preservando`), Spiritual Gangsta (`spiritual-gangsta`) e ZXXR (`zxxr-rosa`). IDs, URLs anteriores, SKUs, tamanhos e preços preservados.
 - Migração `202610270002_product_display_names.sql` aplicada somente aos nomes das variantes. Conferência no painel: quatro tamanhos para cada um dos três produtos renomeados. Nenhum pedido anterior foi regravado.
 - A campanha do Porsche foi substituída pelo ensaio 10 na mesa de sinuca. A referência original e a camisa de catálogo foram preservadas no workspace; a versão antiga da campanha permanece no acervo `public`, fora da distribuição `public-store`.
-- Mestre: `work/ensaio-drop-qc/foto-10-zxxr-sinuca/ensaiodrop1zxxrfoto10-com-estampa.png`, relativo ao workspace pai do repositório. 1086 × 1448 px, gerado com a ferramenta integrada imagegen, sem CLI/API paga adicional.
+- Mestre: `work/ensaio-drop-qc/foto-10-zxxr-sinuca/ensaiodrop1zxxrfoto10-com-estampa.png`, relativo ao workspace pai do repositório. 1086 × 1448 px, gerado com a ferramenta integrada imagegen, sem usar a CLI.
 - Exportação: `node scripts/prepare-campaign10.mjs <master.png>`. WebP em 640/1086 px, com qualidade 92, incluídos na lista de arquivos públicos.
 - A galeria agora mantém a proporção vertical do primeiro ensaio ao selecionar frente/costas. Originais são contidos nessa moldura sem esticar ou recortar a peça. Miniaturas também possuem molduras verticais. Os arquivos originais da frente/costas não foram alterados.
 
@@ -16,6 +16,13 @@
 - As quinze vistas foram conferidas em 1440 px. Cada produto manteve exatamente a mesma moldura ao alternar entre ensaio, frente e costas.
 - ZXXR em 390 px: as três vistas mediram 343 × 457,33 px, sem rolagem horizontal. Fotos e arte do novo ensaio inspecionadas visualmente em relação às referências.
 - Não foram criados pedidos, enviados atendimentos ou efetuadas cobranças na validação.
+
+## Publicação conferida
+
+- GitHub: código `dd99209`, nas branches `main` e `codex/contas-pedidos`.
+- Cloudflare de produção: https://ea9f1d6e.zxxr-store.pages.dev.
+- Em www.zxxr.store foram confirmados os cinco nomes, a foto 10 carregada na ZXXR e a moldura vertical das vistas originais. Inclusão na sacola habilitada e sem aviso de teste.
+- Capturas públicas em `docs/previews/ensaio10/publicado-ensaio-1440.png` e `publicado-frente-1440.png`.
 
 ## Prompt final — ferramenta integrada imagegen
 
