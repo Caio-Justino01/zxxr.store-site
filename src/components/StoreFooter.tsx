@@ -128,7 +128,7 @@ export function StoreFooter() {
       </div>
       <div className="store-footer-bottom">
         <div className="store-footer-payments">
-          <h2>Pagamento no atendimento</h2>
+          <h2>Formas de pagamento</h2>
           <PaymentMethods />
           <p>Combine com a loja pelo WhatsApp.</p>
         </div>

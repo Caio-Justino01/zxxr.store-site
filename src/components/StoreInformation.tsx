@@ -2,40 +2,74 @@ import { useCommerce } from "../commerce/CommerceProvider";
 import { offeredPayments, storeContactLink } from "../config/storefront";
 
 export function PaymentIcon({ kind }: { kind: string }) {
+  if (kind === "pix") {
+    return (
+      <img
+        className="store-pix-logo"
+        src="/brand/payments/pix-oficial.png"
+        width="540"
+        height="190"
+        alt=""
+      />
+    );
+  }
   return (
     <svg
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
+      width="72"
+      height="44"
+      viewBox="0 0 72 44"
       fill="none"
       aria-hidden="true"
     >
-      {kind === "pix" ? (
-        <path
-          d="m12 3 9 9-9 9-9-9 9-9Zm-5 5 3 3a3 3 0 0 0 4 0l3-3M7 16l3-3a3 3 0 0 1 4 0l3 3"
-          stroke="currentColor"
-          strokeWidth="1.4"
-          strokeLinejoin="round"
-        />
-      ) : kind === "credit" ? (
+      {kind === "credit" ? (
         <>
-          <rect
-            x="3"
-            y="5"
-            width="18"
-            height="14"
-            rx="3"
-            stroke="currentColor"
-            strokeWidth="1.4"
+          <rect x="4" y="3" width="64" height="39" rx="6" fill="#DCE2EB" />
+          <rect x="3" y="1" width="64" height="39" rx="6" fill="#24324B" />
+          <path
+            d="M43 1h18a6 6 0 0 1 6 6v27a6 6 0 0 1-6 6H23L43 1Z"
+            fill="#344766"
           />
-          <path d="M3 10h18M7 15h4" stroke="currentColor" strokeWidth="1.4" />
+          <rect x="11" y="12" width="15" height="12" rx="2.5" fill="#E8CF8F" />
+          <path
+            d="M16 12v12m5-12v12M11 18h15"
+            stroke="#A78A4C"
+            strokeWidth=".8"
+          />
+          <path
+            d="M12 31h10m5 0h10m5 0h10"
+            stroke="#EDF1F7"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          />
+          <path
+            d="M49 12a5 5 0 0 1 0 7m4-10a9 9 0 0 1 0 13"
+            stroke="#EDF1F7"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
         </>
       ) : (
-        <path
-          d="M4 5v14M7 5v14M11 5v14M14 5v14M16 5v14M20 5v14"
-          stroke="currentColor"
-          strokeWidth="1.4"
-        />
+        <>
+          <path d="M15 3h34l8 8v29H15V3Z" fill="#ECE9E2" />
+          <path d="M13 1h34l10 10v29H13V1Z" fill="#FFF" stroke="#D4D0C7" />
+          <path d="M47 1v10h10" fill="#EAE7E0" />
+          <path
+            d="M20 9h19M20 14h12"
+            stroke="#B3ADA1"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <path
+            d="M20 21v12m3-12v12m4-12v12m3-12v12m5-12v12m3-12v12m4-12v12m3-12v12m5-12v12"
+            stroke="#202020"
+            strokeWidth="1.4"
+          />
+          <path
+            d="M24 21v12m9-12v12m7-12v12m7-12v12"
+            stroke="#202020"
+            strokeWidth=".6"
+          />
+        </>
       )}
     </svg>
   );
@@ -51,7 +85,9 @@ export function PaymentMethods() {
     >
       {methods.map((method) => (
         <li key={method.id}>
-          <PaymentIcon kind={method.id} />
+          <span className="store-payment-mark" aria-hidden="true">
+            <PaymentIcon kind={method.id} />
+          </span>
           <span>{method.label}</span>
         </li>
       ))}
