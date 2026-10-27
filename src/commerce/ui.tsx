@@ -38,8 +38,10 @@ export function AccountShell({
   children: ReactNode;
 }) {
   const { session, logout } = useCommerce();
-  const titleRef=useRef<HTMLHeadingElement>(null);
-  useEffect(()=>{titleRef.current?.focus({preventScroll:true});},[title]);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    titleRef.current?.focus({ preventScroll: true });
+  }, [title]);
   const [error, setError] = useState("");
   return (
     <main id="top" className="account-page">
@@ -47,7 +49,9 @@ export function AccountShell({
         <Link to="/#o-drop" className="back-link">
           ← Voltar às peças
         </Link>
-        <h1 ref={titleRef} tabIndex={-1}>{title}</h1>
+        <h1 ref={titleRef} tabIndex={-1}>
+          {title}
+        </h1>
         {intro && <p>{intro}</p>}
       </header>
       {session.user && (
@@ -141,20 +145,52 @@ export function Captcha({ onToken }: { onToken: (token: string) => void }) {
   const { session } = useCommerce();
   const target = useRef<HTMLDivElement>(null);
   const callback = useRef(onToken);
+  const [failure, setFailure] = useState("");
+  const [attempt, setAttempt] = useState(0);
   callback.current = onToken;
   useEffect(() => {
     if (!session.captchaSiteKey || !target.current) return;
+    setFailure("");
+    callback.current("");
     let widget: string | undefined;
     let disposed = false;
+    const fail = (
+      message = "A verificação de segurança está indisponível. Tente novamente em instantes.",
+    ) => {
+      if (disposed) return true;
+      callback.current("");
+      setFailure(message);
+      return true;
+    };
     const getApi = () =>
       (window as unknown as { turnstile?: TurnstileApi }).turnstile;
     const render = () => {
-      if (!disposed && target.current && !widget)
-        widget = getApi()?.render(target.current, {
-          sitekey: session.captchaSiteKey,
-          callback: (token: string) => callback.current(token),
-          "expired-callback": () => callback.current(""),
-        });
+      if (!disposed && target.current && !widget) {
+        try {
+          widget = getApi()?.render(target.current, {
+            sitekey: session.captchaSiteKey,
+            callback: (token: string) => {
+              if (!disposed) {
+                setFailure("");
+                callback.current(token);
+              }
+            },
+            "expired-callback": () =>
+              fail("A verificação expirou. Repita para continuar."),
+            "error-callback": () => fail(),
+            "timeout-callback": () =>
+              fail(
+                "A verificação demorou mais que o esperado. Tente novamente.",
+              ),
+            "unsupported-callback": () =>
+              fail(
+                "Abra o site em um navegador atualizado para concluir a verificação.",
+              ),
+          });
+        } catch {
+          fail();
+        }
+      }
     };
     let script = document.querySelector<HTMLScriptElement>(
       "script[data-zxxr-turnstile]",
@@ -167,13 +203,35 @@ export function Captcha({ onToken }: { onToken: (token: string) => void }) {
       script.dataset.zxxrTurnstile = "true";
       document.head.append(script);
     }
+    const scriptError = () => {
+      script?.remove();
+      fail();
+    };
     script.addEventListener("load", render);
+    script.addEventListener("error", scriptError);
     render();
     return () => {
       disposed = true;
       script?.removeEventListener("load", render);
+      script?.removeEventListener("error", scriptError);
       if (widget) getApi()?.remove(widget);
     };
-  }, [session.captchaSiteKey]);
-  return <div ref={target} className="account-captcha" />;
+  }, [session.captchaSiteKey, attempt]);
+  return (
+    <div className="account-captcha">
+      <div ref={target} />
+      {failure && (
+        <>
+          <Notice error>{failure}</Notice>
+          <button
+            type="button"
+            className="account-button"
+            onClick={() => setAttempt((value) => value + 1)}
+          >
+            Repetir verificação
+          </button>
+        </>
+      )}
+    </div>
+  );
 }

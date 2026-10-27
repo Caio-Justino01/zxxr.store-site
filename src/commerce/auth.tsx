@@ -17,6 +17,7 @@ export function AuthPage() {
   const [error, setError] = useState(""),
     [message, setMessage] = useState(""),
     [captchaToken, setCaptchaToken] = useState("");
+  const [captchaAttempt, setCaptchaAttempt] = useState(0);
   const {
     register,
     handleSubmit,
@@ -58,6 +59,8 @@ export function AuthPage() {
       }
     } catch (e) {
       setError(errorMessage(e));
+      setCaptchaToken("");
+      setCaptchaAttempt((value) => value + 1);
     }
   }
   const title = reset
@@ -171,7 +174,9 @@ export function AuthPage() {
                         />
                       </label>
                     )}
-                    {!reset && <Captcha onToken={setCaptchaToken} />}
+                    {!reset && (
+                      <Captcha key={captchaAttempt} onToken={setCaptchaToken} />
+                    )}
                     <button
                       className="account-button primary"
                       disabled={
