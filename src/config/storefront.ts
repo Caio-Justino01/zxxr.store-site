@@ -3,6 +3,10 @@ export const storefront = {
     label: "Instagram · @zxxr.store",
     href: "https://www.instagram.com/zxxr.store/",
   },
+  technology: {
+    label: "Tecnologia desenvolvida pela Roupla",
+    href: "https://www.roupla.com.br/",
+  },
   camisetas: "/#o-drop",
   guia: "/#como-funciona",
   razz: "/#som",

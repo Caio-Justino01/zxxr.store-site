@@ -138,9 +138,20 @@ export function StoreFooter() {
         </div>
       </div>
       <div className="store-footer-legal">
-        <small>
-          © {new Date().getFullYear()} ZXXR Store · Uma criação de Razz.
-        </small>
+        <div className="store-footer-credits">
+          <small>
+            © {new Date().getFullYear()} ZXXR Store · Uma criação de Razz.
+          </small>
+          <a
+            className="store-technology-credit"
+            href={storefront.technology.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {storefront.technology.label}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
         <a href="#top">
           Voltar ao topo <span aria-hidden="true">↑</span>
         </a>

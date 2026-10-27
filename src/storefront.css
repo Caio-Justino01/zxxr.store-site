@@ -163,6 +163,26 @@
   line-height: 1.6;
   color: var(--brand-muted);
 }
+.store-footer-credits {
+  display: grid;
+  justify-items: start;
+  min-width: 0;
+}
+.store-technology-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  max-width: 100%;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--brand-ink);
+}
+.store-technology-credit:focus-visible {
+  outline: 2px solid var(--brand-red);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
 .store-footer-legal > a {
   font-size: 12px;
   padding: 12px 0;
