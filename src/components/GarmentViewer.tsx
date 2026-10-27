@@ -312,7 +312,7 @@ export function GarmentViewer({
         data-zoom={zoom.toFixed(2)}
         style={
           {
-            "--gv-image-ratio": selectedImage.width / selectedImage.height,
+            "--gv-image-ratio": gallery[0].width / gallery[0].height,
           } as CSSProperties
         }
       >

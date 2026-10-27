@@ -21,7 +21,7 @@ export const products: Product[] = [
   {
     id: "boca",
     number: "01",
-    name: "Boca",
+    name: "Emoção",
     price: 100,
     color: "Off-white",
     dark: false,
@@ -62,7 +62,7 @@ export const products: Product[] = [
   {
     id: "me-preservando",
     number: "03",
-    name: "Me preservando",
+    name: "Yaji",
     price: 100,
     color: "Off-white",
     dark: false,
@@ -102,7 +102,7 @@ export const products: Product[] = [
   {
     id: "zxxr-rosa",
     number: "05",
-    name: "ZXXR Rosa",
+    name: "ZXXR",
     price: 100,
     color: "Preto estonado",
     dark: true,

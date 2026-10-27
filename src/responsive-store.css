@@ -194,6 +194,13 @@
 .gv-viewer .gv-control {
   font-size: 14px;
 }
+.gv-viewer .gv-thumbnail {
+  flex-basis: 72px;
+}
+.gv-viewer .gv-thumbnail-frame {
+  width: 72px;
+  height: 96px;
+}
 .gv-viewer .gv-zoom-button {
   width: 44px;
   font-size: 21px;
@@ -688,7 +695,7 @@
   }
   .gv-viewer .gv-thumbnail-frame {
     width: 64px;
-    height: 64px;
+    height: 85px;
   }
   .gv-viewer .gv-compact .gv-control {
     font-size: 14px;

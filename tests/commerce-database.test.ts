@@ -52,6 +52,46 @@ after(async () => {
   await db.close();
 });
 
+test("catalog rename preserves prices, stock, identifiers and historical order snapshots", async () => {
+  const isolated = new PGlite();
+  try {
+    await isolated.exec(
+      "create table public.store_variants(product_id text,size text,sku text,name text,price_cents integer,active boolean); create table public.orders(id integer,items jsonb); insert into public.store_variants values ('boca','M','BOCA-M','Boca',10000,true),('me-preservando','G','PRES-G','Me preservando',10000,false),('zxxr-rosa','GG','ROSA-GG','ZXXR Rosa',11000,true),('flores','P','FLOR-P','Flores',10000,true); insert into public.orders values (1,'[{\"productId\":\"boca\",\"name\":\"Boca\"}]');",
+    );
+    const read = async () =>
+      (
+        await isolated.query<any>(
+          "select * from public.store_variants order by product_id",
+        )
+      ).rows;
+    const before = await read();
+    const migration = await readFile(
+      new URL(
+        "../supabase/migrations/202610270002_product_display_names.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    );
+    await isolated.exec(migration);
+    const after = await read();
+    const withoutName = (rows: any[]) => rows.map(({ name, ...rest }) => rest);
+    assert.deepEqual(withoutName(after), withoutName(before));
+    assert.deepEqual(
+      after.map((row) => row.name),
+      ["Emoção", "Flores", "Yaji", "ZXXR"],
+    );
+    assert.equal(
+      (await isolated.query<any>("select items from public.orders")).rows[0]
+        .items[0].name,
+      "Boca",
+    );
+    await isolated.exec(migration);
+    assert.deepEqual(await read(), after);
+  } finally {
+    await isolated.close();
+  }
+});
+
 test("PostgreSQL migration, private catalog and customer registration", async () => {
   // Replace the UUID helper with the same signature used by Supabase.
   await db.exec(

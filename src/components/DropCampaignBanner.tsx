@@ -19,7 +19,7 @@ export function DropCampaignBanner() {
           sizes="100vw"
           width="1920"
           height="800"
-          alt="Três pessoas na quadra de basquete: Boca off-white na pessoa central e na pessoa à esquerda, e ZXXR Rosa preta na pessoa à direita."
+          alt="Três pessoas na quadra de basquete: Emoção off-white na pessoa central e na pessoa à esquerda, e ZXXR preta na pessoa à direita."
           loading="lazy"
           decoding="async"
         />
