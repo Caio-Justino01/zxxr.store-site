@@ -1,0 +1,11 @@
+# Folga da estampa acima da bainha — ZXXR v4
+
+- Ajuste pedido: afastar a ponta inferior da arte da bainha, mantendo a aplicação próxima à lateral esquerda.
+- Modo: edição pela ferramenta integrada imagegen, usando o mestre v3 como alvo. A aplicação foi levemente elevada para deixar uma faixa de algodão visível acima da costura. A posição geral da arte e o cenário foram mantidos visualmente; os arquivos de frente e costas do catálogo não foram editados.
+- Mestre: `work/ensaio-drop-qc/foto-10-zxxr-sinuca/ensaiodrop1zxxrfoto10-com-estampa-v4.png` (1086 × 1448). Versões anteriores preservadas.
+- Exportação WebP em 640/1086, revisão `-v4`, com a mesma galeria compartilhada entre home e página de produto. Sem mudanças nas demais fotos, layout, catálogo comercial ou pedidos.
+- Validação: os quatro testes da galeria, TypeScript e build aprovados. A prévia https://5abb30e8.zxxr-store.pages.dev/produto/zxxr-rosa foi inspecionada no computador e em 390 px, com a imagem v4 carregada e sem rolagem horizontal.
+
+## Prompt final
+
+Edit this existing photo with a small PRINT TRANSLATION ONLY. The four pink-and-white symbols are correct but the lowest Z touches the bottom hem. Move ALL FOUR symbols together UPWARD by 35 pixels and only 12 pixels to the right to follow the garment grain. Treat them as one rigid group: same size, same angle, same exact shapes, same relative spacing and colors. This is still the approved LEFT-side placement: do not recenter the graphic. Concrete native 1086x1448 placement: the lowest white tip currently around y=1123 must end around y=1088; the top of the R currently around y=750 must end around y=715. There must be a clearly visible strip of unprinted black cotton of about 25-35 pixels between the lowest glyph and the EXISTING hem stitching. Do not merely redraw or lower the hem to fake this gap. Actually move the printed group upward. Carefully erase the old bottom/edge locations with matching cotton and no ghost outlines. Keep the shirt body, left edge, sleeves, collar, bottom hem and its stitching in their ORIGINAL positions. Keep the billiards table, rail, pocket, original photographic texture and lighting unchanged. No new text, no new symbols, no logo redesign, no resizing, no changes beyond this small lift of the existing complete print.

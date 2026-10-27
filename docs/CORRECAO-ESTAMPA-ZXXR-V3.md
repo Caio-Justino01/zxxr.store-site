@@ -1,5 +1,7 @@
 # Correção lateral da estampa ZXXR — ensaio 10 v3
 
+> Substituída pela [v4, com pequena folga acima da bainha](CORRECAO-ESTAMPA-ZXXR-V4.md). O mestre v3 foi preservado.
+
 - Pedido: manter a altura próxima à barra e deslocar a aplicação para a lateral esquerda, conforme a camiseta original.
 - Modo: edição pela ferramenta integrada imagegen. Entradas: fotografia v2, costas originais da camiseta e arte original. O mestre v2 foi preservado.
 - Mestre final: `work/ensaio-drop-qc/foto-10-zxxr-sinuca/ensaiodrop1zxxrfoto10-com-estampa-v3.png` (1086 × 1448).
