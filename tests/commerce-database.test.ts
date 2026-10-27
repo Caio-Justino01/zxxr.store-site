@@ -121,6 +121,15 @@ test("PostgreSQL migration, private catalog and customer registration", async ()
       "utf8",
     ),
   );
+  await db.exec(
+    await readFile(
+      new URL(
+        "../supabase/migrations/202610270003_settings_scope.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
   for (const [id, email] of [
     [customer, "customer@example.test"],
     [other, "other@example.test"],
@@ -337,6 +346,52 @@ test("owner verifies total and payment, staff completes fulfilment", async () =>
   order = await rpc("order_action", [order.id, order.version, "deliver", {}]);
   assert.equal(order.stage, "delivered");
 });
+test("only an owner with MFA can toggle boleto without changing products or existing orders", async () => {
+  await actor(owner, "aal2");
+  const catalogBefore = await rpc("store_catalog");
+  const orderBefore = await rpc("order_detail", [order.id, true]);
+  for (const [id, aal] of [
+    [customer, "aal1"],
+    [staff, "aal2"],
+    [owner, "aal1"],
+  ]) {
+    await actor(id, aal);
+    await assert.rejects(
+      rpc("settings_update", [true, true]),
+      /forbidden|mfa_required/,
+    );
+  }
+  await actor(owner, "aal2");
+  await rpc("settings_update", [true, true]);
+  const enabled = await rpc("store_catalog");
+  assert.equal(enabled.open, catalogBefore.open);
+  assert.equal(enabled.testMode, catalogBefore.testMode);
+  assert.deepEqual(enabled.paymentMethods, ["pix", "credit", "boleto"]);
+  assert.deepEqual(enabled.variants, catalogBefore.variants);
+  assert.deepEqual(await rpc("order_detail", [order.id, true]), orderBefore);
+  await actor(other);
+  const boletoOrder = await rpc("create_order", [
+    { ...request, paymentPreference: "boleto" },
+    "20000000-0000-4000-8000-000000000031",
+  ]);
+  assert.equal(boletoOrder.payment_preference, "boleto");
+  assert.equal(boletoOrder.payment_state, "pending");
+  await actor(owner, "aal2");
+  await rpc("settings_update", [true, false]);
+  assert.deepEqual((await rpc("store_catalog")).paymentMethods, [
+    "pix",
+    "credit",
+  ]);
+  await actor(other);
+  await assert.rejects(
+    rpc("create_order", [
+      { ...request, paymentPreference: "boleto" },
+      "20000000-0000-4000-8000-000000000032",
+    ]),
+    /invalid_data/,
+  );
+});
+
 test("disabled employees immediately lose access and store closes safely", async () => {
   await actor(customer);
   let cancellation = await rpc("create_order", [
@@ -393,6 +448,7 @@ test("a private database snapshot restores orders, identities and access in an i
       "202610260001_store.sql",
       "202610260002_order_hardening.sql",
       "202610270001_operational_orders.sql",
+      "202610270003_settings_scope.sql",
     ])
       await restored.exec(
         await readFile(
