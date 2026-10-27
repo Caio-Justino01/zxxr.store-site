@@ -1,6 +1,7 @@
 import { productById, sizes, type Size } from "../config/products.ts";
 export type CartItem = { productId: string; size: Size; quantity: number };
 export type CartAction =
+  | { type: "ordered"; lines: CartItem[] }
   | { type: "add"; productId: string; size: Size }
   | { type: "quantity"; productId: string; size: Size; quantity: number }
   | { type: "remove"; productId: string; size: Size };
@@ -33,6 +34,14 @@ export function readCart(raw: string | null): CartItem[] {
   }
 }
 export function cartReducer(cart: CartItem[], action: CartAction): CartItem[] {
+  if (action.type === "ordered")
+    return cart.flatMap((item) => {
+      const ordered = action.lines.find(
+        (line) => itemKey(line) === itemKey(item),
+      );
+      const remaining = item.quantity - (ordered?.quantity ?? 0);
+      return remaining > 0 ? [{ ...item, quantity: remaining }] : [];
+    });
   if (!productById(action.productId) || !sizes.includes(action.size))
     return cart;
   const key = itemKey(action),

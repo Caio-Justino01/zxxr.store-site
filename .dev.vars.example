@@ -1,0 +1,11 @@
+SUPABASE_URL=https://PROJECT.supabase.co
+SUPABASE_PUBLISHABLE_KEY=
+# Private key: server only, used exclusively to invite staff after owner/MFA checks.
+SUPABASE_SERVICE_ROLE_KEY=
+STORE_CONTACT=
+STORE_MODE=test
+TURNSTILE_SITE_KEY=
+# Set to the exact public origin in production; omit for localhost.
+APP_ORIGIN=
+EMAIL_LOGIN_ENABLED=false
+GOOGLE_LOGIN_ENABLED=false

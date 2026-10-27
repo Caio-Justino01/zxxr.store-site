@@ -17,6 +17,29 @@ export default defineConfig(({ mode }) => ({
           : html;
       },
       generateBundle(_options, bundle) {
+        if (mode !== "prelaunch") {
+          this.emitFile({
+            type: "asset",
+            fileName: "_routes.json",
+            source: JSON.stringify({
+              version: 1,
+              include: ["/api/*"],
+              exclude: [],
+            }),
+          });
+          this.emitFile({
+            type: "asset",
+            fileName: "_headers",
+            source:
+              "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://i.scdn.co; connect-src 'self' https://viacep.com.br https://challenges.cloudflare.com; frame-src https://open.spotify.com https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me; frame-ancestors 'none'\n/conta/*\n  X-Robots-Tag: noindex, nofollow\n/painel/*\n  X-Robots-Tag: noindex, nofollow\n",
+          });
+          this.emitFile({
+            type: "asset",
+            fileName: "robots.txt",
+            source:
+              "User-agent: *\nDisallow: /api/\nDisallow: /conta/\nDisallow: /painel/\nDisallow: /encomenda\nDisallow: /recuperar-acesso\n",
+          });
+        }
         if (mode !== "prelaunch") return;
         for (const entry of Object.values(bundle)) {
           if (entry.type !== "chunk") continue;

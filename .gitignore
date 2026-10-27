@@ -14,3 +14,4 @@ previews/
 .wrangler/
 .dev.vars
 dist-prelaunch/
+.commerce-test-*

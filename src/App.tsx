@@ -6,6 +6,8 @@ import {
   useReducer,
   useRef,
   useState,
+  lazy,
+  Suspense,
 } from "react";
 import {
   Link,
@@ -38,7 +40,37 @@ import { DropGuide } from "./components/DropGuide";
 import { DropEditorial } from "./components/DropEditorial";
 import { GradientBackdrop } from "./components/GradientBackdrop";
 import { cartSubtotal, formatPrice } from "./lib/pricing";
-import { PreorderCheckout } from "./components/PreorderCheckout";
+import { useCommerce } from "./commerce/CommerceProvider";
+const CheckoutPage = lazy(() =>
+  import("./commerce/checkout").then((m) => ({ default: m.CheckoutPage })),
+);
+const AuthPage = lazy(() =>
+  import("./commerce/auth").then((m) => ({ default: m.AuthPage })),
+);
+const OrderListPage = lazy(() =>
+  import("./commerce/orders").then((m) => ({ default: m.OrderListPage })),
+);
+const OrderDetailPage = lazy(() =>
+  import("./commerce/orders").then((m) => ({ default: m.OrderDetailPage })),
+);
+const ProfilePage = lazy(() =>
+  import("./commerce/profile").then((m) => ({ default: m.ProfilePage })),
+);
+const AdminListPage = lazy(() =>
+  import("./commerce/admin").then((m) => ({ default: m.AdminListPage })),
+);
+const AdminDetailPage = lazy(() =>
+  import("./commerce/admin").then((m) => ({ default: m.AdminDetailPage })),
+);
+const TeamPage = lazy(() =>
+  import("./commerce/admin").then((m) => ({ default: m.TeamPage })),
+);
+const SettingsPage = lazy(() =>
+  import("./commerce/admin").then((m) => ({ default: m.SettingsPage })),
+);
+const PrivacyPage = lazy(() =>
+  import("./commerce/privacy").then((m) => ({ default: m.PrivacyPage })),
+);
 import { preorder } from "./config/preorder";
 const BagContext = createContext<{
   items: CartItem[];
@@ -123,12 +155,28 @@ function RouteEffects() {
         ? "Sua sacola · ZXXR Store"
         : pathname === "/encomenda"
           ? "Seu pedido · ZXXR Store"
-          : "Desejos · New Drop ZXXR · Razz";
+          : pathname.startsWith("/painel")
+            ? "Painel da equipe · ZXXR Store"
+            : pathname.startsWith("/conta")
+              ? "Minha conta · ZXXR Store"
+              : pathname === "/entrar" || pathname === "/cadastro"
+                ? "Sua conta · ZXXR Store"
+                : "Desejos · New Drop ZXXR · Razz";
+    const robots = document.querySelector('meta[name="robots"]');
+    robots?.setAttribute(
+      "content",
+      /^\/(?:conta|painel|encomenda|entrar|cadastro|recuperar-acesso)(?:\/|$)/.test(
+        pathname,
+      )
+        ? "noindex, nofollow"
+        : "index, follow",
+    );
   }, [pathname]);
   return null;
 }
 function Header() {
   const { items } = useContext(BagContext);
+  const { session } = useCommerce();
   const location = useLocation();
   const scrollSection = (id: string) => {
     if (location.pathname === "/")
@@ -162,11 +210,19 @@ function Header() {
           Som
         </Link>
       </nav>
-      <NavLink to="/sacola" className="bag-link">
-        <BagIcon />
-        <span>Sacola</span>
-        <span className="bag-count">{String(count).padStart(2, "0")}</span>
-      </NavLink>
+      <div className="header-account-actions">
+        <NavLink
+          to={session.user ? "/conta/pedidos" : "/entrar"}
+          className="header-account-link"
+        >
+          Minha conta
+        </NavLink>
+        <NavLink to="/sacola" className="bag-link">
+          <BagIcon />
+          <span>Sacola</span>
+          <span className="bag-count">{String(count).padStart(2, "0")}</span>
+        </NavLink>
+      </div>
     </header>
   );
 }
@@ -190,6 +246,9 @@ function Footer() {
       <div>
         <span>zxxr.store</span>
         <small>Primeiro drop · Edição Razz</small>
+        <Link className="footer-privacy" to="/privacidade">
+          Privacidade
+        </Link>
       </div>
       <a href="#top" aria-label="Voltar ao topo">
         ↑
@@ -290,19 +349,20 @@ function ProductPage() {
             aria-describedby={error ? "size-error" : "size-note"}
           >
             <legend className="ps-sr-only">Tamanho da peça</legend>
-            <ProductSizeSelector value={size} onChange={(s) => {
-              setSize(s);
-              setError(false);
-              setAdded(false);
-            }} />
+            <ProductSizeSelector
+              value={size}
+              onChange={(s) => {
+                setSize(s);
+                setError(false);
+                setAdded(false);
+              }}
+            />
             {error ? (
               <p id="size-error" className="size-error" role="alert">
                 Escolha um tamanho para adicionar à sacola.
               </p>
             ) : (
-              <p id="size-note">
-                Selecione o tamanho para adicionar à sacola.
-              </p>
+              <p id="size-note">Selecione o tamanho para adicionar à sacola.</p>
             )}
           </fieldset>
           <button
@@ -310,7 +370,13 @@ function ProductPage() {
             onClick={add}
             disabled={!preorder.open}
           >
-            <span>{!preorder.open ? "Encomendas encerradas" : added ? "Adicionada à sacola" : "Adicionar à sacola"}</span>
+            <span>
+              {!preorder.open
+                ? "Encomendas encerradas"
+                : added
+                  ? "Adicionada à sacola"
+                  : "Adicionar à sacola"}
+            </span>
             {added ? <span>✓</span> : <BagIcon />}
           </button>
           <div className="add-status" aria-live="polite">
@@ -325,8 +391,9 @@ function ProductPage() {
               Como cuidar <span>+</span>
             </summary>
             <p>
-              Lave a peça do avesso e evite passar o ferro diretamente sobre a estampa.
-              Siga as instruções da etiqueta para conservar a malha e as cores.
+              Lave a peça do avesso e evite passar o ferro diretamente sobre a
+              estampa. Siga as instruções da etiqueta para conservar a malha e
+              as cores.
             </p>
           </details>
         </section>
@@ -442,9 +509,7 @@ function Bag() {
           </div>
           <aside className="bag-summary liquid-glass">
             <span className="red-dot" />
-            <h2>
-              Sua seleção.
-            </h2>
+            <h2>Sua seleção.</h2>
             <p>
               Confira as estampas, os tamanhos e as quantidades das suas peças.
             </p>
@@ -461,8 +526,13 @@ function Bag() {
             <Link to="/encomenda" className="add-button">
               Continuar com o pedido <Arrow />
             </Link>
-            <p className="bag-checkout-note">Frete e prazo de produção confirmados no atendimento, antes do pagamento.</p>
-            <Link to="/#o-drop" className="bag-continue">Continuar comprando</Link>
+            <p className="bag-checkout-note">
+              Frete e prazo de produção confirmados no atendimento, antes do
+              pagamento.
+            </p>
+            <Link to="/#o-drop" className="bag-continue">
+              Continuar comprando
+            </Link>
           </aside>
         </div>
       ) : (
@@ -491,6 +561,7 @@ function NotFound() {
 }
 
 export default function App() {
+  useCommerce(); // Re-render editorial prices after a verified catalog refresh.
   const [items, dispatch] = useReducer(cartReducer, undefined, () => {
     try {
       return readCart(localStorage.getItem(CART_KEY));
@@ -513,13 +584,42 @@ export default function App() {
         </a>
         <Header />
         <div id="main-content">
-          <Routes>
-            <Route path="/" element={<Collection />} />
-            <Route path="/produto/:slug" element={<ProductPage />} />
-            <Route path="/sacola" element={<Bag />} />
-            <Route path="/encomenda" element={<PreorderCheckout items={items} />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense
+            fallback={
+              <main className="account-page">
+                <p role="status">Carregando sua página…</p>
+              </main>
+            }
+          >
+            <Routes>
+              <Route path="/" element={<Collection />} />
+              <Route path="/produto/:slug" element={<ProductPage />} />
+              <Route path="/sacola" element={<Bag />} />
+              <Route
+                path="/encomenda"
+                element={
+                  <CheckoutPage
+                    items={items}
+                    onRegistered={(lines) =>
+                      dispatch({ type: "ordered", lines })
+                    }
+                  />
+                }
+              />
+              <Route path="/entrar" element={<AuthPage />} />
+              <Route path="/cadastro" element={<AuthPage />} />
+              <Route path="/recuperar-acesso" element={<AuthPage />} />
+              <Route path="/conta/pedidos" element={<OrderListPage />} />
+              <Route path="/conta/pedidos/:id" element={<OrderDetailPage />} />
+              <Route path="/conta/dados" element={<ProfilePage />} />
+              <Route path="/painel/pedidos" element={<AdminListPage />} />
+              <Route path="/painel/pedidos/:id" element={<AdminDetailPage />} />
+              <Route path="/painel/equipe" element={<TeamPage />} />
+              <Route path="/painel/configuracoes" element={<SettingsPage />} />
+              <Route path="/privacidade" element={<PrivacyPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </div>
         <Footer />
         <RouteEffects />
