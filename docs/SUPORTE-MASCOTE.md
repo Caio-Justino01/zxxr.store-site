@@ -30,3 +30,10 @@ O guia reutiliza o mascote XX vermelho original, os dados públicos do catálogo
 - Prévia compartilha catálogo de validação com bloqueio de acesso aos pedidos reais; sua indicação de encomendas indisponíveis é esperada. Não foram criados pedidos reais nem enviadas mensagens para validar o guia.
 
 Capturas reais ficam em `docs/previews/suporte-mascote/`.
+
+## Publicação conferida
+
+- Código `0ae0bac` enviado ao GitHub (`main` e `codex/contas-pedidos`).
+- Implantação Cloudflare de produção: `https://f6f019d0.zxxr-store.pages.dev`.
+- Em `https://www.zxxr.store/produto/spiritual-gangsta`, o guia abriu, exibiu as duas camisetas pretas com preços reais de R$ 100 e encaminhou ao contato configurado. A opção de adicionar à sacola permaneceu habilitada e não apareceu aviso de teste.
+- Capturas do acionador, conversa e menu móvel feitas no domínio público. Nenhuma mensagem ou encomenda foi enviada nessa conferência.
