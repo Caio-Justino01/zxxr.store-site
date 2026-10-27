@@ -20,8 +20,78 @@ export const storefront = {
 export const mainNavigation = [
   { label: "Camisetas", href: storefront.camisetas },
   { label: "Como comprar", href: storefront.guia },
-  { label: "Conheça o Razz", href: storefront.razz },
+  { label: "Razz", href: storefront.razz },
+  { label: "Ajuda", href: storefront.ajuda },
 ] as const;
+
+export type StoreNavigationItem =
+  | { label: string; kind: "route"; href: string }
+  | { label: string; kind: "external"; href: string }
+  | { label: string; kind: "support" };
+export type StoreNavigationGroup = {
+  label: string;
+  items: StoreNavigationItem[];
+};
+export function storeNavigationGroups(
+  signedIn: boolean,
+  contact?: string | null,
+): StoreNavigationGroup[] {
+  const route = (label: string, href: string): StoreNavigationItem => ({
+    label,
+    kind: "route",
+    href,
+  });
+  const whatsapp = storeContactLink(
+    contact,
+    "Olá! Preciso de ajuda com uma compra na ZXXR.",
+  );
+  return [
+    {
+      label: "Comprar",
+      items: [
+        route("Camisetas", storefront.camisetas),
+        route("Como comprar", storefront.guia),
+      ],
+    },
+    {
+      label: "Minha conta",
+      items: [
+        ...(signedIn ? [] : [route("Entrar", accountDestination(false))]),
+        route("Meus pedidos", accountDestination(signedIn)),
+        route("Meus dados", accountDestination(signedIn, storefront.dados)),
+        route("Sacola", storefront.sacola),
+      ],
+    },
+    {
+      label: "Ajuda",
+      items: [
+        route("Central de ajuda", storefront.ajuda),
+        { kind: "support", label: "Abrir suporte" },
+        ...(whatsapp
+          ? [
+              {
+                kind: "external" as const,
+                label: "Falar no WhatsApp",
+                href: whatsapp,
+              },
+            ]
+          : []),
+      ],
+    },
+    {
+      label: "Sobre",
+      items: [
+        route("Razz", storefront.razz),
+        {
+          kind: "external",
+          label: "Instagram",
+          href: storefront.instagram.href,
+        },
+        route("Privacidade", storefront.privacidade),
+      ],
+    },
+  ];
+}
 
 export const helpTopics = [
   { id: "como-comprar", label: "Como comprar" },

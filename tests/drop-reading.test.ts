@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   getDropLetterOpacity,
   getDropReadingFrame,
+  getFlowReadingFrame,
 } from "../src/lib/drop-reading.ts";
 
 test("the complete paragraph stays readable throughout a long sticky plateau", () => {
@@ -25,6 +26,21 @@ test("the complete paragraph stays readable throughout a long sticky plateau", (
           1,
         );
     }
+  }
+});
+
+test("tall flow sections reveal at reading height without fading controls or needing pinning", () => {
+  for (const height of [320, 568, 766, 1092]) {
+    const outside = getFlowReadingFrame(height, height);
+    const entering = getFlowReadingFrame(height * 0.8, height);
+    const reading = getFlowReadingFrame(height * 0.55, height);
+    assert.equal(outside.reveal, 0);
+    assert.ok(entering.reveal > 0 && entering.reveal < 1);
+    assert.equal(reading.reveal, 1);
+    assert.equal(reading.stageOpacity, 1);
+    assert.equal(getFlowReadingFrame(-height * 2, height).exit, 0);
+    assert.deepEqual(getFlowReadingFrame(height * 0.8, height), entering);
+    assert.ok(Number.isFinite(getFlowReadingFrame(0, 0).imageY));
   }
 });
 test("exit begins only after the actual stage has left the sticky position", () => {

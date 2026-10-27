@@ -115,11 +115,15 @@ export function GradientBackdrop({ className }: { className?: string }) {
       resize();
       sync();
     };
-    const observer = new IntersectionObserver(([entry]) => {
-      onscreen = Boolean(entry?.isIntersecting);
-      sync();
-    });
-    const size = new ResizeObserver(resize);
+    const observer =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(([entry]) => {
+            onscreen = Boolean(entry?.isIntersecting);
+            sync();
+          })
+        : null;
+    const size =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(resize) : null;
 
     canvas.addEventListener("webglcontextlost", contextLost);
     canvas.addEventListener("webglcontextrestored", contextRestored);
@@ -127,15 +131,15 @@ export function GradientBackdrop({ className }: { className?: string }) {
     window.addEventListener("resize", resize, { passive: true });
     reduced.addEventListener("change", preference);
     mobile.addEventListener("change", preference);
-    observer.observe(element);
-    size.observe(element);
+    observer?.observe(element);
+    size?.observe(element);
     initialize();
 
     return () => {
       disposed = true;
       stop();
-      observer.disconnect();
-      size.disconnect();
+      observer?.disconnect();
+      size?.disconnect();
       document.removeEventListener("visibilitychange", visibility);
       window.removeEventListener("resize", resize);
       reduced.removeEventListener("change", preference);

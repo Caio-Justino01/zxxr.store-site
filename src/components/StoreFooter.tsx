@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useEffect, useState, type ReactNode } from "react";
 import { useCommerce } from "../commerce/CommerceProvider";
 import {
   accountDestination,
@@ -10,6 +11,38 @@ import {
   StoreContact,
   StoreTestNotice,
 } from "./StoreInformation";
+
+function FooterGroup({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  const [mobile, setMobile] = useState(
+    () => matchMedia("(max-width: 767px)").matches,
+  );
+  useEffect(() => {
+    const media = matchMedia("(max-width: 767px)");
+    const update = () => setMobile(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  return mobile ? (
+    <details className="store-footer-group">
+      <summary>
+        {title}
+        <span aria-hidden="true">+</span>
+      </summary>
+      <nav aria-label={title}>{children}</nav>
+    </details>
+  ) : (
+    <nav className="store-footer-group" aria-label={title}>
+      <h2>{title}</h2>
+      {children}
+    </nav>
+  );
+}
 
 export function StoreFooter() {
   const { session } = useCommerce();
@@ -70,22 +103,19 @@ export function StoreFooter() {
             <span aria-hidden="true">↗</span>
           </a>
         </section>
-        <nav aria-label="Comprar">
-          <h2>Comprar</h2>
+        <FooterGroup title="Comprar">
           <Link to={storefront.camisetas}>Camisetas</Link>
           <Link to={storefront.guia}>Como comprar</Link>
           <Link to={storefront.sacola}>Minha sacola</Link>
-        </nav>
-        <nav aria-label="Sua conta">
-          <h2>Sua conta</h2>
+        </FooterGroup>
+        <FooterGroup title="Minha conta">
           <Link to={account}>Minha conta</Link>
           <Link to={account}>Acompanhar pedido</Link>
           <Link to={accountDestination(!!session.user, storefront.dados)}>
             Meus dados
           </Link>
-        </nav>
-        <nav aria-label="Ajuda">
-          <h2>Ajuda</h2>
+        </FooterGroup>
+        <FooterGroup title="Ajuda">
           {helpTopics
             .filter((topic) => topic.id !== "como-comprar")
             .map((topic) => (
@@ -94,7 +124,7 @@ export function StoreFooter() {
               </Link>
             ))}
           <Link to={storefront.privacidade}>Privacidade</Link>
-        </nav>
+        </FooterGroup>
       </div>
       <div className="store-footer-bottom">
         <div className="store-footer-payments">

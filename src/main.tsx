@@ -12,6 +12,7 @@ import "./liquid-glass.css";
 import "./brand-theme.css";
 import "./storefront.css";
 import "./support/support.css";
+import "./responsive-store.css";
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>

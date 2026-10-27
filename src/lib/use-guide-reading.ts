@@ -5,6 +5,7 @@ import {
   getGuideReadingFrame,
   guideStageFits,
 } from "./guide-reading";
+import { getFlowReadingFrame } from "./drop-reading";
 
 export function useGuideReading(ref: RefObject<HTMLElement | null>) {
   useLayoutEffect(() => {
@@ -41,33 +42,63 @@ export function useGuideReading(ref: RefObject<HTMLElement | null>) {
       );
       const progress = sticky ? clampReading((inset - bounds.top) / travel) : 1;
       const reading = getGuideReadingFrame(progress);
+      const headerHeight =
+        document.querySelector(".site-header")?.getBoundingClientRect()
+          .height ?? 0;
+      const titleTop =
+        (root.querySelector("h2") ?? content).getBoundingClientRect().top -
+        headerHeight;
+      const flowTitle = getFlowReadingFrame(
+        titleTop,
+        viewportHeight - headerHeight,
+      ).reveal;
       letters.forEach((letter, index) =>
         letter.style.setProperty(
           "--guide-letter",
-          String(getGuideLetterOpacity(index, letters.length, reading.title)),
+          String(
+            reducedMotion.matches
+              ? 1
+              : getGuideLetterOpacity(
+                  index,
+                  letters.length,
+                  sticky ? reading.title : flowTitle,
+                ),
+          ),
         ),
       );
       steps.forEach((step, index) => {
-        const value = reading.steps[index];
-        step.style.setProperty("--guide-step", String(value));
+        const value = reducedMotion.matches
+          ? 1
+          : sticky
+            ? reading.steps[index]
+            : getFlowReadingFrame(
+                step.getBoundingClientRect().top - headerHeight,
+                viewportHeight - headerHeight,
+              ).reveal;
+        step.style.setProperty("--guide-step", String(0.4 + value * 0.6));
         step.style.setProperty("--guide-shift", `${(1 - value) * 18}px`);
       });
     };
     const schedule = () => {
       if (!frame && !disposed) frame = requestAnimationFrame(update);
     };
-    const observer = new ResizeObserver(schedule);
-    observer.observe(content);
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(schedule)
+        : null;
+    observer?.observe(content);
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     window.visualViewport?.addEventListener("resize", schedule);
     reducedMotion.addEventListener("change", schedule);
-    document.fonts.ready.then(schedule);
+    void document.fonts?.ready.then(schedule);
+    root.addEventListener("focusin", schedule);
     update();
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
-      observer.disconnect();
+      observer?.disconnect();
+      root.removeEventListener("focusin", schedule);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       window.visualViewport?.removeEventListener("resize", schedule);

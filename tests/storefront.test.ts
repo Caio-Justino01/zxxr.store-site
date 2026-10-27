@@ -4,6 +4,7 @@ import {
   accountDestination,
   offeredPayments,
   storeContactLink,
+  storeNavigationGroups,
 } from "../src/config/storefront.ts";
 import { safeReturnTo } from "../src/commerce/contracts.ts";
 
@@ -17,6 +18,36 @@ test("shopping account shortcuts preserve an allowed destination through login",
     assert.equal(safeReturnTo(login.searchParams.get("returnTo")), destination);
     assert.equal(accountDestination(true, destination), destination);
   }
+});
+
+test("complete navigation protects account destinations and omits unavailable contact", () => {
+  const groups = storeNavigationGroups(false, null);
+  assert.deepEqual(
+    groups.map((group) => group.label),
+    ["Comprar", "Minha conta", "Ajuda", "Sobre"],
+  );
+  const entries = groups.flatMap((group) => group.items);
+  assert.equal(
+    entries.some((item) => item.label === "Falar no WhatsApp"),
+    false,
+  );
+  assert.equal(
+    entries.find((item) => item.label === "Abrir suporte")?.kind,
+    "support",
+  );
+  const orders = entries.find((item) => item.label === "Meus pedidos");
+  assert.ok(orders && orders.kind === "route");
+  assert.equal(orders.href, "/entrar?returnTo=%2Fconta%2Fpedidos");
+  const signedIn = storeNavigationGroups(true, "5531985579685").flatMap(
+    (group) => group.items,
+  );
+  const ownOrders = signedIn.find((item) => item.label === "Meus pedidos");
+  assert.ok(ownOrders && ownOrders.kind === "route");
+  assert.equal(ownOrders.href, "/conta/pedidos");
+  assert.equal(
+    signedIn.find((item) => item.label === "Falar no WhatsApp")?.kind,
+    "external",
+  );
 });
 
 test("payment presentation never advertises methods absent from the verified catalog", () => {

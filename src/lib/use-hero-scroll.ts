@@ -151,25 +151,38 @@ export function useHeroScroll(
     const initialBounds = element.getBoundingClientRect();
     let lastWidth = initialBounds.width;
     let lastHeight = initialBounds.height;
-    const observer = new ResizeObserver(([entry]) => {
-      if (!entry) return;
-      const { width, height } = entry.target.getBoundingClientRect();
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(([entry]) => {
+            if (!entry) return;
+            const { width, height } = entry.target.getBoundingClientRect();
+            if (
+              Math.abs(width - lastWidth) < 0.5 &&
+              Math.abs(height - lastHeight) < 0.5
+            )
+              return;
+            lastWidth = width;
+            lastHeight = height;
+            scheduleRefresh();
+          })
+        : null;
+    observer?.observe(element);
+    const resized = () => {
+      const box = element.getBoundingClientRect();
       if (
-        Math.abs(width - lastWidth) < 0.5 &&
-        Math.abs(height - lastHeight) < 0.5
+        Math.abs(box.width - lastWidth) > 0.5 ||
+        Math.abs(box.height - lastHeight) > 0.5
       )
-        return;
-      lastWidth = width;
-      lastHeight = height;
-      scheduleRefresh();
-    });
-    observer.observe(element);
+        scheduleRefresh();
+    };
+    window.addEventListener("resize", resized);
     scheduleRefresh();
 
     return () => {
       alive = false;
       cancelAnimationFrame(refreshFrame);
-      observer.disconnect();
+      observer?.disconnect();
+      window.removeEventListener("resize", resized);
       images.forEach((image) => {
         image.removeEventListener("load", scheduleRefresh);
         image.removeEventListener("error", scheduleRefresh);

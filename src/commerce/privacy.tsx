@@ -4,7 +4,7 @@ export function PrivacyPage() {
   const { catalog } = useCommerce();
   return (
     <AccountShell
-      title="Seus dados, com cuidado."
+      title="Privacidade"
       intro="Como a ZXXR usa as informações da sua conta e dos seus pedidos."
     >
       <article className="account-card privacy-copy">

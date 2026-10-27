@@ -1,4 +1,18 @@
 export const clampReading = (value: number) => Math.min(1, Math.max(0, value));
+
+/** Flow scenes animate their own text instead of needing to fit a whole screen. */
+export function getFlowReadingFrame(top: number, viewportHeight: number) {
+  const height = Math.max(1, viewportHeight);
+  const reveal = clampReading((height * 0.94 - top) / (height * 0.32));
+  const progress = clampReading((height - top) / (height * 1.4));
+  return {
+    reveal,
+    exit: 0,
+    progress,
+    imageY: (0.5 - progress) * 12,
+    stageOpacity: 1,
+  };
+}
 export type ReadingGeometry = {
   top: number;
   height: number;

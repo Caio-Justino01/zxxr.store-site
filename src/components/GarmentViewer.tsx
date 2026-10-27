@@ -37,9 +37,11 @@ export function GarmentViewer({
 }) {
   const gallery = useMemo(() => getProductGallery(product), [product]);
   const sides = useMemo(() => gallery.map((image) => image.id), [gallery]);
-  const startingView = initialView && sides.includes(initialView) ? initialView : sides[0];
+  const startingView =
+    initialView && sides.includes(initialView) ? initialView : sides[0];
   const [side, setSide] = useState<Side>(startingView);
-  const selectedImage = gallery.find((image) => image.id === side) ?? gallery[0];
+  const selectedImage =
+    gallery.find((image) => image.id === side) ?? gallery[0];
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState<ViewerPoint>({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -93,7 +95,11 @@ export function GarmentViewer({
   }, [product.id, startingView]);
 
   useLayoutEffect(() => {
-    setImages({ productId: product.id, statuses: initialStatus(sides), sizes: {} });
+    setImages({
+      productId: product.id,
+      statuses: initialStatus(sides),
+      sizes: {},
+    });
   }, [product.id, sides]);
 
   useLayoutEffect(() => {
@@ -107,9 +113,14 @@ export function GarmentViewer({
       );
     };
     update();
-    const observer = new ResizeObserver(update);
-    observer.observe(node);
-    return () => observer.disconnect();
+    const observer =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
+    observer?.observe(node);
+    window.addEventListener("resize", update);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   useLayoutEffect(() => {
@@ -151,7 +162,11 @@ export function GarmentViewer({
     setZoom(1);
     setPan({ x: 0, y: 0 });
   };
-  const restore = () => selectSide(startingView);
+  const restore = () => {
+    stopPan();
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  };
   const changeZoom = (next: number) => {
     stopPan();
     const value = clampViewerZoom(Math.round(next * 100) / 100);
@@ -233,7 +248,11 @@ export function GarmentViewer({
       } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         event.preventDefault();
         const direction = event.key === "ArrowRight" ? 1 : -1;
-        selectSide(sides[(sides.indexOf(side) + direction + sides.length) % sides.length]);
+        selectSide(
+          sides[
+            (sides.indexOf(side) + direction + sides.length) % sides.length
+          ],
+        );
       }
     }
   };
@@ -247,7 +266,11 @@ export function GarmentViewer({
       const current =
         previous.productId === product.id
           ? previous
-          : { productId: product.id, statuses: initialStatus(sides), sizes: {} };
+          : {
+              productId: product.id,
+              statuses: initialStatus(sides),
+              sizes: {},
+            };
       return {
         ...current,
         statuses: { ...current.statuses, [view]: next },
@@ -267,7 +290,10 @@ export function GarmentViewer({
   };
 
   return (
-    <section className={`gv-viewer ${compact ? "gv-compact" : ""}`} aria-label={`Imagens de ${product.name}`}>
+    <section
+      className={`gv-viewer ${compact ? "gv-compact" : ""}`}
+      aria-label={`Imagens de ${product.name}`}
+    >
       <div
         ref={viewport}
         className={`gv-stage ${selectedImage.campaign ? "gv-campaign" : "gv-original"} ${isZoomed ? "gv-zoomed" : ""} ${dragging ? "gv-panning" : ""}`}
@@ -284,7 +310,11 @@ export function GarmentViewer({
         onKeyDown={keyDown}
         data-view={side}
         data-zoom={zoom.toFixed(2)}
-        style={{ "--gv-image-ratio": selectedImage.width / selectedImage.height } as CSSProperties}
+        style={
+          {
+            "--gv-image-ratio": selectedImage.width / selectedImage.height,
+          } as CSSProperties
+        }
       >
         <div
           className="gv-image-stack"
@@ -311,14 +341,21 @@ export function GarmentViewer({
               draggable={false}
               decoding="async"
               loading={compact ? "lazy" : "eager"}
-              onLoad={(event) => imageState(image.id, "ready", event.currentTarget)}
+              onLoad={(event) =>
+                imageState(image.id, "ready", event.currentTarget)
+              }
               onError={(event) =>
                 imageState(image.id, "error", event.currentTarget)
               }
             />
           ))}
         </div>
-        <span className="gv-photo-label liquid-glass" aria-hidden="true">{selectedImage.label}<span>{sides.indexOf(side) + 1} / {sides.length}</span></span>
+        <span className="gv-photo-label liquid-glass" aria-hidden="true">
+          {selectedImage.label}
+          <span>
+            {sides.indexOf(side) + 1} / {sides.length}
+          </span>
+        </span>
         {status === "loading" && (
           <span className="gv-status" role="status">
             Carregando imagem…
@@ -338,10 +375,30 @@ export function GarmentViewer({
           </div>
         )}
       </div>
-      <div className="gv-thumbnails" role="group" aria-label={`Galeria de ${product.name}`}>
+      <div
+        className="gv-thumbnails"
+        role="group"
+        aria-label={`Galeria de ${product.name}`}
+      >
         {gallery.map((image) => (
-          <button type="button" key={image.id} className={`gv-thumbnail ${image.campaign ? "gv-thumbnail-campaign" : ""}`} aria-label={`Ver ${image.label.toLowerCase()} de ${product.name}`} aria-pressed={side === image.id} onClick={() => selectSide(image.id)}>
-            <span className="gv-thumbnail-frame"><img src={image.src} alt="" width="72" height="72" loading="lazy" decoding="async" /></span>
+          <button
+            type="button"
+            key={image.id}
+            className={`gv-thumbnail ${image.campaign ? "gv-thumbnail-campaign" : ""}`}
+            aria-label={`Ver ${image.label.toLowerCase()} de ${product.name}`}
+            aria-pressed={side === image.id}
+            onClick={() => selectSide(image.id)}
+          >
+            <span className="gv-thumbnail-frame">
+              <img
+                src={image.src}
+                alt=""
+                width="72"
+                height="72"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
             <span>{image.label}</span>
           </button>
         ))}
@@ -354,11 +411,13 @@ export function GarmentViewer({
             onClick={details}
             disabled={status !== "ready"}
           >
-            Detalhes
+            Ampliar foto
           </button>
-          <button type="button" className="gv-control" onClick={restore}>
-            Restaurar visão
-          </button>
+          {(isZoomed || pan.x !== 0 || pan.y !== 0) && (
+            <button type="button" className="gv-control" onClick={restore}>
+              Restaurar foto
+            </button>
+          )}
         </div>
       </div>
       <div className="gv-footer">

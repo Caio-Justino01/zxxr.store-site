@@ -20,12 +20,17 @@ export function DropTiles() {
           : { rows, cols },
       );
     };
-    const observer = new ResizeObserver(measure);
-    observer.observe(element);
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(measure)
+        : null;
+    observer?.observe(element);
+    window.addEventListener("resize", measure);
     desktop.addEventListener("change", measure);
     measure();
     return () => {
-      observer.disconnect();
+      observer?.disconnect();
+      window.removeEventListener("resize", measure);
       desktop.removeEventListener("change", measure);
     };
   }, []);
