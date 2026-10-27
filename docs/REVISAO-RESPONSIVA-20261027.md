@@ -33,3 +33,11 @@ O gradiente mantém seu tratamento de perda/restauração de WebGL e sua alterna
 Somente Chromium está disponível nesta sessão. Firefox, WebKit, Safari em iPhone/iPad, Chrome em aparelho Android e navegador interno do Instagram não foram testados fisicamente. Emulação de viewport não é apresentada como validação nesses aparelhos. Não houve emulação de rede lenta ou alteração de preferências do sistema para redução de movimento/transparência; esses caminhos foram revisados no código e nas regras existentes.
 
 Prévia final: https://5f129a90.zxxr-store.pages.dev.
+
+## Publicação conferida
+
+- Código `9a52a67` enviado ao GitHub (`main` e `codex/contas-pedidos`).
+- Cloudflare de produção: https://a38bd879.zxxr-store.pages.dev.
+- Conferidos no domínio www.zxxr.store o menu completo, a colagem em 390/820 px e o rodapé expansível em 390 px, sem rolagem horizontal.
+- Catálogo comercial carregado: Pix e cartão de crédito, contato configurado, inclusão na sacola habilitada e ausência de aviso de teste. Nenhum pedido ou mensagem foi enviado durante a revisão.
+- Capturas públicas finais: `publicado-colagem-390.png`, `publicado-colagem-820.png` e `publicado-rodape-390.png`.
