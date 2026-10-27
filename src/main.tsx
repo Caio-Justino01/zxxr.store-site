@@ -11,6 +11,7 @@ import "./hero-desejos.css";
 import "./liquid-glass.css";
 import "./brand-theme.css";
 import "./storefront.css";
+import "./support/support.css";
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useCommerce } from "./CommerceProvider";
 import { errorMessage } from "./client";
 import { MfaPage } from "./auth";
+import { SupportInlineButton } from "../support/context";
 
 export function Notice({
   children,
@@ -38,6 +39,7 @@ export function AccountShell({
   children: ReactNode;
 }) {
   const { session, logout } = useCommerce();
+  const location = useLocation();
   const titleRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     titleRef.current?.focus({ preventScroll: true });
@@ -49,9 +51,18 @@ export function AccountShell({
         <Link to="/#o-drop" className="back-link">
           ← Ver camisetas
         </Link>
-        <h1 ref={titleRef} tabIndex={-1}>
-          {title}
-        </h1>
+        {location.pathname === "/encomenda" ? (
+          <div className="support-checkout-heading">
+            <h1 ref={titleRef} tabIndex={-1}>
+              {title}
+            </h1>
+            <SupportInlineButton />
+          </div>
+        ) : (
+          <h1 ref={titleRef} tabIndex={-1}>
+            {title}
+          </h1>
+        )}
         {intro && <p>{intro}</p>}
       </header>
       {session.user && (

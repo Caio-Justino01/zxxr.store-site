@@ -44,6 +44,9 @@ import { StoreHeader } from "./components/StoreHeader";
 import { StoreFooter } from "./components/StoreFooter";
 import { StoreTestNotice } from "./components/StoreInformation";
 import { storefront } from "./config/storefront";
+import { helpContent } from "./config/help-content";
+import { SupportProvider } from "./support/context";
+import { SupportWidget } from "./support/SupportWidget";
 const HelpPage = lazy(() =>
   import("./components/HelpPage").then((m) => ({ default: m.HelpPage })),
 );
@@ -331,11 +334,7 @@ function ProductPage() {
             <summary>
               Como cuidar <span>+</span>
             </summary>
-            <p>
-              Lave a peça do avesso e evite passar o ferro diretamente sobre a
-              estampa. Siga as instruções da etiqueta para conservar a malha e
-              as cores.
-            </p>
+            <p>{helpContent.care}</p>
           </details>
         </section>
       </div>
@@ -531,53 +530,69 @@ export default function App() {
   }, [items]);
   return (
     <BagContext.Provider value={{ items, dispatch }}>
-      <>
-        <a className="skip-link" href="#main-content">
-          Pular para o conteúdo
-        </a>
-        <StoreHeader count={items.reduce((n, item) => n + item.quantity, 0)} />
-        <div id="main-content">
-          <Suspense
-            fallback={
-              <main className="account-page">
-                <p role="status">Carregando sua página…</p>
-              </main>
-            }
-          >
-            <Routes>
-              <Route path="/" element={<Collection />} />
-              <Route path="/produto/:slug" element={<ProductPage />} />
-              <Route path="/sacola" element={<Bag />} />
-              <Route
-                path="/encomenda"
-                element={
-                  <CheckoutPage
-                    items={items}
-                    onRegistered={(lines) =>
-                      dispatch({ type: "ordered", lines })
-                    }
-                  />
-                }
-              />
-              <Route path="/entrar" element={<AuthPage />} />
-              <Route path="/cadastro" element={<AuthPage />} />
-              <Route path="/recuperar-acesso" element={<AuthPage />} />
-              <Route path="/conta/pedidos" element={<OrderListPage />} />
-              <Route path="/conta/pedidos/:id" element={<OrderDetailPage />} />
-              <Route path="/conta/dados" element={<ProfilePage />} />
-              <Route path="/painel/pedidos" element={<AdminListPage />} />
-              <Route path="/painel/pedidos/:id" element={<AdminDetailPage />} />
-              <Route path="/painel/equipe" element={<TeamPage />} />
-              <Route path="/painel/configuracoes" element={<SettingsPage />} />
-              <Route path="/privacidade" element={<PrivacyPage />} />
-              <Route path="/ajuda" element={<HelpPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </div>
-        <StoreFooter />
-        <RouteEffects />
-      </>
+      <SupportProvider>
+        <>
+          <a className="skip-link" href="#main-content">
+            Pular para o conteúdo
+          </a>
+          <StoreHeader
+            count={items.reduce((n, item) => n + item.quantity, 0)}
+          />
+          <div id="main-content">
+            <Suspense
+              fallback={
+                <main className="account-page">
+                  <p role="status">Carregando sua página…</p>
+                </main>
+              }
+            >
+              <Routes>
+                <Route path="/" element={<Collection />} />
+                <Route path="/produto/:slug" element={<ProductPage />} />
+                <Route path="/sacola" element={<Bag />} />
+                <Route
+                  path="/encomenda"
+                  element={
+                    <CheckoutPage
+                      items={items}
+                      onRegistered={(lines) =>
+                        dispatch({ type: "ordered", lines })
+                      }
+                    />
+                  }
+                />
+                <Route path="/entrar" element={<AuthPage />} />
+                <Route path="/cadastro" element={<AuthPage />} />
+                <Route path="/recuperar-acesso" element={<AuthPage />} />
+                <Route path="/conta/pedidos" element={<OrderListPage />} />
+                <Route
+                  path="/conta/pedidos/:id"
+                  element={<OrderDetailPage />}
+                />
+                <Route path="/conta/dados" element={<ProfilePage />} />
+                <Route path="/painel/pedidos" element={<AdminListPage />} />
+                <Route
+                  path="/painel/pedidos/:id"
+                  element={<AdminDetailPage />}
+                />
+                <Route path="/painel/equipe" element={<TeamPage />} />
+                <Route
+                  path="/painel/configuracoes"
+                  element={<SettingsPage />}
+                />
+                <Route path="/privacidade" element={<PrivacyPage />} />
+                <Route path="/ajuda" element={<HelpPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </div>
+          <StoreFooter />
+          <SupportWidget
+            cartCount={items.reduce((n, item) => n + item.quantity, 0)}
+          />
+          <RouteEffects />
+        </>
+      </SupportProvider>
     </BagContext.Provider>
   );
 }
