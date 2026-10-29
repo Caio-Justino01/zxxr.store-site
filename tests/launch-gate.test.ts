@@ -130,7 +130,7 @@ test("public opening repeats on each reload, removes preview-only controls in bu
     "utf8",
   );
   assert.doesNotMatch(intro, /sessionStorage/);
-  assert.match(intro, /const shouldPlay = firstVisit\(\)/);
+  assert.match(intro, /const \[intro, setIntro\] = useState\(true\)/);
   const css = await readFile(
     new URL("../launch-preview/launch-preview.css", import.meta.url),
     "utf8",

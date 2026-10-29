@@ -21,3 +21,13 @@ Aprovada para o site oficial em 29/10/2026. Abertura em **31/10/2026 às 00h de 
 Checkout isolado a partir da versão de produção `a6e7621`. Não inclui mudanças de catálogo, banco, pedidos, preços ou o gelo em revisão. Fotos WebP e arte da boia foram reutilizadas sem alterações. O checkout original e as prévias 5274/5277 foram preservados.
 
 Build: `npm.cmd run build`. Prévia com middleware: `node_modules/.bin/wrangler.cmd pages dev dist --port 5280`.
+
+
+## Correção de compatibilidade v5
+
+- O mosaico aparece também com movimento reduzido: fotografia estática por 2,8 segundos, seguida da espera, sem deslocamento ou rotação.
+- Oito prévias JPEG de 160 px, somando 36.535 bytes, estão embutidas no código. A abertura espera sua carga/decodificação; não depende de oito downloads externos para exibir as cenas.
+- Fotografias originais em alta resolução substituem cada prévia somente quando carregadas e decodificadas. Falha ou lentidão mantém a fotografia leve visível.
+- A preparação tem cancelamento, limite de espera e compatibilidade com ausência/rejeição de `img.decode`. Há fallback de redimensionamento quando `ResizeObserver` não existe.
+- Verificações: 111 testes, TypeScript e build; navegador com oito fotos externas bloqueadas, movimento reduzido e larguras de 320, 391 e 414 px. Não foi usado um iPhone físico nesta validação.
+- Sem alteração na abertura comercial de 31/10/2026 às 00h de Brasília.

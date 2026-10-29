@@ -30,10 +30,6 @@ const PreviewControls = import.meta.env.DEV
   ? lazy(() => import("./PreviewControls"))
   : null;
 
-function firstVisit() {
-  return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
 function launchDate(value: string) {
   const date = new Date(value);
 
@@ -83,7 +79,9 @@ export function LaunchPreview() {
 
   const [presentation, setPresentation] = useState<PresentationPhase>("normal");
 
-  const [intro, setIntro] = useState(firstVisit);
+  const [intro, setIntro] = useState(true);
+  const [mosaicReady, setMosaicReady] = useState(false);
+  const handleMosaicReady = useCallback(() => setMosaicReady(true), []);
 
   const [introRun, setIntroRun] = useState(0);
 
@@ -198,30 +196,31 @@ export function LaunchPreview() {
   useEffect(() => {
     const element = root.current!;
 
-    if (reduced) {
-      element.dataset.scene = "waiting";
-
-      setIntro(false);
-
+    if (!intro) return;
+    if (!mosaicReady) {
+      element.dataset.scene = "preparing";
       return;
     }
-
-    const shouldPlay = firstVisit();
-
-    element.dataset.scene = shouldPlay ? "assembling" : "waiting";
-
-    if (!shouldPlay) return;
-
-    setIntro(true);
+    element.dataset.scene = reduced ? "collage" : "assembling";
 
     let timeline: gsap.core.Timeline;
 
     const context = gsap.context(() => {
-      timeline = gsap.timeline({ onComplete: finishIntro });
+      timeline = gsap.timeline({ paused: true, onComplete: finishIntro });
 
       introTimeline.current = timeline;
 
       const tiles = [...element.querySelectorAll(".collage-tile")];
+      if (reduced) {
+        timeline.set(tiles, { opacity: 1, x: 0, y: 0, rotation: 0 }, 0);
+        // Keep the complete photographic mosaic; remove travel, rotation and zoom.
+        timeline.set(
+          ".waiting-brand,.waiting-object,.waiting-caption",
+          { opacity: 1, y: 0 },
+          2.8,
+        );
+        return;
+      }
 
       timeline.fromTo(
         tiles,
@@ -341,7 +340,7 @@ export function LaunchPreview() {
 
       context.revert();
     };
-  }, [introRun, reduced]);
+  }, [introRun, reduced, mosaicReady, intro]);
 
   const authorizedOpen = Boolean(status?.enabled && status.isOpen);
 
@@ -391,6 +390,7 @@ export function LaunchPreview() {
   }
 
   function replay() {
+    setMosaicReady(false);
     setIntro(true);
 
     setIntroRun((value) => value + 1);
@@ -426,7 +426,9 @@ export function LaunchPreview() {
     <main
       ref={root}
       className="launch-experience"
-      data-version="4-public"
+      data-version="5-ready-mosaic"
+      data-reduced={reduced}
+      data-mosaic-ready={mosaicReady}
       data-presentation={presentation}
       data-intro={intro}
       data-connection={connection}
@@ -540,7 +542,7 @@ export function LaunchPreview() {
         </footer>
       </div>
 
-      {intro && <Mosaic />}
+      {intro && <Mosaic key={introRun} onReady={handleMosaicReady} />}
 
       {intro && (
         <button className="skip-intro" type="button" onClick={skip}>
