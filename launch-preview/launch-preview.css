@@ -215,6 +215,16 @@ input:focus-visible {
   pointer-events: none;
   overflow: hidden;
 }
+.intro-collage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #000;
+  transition: opacity 0.5s ease-in-out;
+}
+.launch-experience[data-scene="dissolving"] .intro-collage::before {
+  opacity: 0;
+}
 .collage-heading {
   position: absolute;
   top: 19px;
