@@ -1,17 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "jsx": "react-jsx",
     "strict": true,
@@ -21,11 +15,5 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": [
-    "src",
-    "server",
-    "functions",
-    "vite.config.ts",
-    "launch-preview"
-  ]
+  "include": ["src", "server", "functions", "vite.config.ts", "launch-preview"]
 }

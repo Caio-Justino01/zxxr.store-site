@@ -18,7 +18,9 @@ createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <CommerceProvider>
-        <StoreLaunchGate><App /></StoreLaunchGate>
+        <StoreLaunchGate>
+          <App />
+        </StoreLaunchGate>
       </CommerceProvider>
     </BrowserRouter>
   </React.StrictMode>,

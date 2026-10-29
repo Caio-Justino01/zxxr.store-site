@@ -1,6 +1,9 @@
 export const IDLE_DELAY_MS = 10_000;
 export type PresentationPhase =
-  "normal" | "entering-idle" | "idle" | "returning";
+  | "normal"
+  | "entering-idle"
+  | "idle"
+  | "returning";
 export type Pose = { x: number; y: number; rotation: number };
 export type Bounds = { minX: number; minY: number; maxX: number; maxY: number };
 export type CornerSequence = {
