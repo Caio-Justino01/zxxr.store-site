@@ -23,8 +23,8 @@ export default defineConfig(({ mode }) => ({
             fileName: "_routes.json",
             source: JSON.stringify({
               version: 1,
-              include: ["/api/*"],
-              exclude: [],
+              include: ["/*"],
+              exclude: ["/assets/*", "/brand/*", "/fonts/*", "/media/*", "/robots.txt", "/favicon.ico"],
             }),
           });
           this.emitFile({
@@ -96,6 +96,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: mode === "prelaunch" ? "dist-prelaunch" : "dist",
     rollupOptions: {
+      input: mode === "prelaunch" ? undefined : { store: fileURLToPath(new URL("./index.html", import.meta.url)), waiting: fileURLToPath(new URL("./espera.html", import.meta.url)) },
       output: {
         manualChunks(id) {
           if (id.includes("/three/")) return "three";

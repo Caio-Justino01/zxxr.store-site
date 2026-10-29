@@ -1,0 +1,66 @@
+[
+  {
+    "id": "court",
+    "width": 1920,
+    "height": 800,
+    "src": "/media/launch-v2/photo-court-1920.webp",
+    "srcSet": "/media/launch-v2/photo-court-480.webp 480w, /media/launch-v2/photo-court-960.webp 960w, /media/launch-v2/photo-court-1920.webp 1920w",
+    "alt": "Ensaio ZXXR na quadra: as três pessoas e suas camisetas, fotografia completa."
+  },
+  {
+    "id": "beach",
+    "width": 1045,
+    "height": 1505,
+    "src": "/media/launch-v2/photo-beach-1045.webp",
+    "srcSet": "/media/launch-v2/photo-beach-480.webp 480w, /media/launch-v2/photo-beach-960.webp 960w, /media/launch-v2/photo-beach-1045.webp 1045w",
+    "alt": "O ensaio no bar à beira da praia, fotografia completa."
+  },
+  {
+    "id": "chairs",
+    "width": 1024,
+    "height": 1536,
+    "src": "/media/launch-v2/photo-chairs-1024.webp",
+    "srcSet": "/media/launch-v2/photo-chairs-480.webp 480w, /media/launch-v2/photo-chairs-960.webp 960w, /media/launch-v2/photo-chairs-1024.webp 1024w",
+    "alt": "Duas pessoas usando as camisetas ZXXR nas cadeiras, fotografia completa."
+  },
+  {
+    "id": "garden",
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/launch-v2/photo-garden-1122.webp",
+    "srcSet": "/media/launch-v2/photo-garden-480.webp 480w, /media/launch-v2/photo-garden-960.webp 960w, /media/launch-v2/photo-garden-1122.webp 1122w",
+    "alt": "Ensaio com as três pessoas no jardim, fotografia completa."
+  },
+  {
+    "id": "pier",
+    "width": 1680,
+    "height": 2094,
+    "src": "/media/launch-v2/photo-pier-1680.webp",
+    "srcSet": "/media/launch-v2/photo-pier-480.webp 480w, /media/launch-v2/photo-pier-960.webp 960w, /media/launch-v2/photo-pier-1680.webp 1680w",
+    "alt": "Camiseta Yaji em uso no píer entre os barcos, fotografia completa."
+  },
+  {
+    "id": "mercedes",
+    "width": 1086,
+    "height": 1448,
+    "src": "/media/launch-v2/photo-mercedes-1086.webp",
+    "srcSet": "/media/launch-v2/photo-mercedes-480.webp 480w, /media/launch-v2/photo-mercedes-960.webp 960w, /media/launch-v2/photo-mercedes-1086.webp 1086w",
+    "alt": "Emoção na Mercedes, versão final editada e aprovada pelo usuário, fotografia completa."
+  },
+  {
+    "id": "pool",
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/launch-v2/photo-pool-1122.webp",
+    "srcSet": "/media/launch-v2/photo-pool-480.webp 480w, /media/launch-v2/photo-pool-960.webp 960w, /media/launch-v2/photo-pool-1122.webp 1122w",
+    "alt": "Spiritual Gangsta na piscina, fotografia completa."
+  },
+  {
+    "id": "billiards",
+    "width": 1086,
+    "height": 1448,
+    "src": "/media/launch-v2/photo-billiards-1086.webp",
+    "srcSet": "/media/launch-v2/photo-billiards-480.webp 480w, /media/launch-v2/photo-billiards-960.webp 960w, /media/launch-v2/photo-billiards-1086.webp 1086w",
+    "alt": "Camiseta ZXXR na mesa de sinuca azul, fotografia completa."
+  }
+]

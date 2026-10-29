@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import App from "./App";
+import { StoreLaunchGate } from "./components/StoreLaunchGate";
 import { CommerceProvider } from "./commerce/CommerceProvider";
 import "./commerce/commerce.css";
 import "./styles.css";
@@ -17,7 +18,7 @@ createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <CommerceProvider>
-        <App />
+        <StoreLaunchGate><App /></StoreLaunchGate>
       </CommerceProvider>
     </BrowserRouter>
   </React.StrictMode>,
