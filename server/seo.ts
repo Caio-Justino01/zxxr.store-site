@@ -88,14 +88,18 @@ export async function handleSeoRequest(
     return context.next();
   let response: Response;
   const meta = getSeoMetadata(path);
-  if (open && (isPrivateSeoPath(path) || meta.status === 404)) {
+  const privateRoute = isPrivateSeoPath(path);
+  if (privateRoute || (open && meta.status === 404)) {
     const assetUrl = new URL(
-      isPrivateSeoPath(path) ? "/store-shell.html" : "/404.html",
+      privateRoute ? "/store-shell.html" : "/404.html",
       url,
     );
     response = await env.ASSETS.fetch(new Request(assetUrl, { method: "GET" }));
   } else response = await context.next();
-  if (!open || response.headers.get("X-ZXXR-Launch") === "waiting")
+  if (
+    (!open && !privateRoute) ||
+    response.headers.get("X-ZXXR-Launch") === "waiting"
+  )
     return response;
   if (!response.headers.get("Content-Type")?.includes("text/html"))
     return response;

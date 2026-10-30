@@ -160,6 +160,69 @@ test("unknown pages return real 404; private routes use an empty CSR shell and n
   assert.equal(preview.headers.get("X-Robots-Tag"), "noindex, nofollow");
 });
 
+test("private account and analytics routes use their own empty CSR shell before opening, never the prerendered collection", async () => {
+  for (const path of ["/entrar", "/painel/analytics", "/conta/pedidos"]) {
+    const c = context(path);
+    let nextCalls = 0;
+    const assets: string[] = [];
+    c.next = async () => {
+      nextCalls++;
+      return new Response(
+        template.replace(
+          '<div id="root"></div>',
+          '<div id="root"><main>PRERENDERED_COLLECTION</main></div>',
+        ),
+        {
+          headers: { "Content-Type": "text/html" },
+        },
+      );
+    };
+    c.env.ASSETS.fetch = async (request: Request) => {
+      assets.push(new URL(request.url).pathname);
+      return new Response(template, {
+        headers: { "Content-Type": "text/html" },
+      });
+    };
+    const response = await handleSeoRequest(c, before);
+    const html = await response.text();
+    assert.equal(response.status, 200, path);
+    assert.equal(
+      response.headers.get("X-Robots-Tag"),
+      "noindex, nofollow",
+      path,
+    );
+    assert.equal(
+      response.headers.get("Cache-Control"),
+      "private, no-store",
+      path,
+    );
+    assert.equal(nextCalls, 0, `${path}: collection fallback must never run`);
+    assert.deepEqual(assets, ["/store-shell.html"], path);
+    assert.match(html, /<div id="root"><\/div>/, path);
+    assert.ok(
+      html.includes(`href="https://www.zxxr.store${path}"`),
+      `${path}: private canonical`,
+    );
+    assert.doesNotMatch(
+      html,
+      /PRERENDERED_COLLECTION|data-seo-prerendered/,
+      path,
+    );
+
+    c.request = new Request(`https://www.zxxr.store${path}`, {
+      method: "HEAD",
+    });
+    const head = await handleSeoRequest(c, before);
+    assert.equal(head.status, 200, `${path}: HEAD status`);
+    assert.equal(
+      head.headers.get("X-Robots-Tag"),
+      "noindex, nofollow",
+      `${path}: HEAD indexation`,
+    );
+    assert.equal(await head.text(), "", `${path}: HEAD body`);
+  }
+});
+
 test("production canonical redirects do not capture preview domains", async () => {
   const redirect = await handleSeoRequest(
     context("/produto/boca/", "zxxr.store"),
