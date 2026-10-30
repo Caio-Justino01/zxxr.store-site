@@ -1,0 +1,14 @@
+{
+  "pattern": "[108, 167, 921, 691]",
+  "source": "IMG_3296 1.jpg",
+  "widthMetresAssumedForPhysics": 0.82,
+  "physicsFrames": 110,
+  "simulationVertices": 2720,
+  "desktopVertices": 15497,
+  "seamOpenings": {
+    "hem": 55,
+    "sewn": 175,
+    "neck": 18,
+    "cuff": 49
+  }
+}

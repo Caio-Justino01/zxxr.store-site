@@ -1,12 +1,12 @@
 @font-face {
   font-family: Inter;
-  src: url("/fonts/Inter-Variavel.ttf") format("truetype");
+  src: url("/fonts/Inter-Variavel.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }
 @font-face {
   font-family: Archivo;
-  src: url("/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+  src: url("/fonts/ArchivoBlack-Regular.woff2") format("woff2");
   font-weight: 900;
   font-display: swap;
 }
@@ -595,3 +595,5 @@ input:focus-visible {
 .waiting-caption .launch-status:empty {
   display: none;
 }
+.waiting-privacy { position: fixed; z-index: 25; right: 18px; bottom: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font: 12px/1.5 Inter, sans-serif; }
+.waiting-privacy a, .waiting-privacy button { color: #101010; padding: 9px 12px; border-radius: 24px; background: rgba(255,255,255,.85); }

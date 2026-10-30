@@ -1,6 +1,12 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router";
-import { products, type Product, type Size } from "../config/products";
+import {
+  products,
+  isAvailable,
+  type Product,
+  type Size,
+} from "../config/products";
+import { UpcomingDrop } from "./UpcomingDrop";
 import { dropStories } from "../config/drop-editorial";
 import { useDropReading } from "../lib/use-drop-reading";
 import { formatPrice } from "../lib/pricing";
@@ -49,7 +55,7 @@ function GuidedText({ lines }: { lines: string[] }) {
 
 const stories = dropStories.flatMap((story) => {
   const product = products.find((item) => item.id === story.productId);
-  return product ? [{ story, product }] : [];
+  return isAvailable(product) ? [{ story, product }] : [];
 });
 
 export function DropEditorial({ onAdd }: Props) {
@@ -61,10 +67,15 @@ export function DropEditorial({ onAdd }: Props) {
     const chapter = document.getElementById(`drop-${id}`);
     if (!chapter) return;
     const headerHeight =
-      document.querySelector(".site-header")?.getBoundingClientRect().height ?? 0;
-    const distance = chapter.dataset.layout === "sticky"
-      ? Math.max(0, chapter.offsetHeight - (window.innerHeight - headerHeight))
-      : 0;
+      document.querySelector(".site-header")?.getBoundingClientRect().height ??
+      0;
+    const distance =
+      chapter.dataset.layout === "sticky"
+        ? Math.max(
+            0,
+            chapter.offsetHeight - (window.innerHeight - headerHeight),
+          )
+        : 0;
     window.scrollTo({
       top:
         chapter.getBoundingClientRect().top +
@@ -136,14 +147,21 @@ export function DropEditorial({ onAdd }: Props) {
                   >
                     {product.name}
                   </h3>
-                  <p className="ps-description">
-                    {product.description}
-                  </p>
+                  <p className="ps-description">{product.description}</p>
                   <ProductSpecifications product={product} />
-                  <ProductSizeSelector value={selectedSizes[product.id] ?? "M"} onChange={(size) => {
-                    setSelectedSizes((previous) => ({ ...previous, [product.id]: size }));
-                    setAdded((previous) => ({ ...previous, [product.id]: false }));
-                  }} />
+                  <ProductSizeSelector
+                    value={selectedSizes[product.id] ?? "M"}
+                    onChange={(size) => {
+                      setSelectedSizes((previous) => ({
+                        ...previous,
+                        [product.id]: size,
+                      }));
+                      setAdded((previous) => ({
+                        ...previous,
+                        [product.id]: false,
+                      }));
+                    }}
+                  />
                   <div className="ps-order-row">
                     <p className="ps-price">
                       {formatPrice(product.price)}
@@ -155,25 +173,45 @@ export function DropEditorial({ onAdd }: Props) {
                       disabled={added[product.id] || !preorder.open}
                       onClick={() => {
                         onAdd(product, selectedSizes[product.id] ?? "M");
-                        setAdded((previous) => ({ ...previous, [product.id]: true }));
+                        setAdded((previous) => ({
+                          ...previous,
+                          [product.id]: true,
+                        }));
                       }}
-                      aria-label={`Adicionar ${product.name}, tamanho ${selectedSizes[product.id] ?? "M"}, à sacola`}
+                      aria-label={`${!preorder.open ? "Encomendas encerradas" : added[product.id] ? "Adicionado à sacola" : "Adicionar à sacola"}: ${product.name}, tamanho ${selectedSizes[product.id] ?? "M"}`}
                     >
-                      <span>{!preorder.open ? "Encomendas encerradas" : added[product.id] ? "Adicionado à sacola" : "Adicionar à sacola"}</span>
-                      {added[product.id] ? <span aria-hidden="true">✓</span> : <Arrow />}
+                      <span>
+                        {!preorder.open
+                          ? "Encomendas encerradas"
+                          : added[product.id]
+                            ? "Adicionado à sacola"
+                            : "Adicionar à sacola"}
+                      </span>
+                      {added[product.id] ? (
+                        <span aria-hidden="true">✓</span>
+                      ) : (
+                        <Arrow />
+                      )}
                     </button>
                   </div>
                   <div className="ps-purchase-links">
-                    <Link to={`/produto/${product.id}`}>Ver todos os detalhes</Link>
+                    <Link to={`/produto/${product.id}`}>
+                      Ver todos os detalhes
+                    </Link>
                     {added[product.id] && <Link to="/sacola">Ver sacola</Link>}
                   </div>
-                  <span className="ps-sr-only" role="status">{added[product.id] ? `${product.name}, tamanho ${selectedSizes[product.id] ?? "M"}, na sua sacola.` : ""}</span>
+                  <span className="ps-sr-only" role="status">
+                    {added[product.id]
+                      ? `${product.name}, tamanho ${selectedSizes[product.id] ?? "M"}, na sua sacola.`
+                      : ""}
+                  </span>
                 </div>
               </div>
             </div>
           </article>
         ))}
       </div>
+      <UpcomingDrop />
       <DropCampaignBanner />
     </section>
   );

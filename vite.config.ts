@@ -4,9 +4,12 @@ import react from "@vitejs/plugin-react";
 import tailwind from "@tailwindcss/vite";
 import fs from "node:fs";
 import path from "node:path";
+import { staticSecurityHeaders } from "./server/security.ts";
+import { localApiPlugin } from "./server/dev-api.ts";
 export default defineConfig(({ mode }) => ({
   publicDir: mode === "prelaunch" ? "public-prelaunch" : "public-store",
   plugins: [
+    localApiPlugin(),
     react(),
     tailwind(),
     {
@@ -29,7 +32,6 @@ export default defineConfig(({ mode }) => ({
                 "/brand/*",
                 "/fonts/*",
                 "/media/*",
-                "/robots.txt",
                 "/favicon.ico",
               ],
             }),
@@ -37,8 +39,7 @@ export default defineConfig(({ mode }) => ({
           this.emitFile({
             type: "asset",
             fileName: "_headers",
-            source:
-              "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://i.scdn.co; connect-src 'self' https://viacep.com.br https://challenges.cloudflare.com; frame-src https://open.spotify.com https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me; frame-ancestors 'none'\n/conta/*\n  X-Robots-Tag: noindex, nofollow\n/painel/*\n  X-Robots-Tag: noindex, nofollow\n",
+            source: staticSecurityHeaders(),
           });
           this.emitFile({
             type: "asset",
@@ -99,7 +100,17 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
   },
-  server: { strictPort: true },
+  server: {
+    strictPort: true,
+    watch: {
+      ignored: [
+        "**/previews/**",
+        "**/work/antes-*/**",
+        "**/work/qa-analytics-seo/**",
+        "**/entrega/**",
+      ],
+    },
+  },
   build: {
     outDir: mode === "prelaunch" ? "dist-prelaunch" : "dist",
     rollupOptions: {

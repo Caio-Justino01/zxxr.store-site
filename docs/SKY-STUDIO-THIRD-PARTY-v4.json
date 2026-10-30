@@ -1,0 +1,33 @@
+{
+  "license": "CC0",
+  "licensePage": "https://polyhaven.com/license",
+  "assets": [
+    {
+      "name": "Leafy Grass",
+      "author": "Charlotte Baglioni",
+      "page": "https://polyhaven.com/a/leafy_grass"
+    },
+    {
+      "name": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+      "authors": [
+        "Greg Zaal",
+        "Jarod Guest"
+      ],
+      "page": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky"
+    }
+  ],
+  "files": [
+    {
+      "file": "leafy-grass-diff-2k.jpg",
+      "sha256": "8e1c6d21365d4b89bc5a35ab664da98a78dbc3ab9ba6100474881c8619a5b113"
+    },
+    {
+      "file": "leafy-grass-normal-1k.jpg",
+      "sha256": "832328216adc0a7e1f70a31d5ee48c9ab7f2152d83816122736cf42ac4b2ebd6"
+    },
+    {
+      "file": "kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+      "sha256": "5244534e9cf5b606f2ff513aa00ddb161b0a4826ffd88a0d3bd03ac29247d198"
+    }
+  ]
+}

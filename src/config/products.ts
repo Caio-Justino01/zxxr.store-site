@@ -2,10 +2,14 @@ export const sizes = ["P", "M", "G", "GG"] as const;
 export type Size = (typeof sizes)[number];
 export type Product = {
   id: string;
+  releaseStatus: "available" | "coming-soon";
   number: string;
   name: string;
   color: string;
   dark: boolean;
+  fit: string;
+  material: string;
+  finish?: string;
   description: string;
   line: string;
   note: string;
@@ -16,15 +20,19 @@ export type Product = {
   back: string;
   textures: { front: string; back: string };
   heroView?: "front" | "back";
+  frozenImage?: { src: string; srcSet?: string; width: number; height: number };
 };
 export const products: Product[] = [
   {
     id: "boca",
+    releaseStatus: "available",
     number: "01",
     name: "Emoção",
-    price: 100,
+    price: 149.9,
     color: "Off-white",
     dark: false,
+    fit: "Oversized boxy",
+    material: "Algodão Madri",
     description:
       "Assinatura pequena no peito e a boca com o R em destaque nas costas. Off-white para deixar o desenho falar.",
     line: "O som também veste.",
@@ -40,12 +48,16 @@ export const products: Product[] = [
   },
   {
     id: "flores",
+    frozenImage: {"src": "/media/ice-v6/flores-ice-v6-1440.webp", "srcSet": "/media/ice-v6/flores-ice-v6-640.webp 640w, /media/ice-v6/flores-ice-v6-1024.webp 1024w, /media/ice-v6/flores-ice-v6-1440.webp 1440w", "width": 1440, "height": 1080},
+    releaseStatus: "coming-soon",
     heroView: "front",
     number: "02",
     name: "Flores",
-    price: 100,
+    price: 149.9,
     color: "Off-white",
     dark: false,
+    fit: "Oversized boxy",
+    material: "Algodão Madri",
     description:
       "Três flores vermelhas atravessam a frente. Nas costas, a assinatura de Razz aparece junto à gola.",
     line: "Florescem outros caminhos.",
@@ -61,11 +73,15 @@ export const products: Product[] = [
   },
   {
     id: "me-preservando",
+    frozenImage: {"src": "/media/ice-v6/yaji-ice-v6-1440.webp", "srcSet": "/media/ice-v6/yaji-ice-v6-640.webp 640w, /media/ice-v6/yaji-ice-v6-1024.webp 1024w, /media/ice-v6/yaji-ice-v6-1440.webp 1440w", "width": 1440, "height": 1080},
+    releaseStatus: "coming-soon",
     number: "03",
     name: "Yaji",
-    price: 100,
+    price: 149.9,
     color: "Off-white",
     dark: false,
+    fit: "Oversized boxy",
+    material: "Algodão Madri",
     description:
       "“Me preservando, não me encontre.” A frase em vermelho percorre os ombros; a frente leva uma assinatura discreta.",
     line: "O silêncio tem presença.",
@@ -81,13 +97,17 @@ export const products: Product[] = [
   },
   {
     id: "spiritual-gangsta",
+    releaseStatus: "available",
     number: "04",
     name: "Spiritual Gangsta",
-    price: 100,
-    color: "Preto estonado",
+    price: 169.9,
+    color: "Preto marmorizado",
     dark: true,
+    fit: "Oversized boxy",
+    material: "100% algodão · fio 30.1",
+    finish: "Marmorizado",
     description:
-      "Spiritual Gangsta ocupa a parte de cima das costas em vermelho. A lavagem estonada dá variação ao preto da peça.",
+      "Spiritual Gangsta ocupa a parte de cima das costas em vermelho. O acabamento marmorizado dá variação ao preto da peça.",
     line: "Na sua frequência.",
     note: "Da música para a rua. Feita para acompanhar o seu próprio ritmo.",
     source: "IMG_3281 1.jpg",
@@ -101,11 +121,16 @@ export const products: Product[] = [
   },
   {
     id: "zxxr-rosa",
+    frozenImage: {"src": "/media/ice-v6/zxxr-ice-v6-1440.webp", "srcSet": "/media/ice-v6/zxxr-ice-v6-640.webp 640w, /media/ice-v6/zxxr-ice-v6-1024.webp 1024w, /media/ice-v6/zxxr-ice-v6-1440.webp 1440w", "width": 1440, "height": 1080},
+    releaseStatus: "coming-soon",
     number: "05",
     name: "ZXXR",
-    price: 100,
-    color: "Preto estonado",
+    price: 169.9,
+    color: "Preto marmorizado",
     dark: true,
+    fit: "Oversized boxy",
+    material: "100% algodão · fio 30.1",
+    finish: "Marmorizado",
     description:
       "Quatro letras em rosa, contorno branco e uma diagonal que atravessa as costas. Na frente, a marca aparece menor.",
     line: "Uma assinatura em movimento.",
@@ -121,3 +146,7 @@ export const products: Product[] = [
   },
 ];
 export const productById = (id?: string) => products.find((p) => p.id === id);
+
+export const isAvailable = (product: Product | undefined): product is Product & { releaseStatus: "available" } => product?.releaseStatus === "available";
+export const availableProducts = products.filter(isAvailable);
+export const upcomingProducts = products.filter(p => !isAvailable(p));

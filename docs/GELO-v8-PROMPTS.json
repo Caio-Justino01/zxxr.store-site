@@ -1,0 +1,27 @@
+{
+  "method": "Built-in image_gen; same new portrait ice layers across all three original garment cutouts.",
+  "shell": "Use case: product-mockup. Create ONE new empty ice slab on genuine transparent RGBA background, PORTRAIT 4:5 canvas, ideally 1440x1800 pixels or larger at the same ratio.\nThe reference is material direction only. REBUILD it as a VERTICAL rectangular slab, taller than wide. Do not stretch or rotate the old horizontal image.\nStraight-on photographic studio view, tiny visible thickness along top/right, smooth simple basic glass-like edges and gently eased small corners. One understated broad softbox reflection, no chrome, no facets, no dark grooves. Same neutral translucent frozen-water material from the reference, soft continuous cloudy diffusion over a quiet broad front face.\nREGISTRATION: slab exactly centered; its outer bounds run from3%to97%ofcanvaswidth AND3%to97%ofcanvasheight. Equal proportional transparent margin on all four sides. The actual ice silhouette must be4:5, not a square floating inside a portraitcanvas. Full uninterrupted slab. No crop.\nEmpty: no shirt, no objects, no writing. Transparent outside the slab. No metallic silver, no ornate bevels, no crumpled foil, no stars, no scratch grid, no cracks, no large bubbles, no geometric pattern. Plain, restrained real ice photographed softly.",
+  "front": "Use case: product-mockup. Input is the shared vertical ICE SHELL registration reference. Create ONE separate FRONT DIFFUSION SURFACE for this same slab, on the same portrait4:5canvas ideally1440x1800pxorhigher. Sameboundsandregistration. TrueRGBA transparent background outside the face.\nOnly the broad front face, with pale neutral white-gray fine photographic frost and continuous cloudy diffusion. Consistent coverage includingthecenter, NOclearcentralhole ortransparentwindow. The surface itself should be dense/opaque so our webapp can apply48%opacity uniformly. Natural fine neutral granularity, absolutely no geometric scratch grid. Quiet large tonal regions, no dramatic patchiness.\nNo perimeter rim or sidewall; softly faded outline just inside the input slab rim, no rectangular card or opaque exterior. This is a reusable optical ice film to put IN FRONT OF real garment photographs supplied separately. It must obscure prints gently rather than tint themblue.\nNo clothing, no writing, no symbols, no bubble decorations, no cracks, no stars, no metallic reflections. Soft natural frozen-water diffusion, no illustration.",
+  "engraving": "Use case: product-mockup. One isolated raster inscription layer on genuinely transparent RGBA background. Portrait4:5canvas, ideally1440x1800px. ONLY the exact Portuguese words \"Em breve\" on one horizontal line, centered on the canvas. The word group should occupy52%ofcanvaswidth. No background objects.\nThe words are HAND SCRATCHED INTO REAL ICE WITH A KNIFE TIP: simple irregular non-cursive handwritten letters, uneven hand-cut hairline grooves, short repeated scoring marks and small interruptions. Clear charcoal inner cuts with slim bright white ice lips along both sides. The paired dark groove and white edge must remain legible over dark gray fabric and hot pink print behind the transparent overlay. More defined and readable than faint gray pencil scratches. Keep it incised, NOT raised or chrome, no metallic letters. Narrow strokes, no broad filled letters, no font-like calligraphy, no elegant script, no typeset label. Small precise natural knife-cut marks.\nONLY \"Em breve\". Transparent everywhere except the groove marks. NO ice block, NO shirt, NO plaque or panel, NO rectangular outline, NO glow, NO shadow cast behind a label, NO crystals or long cracks radiating from the letters.",
+  "engravingRefinement": "Use case: precise-object-edit. EDIT ONLY THE INSCRIPTION MATERIAL in this transparent engraving layer. Keep the exact words \"Em breve\", their irregular hand-scratched letter shapes, layout, canvas and actual transparency.\nThe current grooves are too middle-gray and disappear over dark gray/pink fabric. Make the knife-cut scoring predominantly BRIGHT FROST WHITE from tiny crushed-ice edges. Every letter stroke must read clearly in WHITE on a medium gray shirt and pink printed pattern. Preserve a very narrow charcoal inner hairline for incised depth, but WHITE SCATTERED ICE should cover roughly80%ofeachstroke'svisiblewidth, not silver-gray. Natural fine irregular knife scratches, a few interrupted short white scoring marks. Slightly firmer strokes so readable at small size, still hand-incised in ice.\nNo gray metallic filled bevels, no raised chrome, no extrusion, no neon/glow/halo, no broad drop shadow, no plaque or background patch. Do not add any ice slab, shirt or background. True transparentRGBA everywhere except the white knife-cut strokes and tiny dark hairlines.",
+  "registration": {
+    "canvas": [
+      1440,
+      1800
+    ],
+    "nativeGeneratedApprox": [
+      1122,
+      1402
+    ],
+    "engravingContentWidth": 0.52,
+    "engravingOpacity": 0.95,
+    "garmentWindow": [
+      0.82,
+      0.76
+    ],
+    "frontOpacity": 0.7,
+    "garmentBlurCqw": 1,
+    "engravingContrast": 1.4,
+    "hero": "Keep imageHeight; ice width=imageHeight*0.8. Do not change carousel calculations."
+  }
+}

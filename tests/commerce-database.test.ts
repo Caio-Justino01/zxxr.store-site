@@ -541,3 +541,56 @@ test("launch keeps fixtures archived and only real orders feed customer and staf
     "Historical fixtures must be preserved",
   );
 });
+
+test("new prices update every size, preserve historical orders and reject stale checkout prices", async () => {
+  await db.exec("reset role");
+  const before = (await db.query<any>("select * from public.store_variants order by product_id,size")).rows;
+  const history = (await db.query<any>("select id,items,subtotal_cents,total_cents from public.orders order by id")).rows;
+  const migration = await readFile(new URL("../supabase/migrations/202610270004_product_prices_materials.sql", import.meta.url), "utf8");
+  await db.exec(migration);
+  const after = (await db.query<any>("select * from public.store_variants order by product_id,size")).rows;
+  const unchanged = (rows: any[]) => rows.map(({ price_cents, color, ...rest }) => rest);
+  assert.deepEqual(unchanged(after), unchanged(before));
+  assert.equal(after.length, 20);
+  for (const row of after) {
+    const dark = ["spiritual-gangsta", "zxxr-rosa"].includes(row.product_id);
+    assert.equal(row.price_cents, dark ? 16990 : 14990);
+    assert.equal(row.color, dark ? "Preto marmorizado" : "Off-white");
+  }
+  assert.deepEqual((await db.query<any>("select id,items,subtotal_cents,total_cents from public.orders order by id")).rows, history);
+  await db.exec(migration);
+  assert.deepEqual((await db.query<any>("select * from public.store_variants order by product_id,size")).rows, after);
+  await actor(customer);
+  await assert.rejects(rpc("create_order", [request, "20000000-0000-4000-8000-000000000030"]), /price_changed/);
+  const updated = await rpc("create_order", [{ ...request, items: [
+    { productId: "boca", size: "M", quantity: 1, expectedUnitCents: 14990 },
+    { productId: "spiritual-gangsta", size: "G", quantity: 1, expectedUnitCents: 16990 },
+  ] }, "20000000-0000-4000-8000-000000000031"]);
+  assert.equal(updated.subtotal_cents, 31980);
+  assert.equal(updated.total_cents, null);
+  assert.equal(updated.items[1].color, "Preto marmorizado");
+});
+
+test("two-piece launch keeps eight active variants and preserves order history and stored prices", async () => {
+  await db.exec("reset role");
+  const before = (await db.query<any>("select * from public.store_variants order by product_id,size")).rows;
+  const orders = (await db.query<any>("select * from public.orders order by id")).rows;
+  const migration = await readFile(new URL("../supabase/migrations/202610290001_two_piece_launch.sql", import.meta.url), "utf8");
+  await db.exec(migration);
+  const after = (await db.query<any>("select * from public.store_variants order by product_id,size")).rows;
+  assert.equal(after.filter(v => v.active).length, 8);
+  const withoutActive = (rows: any[]) => rows.map(({ active, ...rest }) => rest);
+  assert.deepEqual(withoutActive(after), withoutActive(before));
+  assert.deepEqual((await db.query<any>("select * from public.orders order by id")).rows, orders);
+  await db.exec(migration);
+  assert.deepEqual((await db.query<any>("select * from public.store_variants order by product_id,size")).rows, after);
+  await actor(customer);
+  for (const [index, productId] of ["flores", "me-preservando", "zxxr-rosa"].entries()) {
+    await assert.rejects(rpc("create_order", [{ ...request, items: [{ productId, size: "M", quantity: 1, expectedUnitCents: productId === "zxxr-rosa" ? 16990 : 14990 }] }, `20000000-0000-4000-8000-00000000004${index}`]), /unavailable/);
+  }
+  const valid = await rpc("create_order", [{ ...request, items: [
+    { productId: "boca", size: "M", quantity: 1, expectedUnitCents: 14990 },
+    { productId: "spiritual-gangsta", size: "M", quantity: 1, expectedUnitCents: 16990 },
+  ] }, "20000000-0000-4000-8000-000000000045"]);
+  assert.equal(valid.subtotal_cents, 31980);
+});

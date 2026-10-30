@@ -1,0 +1,356 @@
+/* One registered material matrix is shared by every future garment. */
+.ice-block {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  text-align: center;
+  transform-style: flat;
+  isolation: isolate;
+  container-type: inline-size;
+}
+.ice-block .ice-layer,
+.tr-shirt .ice-block .ice-layer {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  max-width: none;
+  max-height: none;
+}
+.ice-block .ice-shell {
+  z-index: 0;
+  filter: drop-shadow(0 10px 8px #153f571c);
+}
+.ice-garment-window {
+  position: absolute;
+  width: var(--ice-garment-width, 82%);
+  height: var(--ice-garment-height, 76%);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+.ice-block .ice-original-garment {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  filter: blur(0.22cqw);
+}
+.ice-fabric-layers {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+}
+.ice-optical-defs {
+  position: absolute;
+  pointer-events: none;
+}
+.ice-clear-fabric,
+.ice-print-diffusion,
+.ice-contact-depth,
+.ice-contact-frost {
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+}
+.ice-block .ice-clear-fabric {
+  mask-image: var(--ice-mask-clear);
+  -webkit-mask-image: var(--ice-mask-clear);
+}
+.ice-block .ice-print-diffusion {
+  mask-image: var(--ice-mask-print);
+  -webkit-mask-image: var(--ice-mask-print);
+  filter: blur(3cqw);
+  mix-blend-mode: plus-lighter;
+}
+.ice-contact-depth,
+.ice-contact-frost {
+  position: absolute;
+  inset: 0;
+  mask-image: var(--ice-mask-contact);
+  -webkit-mask-image: var(--ice-mask-contact);
+  pointer-events: none;
+}
+.ice-contact-depth {
+  background: #536b7b;
+  opacity: 0.13;
+}
+.ice-contact-frost {
+  background-image: var(--ice-contact-texture);
+  background-position: center;
+  background-size: cover;
+  filter: grayscale(1) brightness(1.12);
+  opacity: 0.52;
+}
+.ice-block .ice-mask-preload {
+  display: none !important;
+}
+.ice-block .ice-front {
+  z-index: 2;
+  opacity: 0.42;
+  filter: grayscale(1);
+  clip-path: inset(8% 7% 7% round 2cqw);
+}
+.ice-block .ice-engraving-layer {
+  z-index: 3;
+  opacity: 0.95;
+  filter: grayscale(1) contrast(1.4);
+}
+.ice-image-unavailable {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  color: #37566a;
+  font-size: 14px;
+  align-content: center;
+  gap: 8px;
+}
+.ice-image-unavailable small {
+  font-size: 12px;
+}
+.dh-piece[data-release="coming-soon"] .dh-swing {
+  pointer-events: auto;
+}
+.dh-garment > .dh-swing > .hero-shirt-frame,
+.tr-shirt-frame {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+}
+.dh-garment .hero-shirt-frame > img,
+.tr-shirt-frame > img {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.dh-coming-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 0;
+}
+.dh-coming-info > span {
+  margin: 0;
+}
+.upcoming-drop {
+  padding: clamp(58px, 8vw, 120px) max(24px, 6vw);
+  background: linear-gradient(150deg, #f1faff, #dfeef6 70%, #f7fbfc);
+}
+.upcoming-drop > header {
+  max-width: 520px;
+  margin-bottom: 52px;
+}
+.upcoming-drop {
+  scroll-margin-top: calc(var(--site-header-height, 88px) + 20px);
+}
+.upcoming-drop h2 {
+  font-size: clamp(32px, 4vw, 60px);
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+  margin: 0 0 18px;
+}
+.upcoming-drop p {
+  color: #50616e;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.upcoming-grid {
+  max-width: 1180px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(30px, 5vw, 75px);
+}
+.upcoming-card {
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+.upcoming-card h3 {
+  font-size: 22px;
+  margin: 32px 0 10px;
+  letter-spacing: -0.04em;
+}
+.upcoming-card > p {
+  margin: 0;
+}
+.upcoming-card:focus-visible {
+  outline: 2px solid #1f526e;
+  outline-offset: 12px;
+  border-radius: 8px;
+}
+.upcoming-page {
+  padding: 38px max(24px, 6vw) 90px;
+}
+.upcoming-page-grid {
+  max-width: 1050px;
+  margin: 40px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(40px, 8vw, 110px);
+}
+.upcoming-page h1 {
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  margin: 18px 0;
+}
+.upcoming-page p {
+  line-height: 1.7;
+  color: #50616e;
+}
+.upcoming-page .ice-block {
+  max-width: 520px;
+  margin: auto;
+}
+.upcoming-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 30px;
+}
+.upcoming-links a {
+  color: inherit;
+  text-underline-offset: 6px;
+  padding: 8px 0;
+}
+.bag-upcoming-note {
+  padding: 18px 0;
+  color: #496070;
+  line-height: 1.6;
+  font-size: 13px;
+}
+.bag-item .ice-block {
+  max-width: 150px;
+}
+.other-grid .ice-block {
+  width: 90%;
+  margin: auto;
+}
+.support-products .ice-block {
+  width: 58px;
+  flex: 0 0 58px;
+}
+.pqv-upcoming .ice-block {
+  max-width: 340px;
+  margin: 20px auto;
+}
+.pqv-dialog.pqv-upcoming {
+  width: min(540px, calc(100% - 32px));
+  text-align: center;
+}
+@media (max-width: 760px) {
+  .upcoming-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+    max-width: 370px;
+  }
+  .upcoming-page-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .upcoming-page .ice-block {
+    max-width: 420px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ice-block {
+    transform: none !important;
+  }
+}
+
+/* Restrained perimeter light, with no painted veil over the garment. */
+.ice-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 4;
+}
+.ice-reflection {
+  position: absolute;
+  inset: 0;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  opacity: var(--ice-light, 0);
+  mix-blend-mode: screen;
+}
+.ice-edge-reflection {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at calc(var(--ice-x, 50) * 1%) calc(var(--ice-y, 30) * 1%),
+    #fff9,
+    transparent 60%
+  );
+  mask-image: radial-gradient(
+    ellipse at center,
+    transparent 45%,
+    #0007 69%,
+    #000 85%
+  );
+}
+.ice-cold-mist {
+  position: absolute;
+  left: 1%;
+  right: 1%;
+  bottom: -3%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #eefaff35, transparent 70%);
+  filter: blur(8px);
+  opacity: 0.16;
+  animation: ice-air-drift 9s ease-in-out infinite alternate;
+}
+@keyframes ice-air-drift {
+  from {
+    transform: translateX(-3px);
+  }
+  to {
+    transform: translateX(3px);
+  }
+}
+.ice-block[data-effects="false"] .ice-atmosphere {
+  visibility: hidden;
+}
+.ice-block[data-effects="false"] .ice-cold-mist {
+  animation-play-state: paused;
+}
+.upcoming-card:focus-visible .ice-reflection,
+.ac-image-link:focus-visible .ice-reflection {
+  opacity: 0.12;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ice-atmosphere {
+    display: none;
+  }
+}

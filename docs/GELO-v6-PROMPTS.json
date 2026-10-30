@@ -1,0 +1,47 @@
+{
+  "tool": "Built-in image_gen, edit mode",
+  "common": {
+    "common": "Create a faithful photographic compositing edit. Image 1 is the EXACT garment to preserve. Image 2 is ONLY the approved ice material, framing, scale and camera reference; replace its floral garment completely with image 1 and DO NOT copy flowers. Match image 2's clean heavy clear neutral rectangular ice block, nearly frontal perspective, visible subtle top/right thickness, broad translucent areas, naturally softened edges and restrained studio highlights. Same horizontal 4:3 composition, entire block isolated with genuinely transparent background, no floor or scene. Embed the entire exact shirt INSIDE the ice at 76% of ice front face width and about 74% height, with generous clear margins beyond BOTH sleeves, collar and hem. Preserve its boxy silhouette and original ink colors, never blue-tint it. Extremely sparse tiny bubbles and faint peripheral fissures only, no large spherical bubbles, no shattered-glass texture, no ornamental snowflakes/stars, no opaque crust. Photographic optical depth, not cartoon/toy/resin. In the CENTER of the FRONT ICE FACE physically scratch the exact words 'Em breve' with a knife: thin irregular incised hand lettering, fine dark recesses and a few tiny white displaced chips/glints. Small understated lettering occupying about 32% of face width, same scale as image 2, centered in front of the garment, NOT printed on fabric, no generic font or floating text. Keep shirt legible. No added words beyond the original print and carved 'Em breve'.",
+    "jobs": [
+      {
+        "id": "yajiIceV6",
+        "file": "me-preservando-back.png",
+        "extra": "Preserve the off-white BACK shirt from image 1. Its original burgundy cursive sentence across the TOP of the BACK SHOULDERS reads “Me preservando,não me encontre” with the original Razz signature at its right. Keep sentence's exact content, elegant handwriting, location and proportional size. Do not move that print to center, duplicate it, replace letters, add flowers or remove signature. Preserve front/back orientation."
+      },
+      {
+        "id": "zxxrIceV6",
+        "file": "zxxr-rosa-back.png",
+        "extra": "Preserve the washed/marbled BLACK BACK shirt from image 1 with FOUR exact hot-pink symbols and WHITE outlines rising diagonally from LOWER LEFT to upper right. The first Z MUST stay at the garment's LOWER LEFT with a margin from the hem and left body seam exactly like image 1. Preserve the diagonal's position/size, lettering shapes, four symbols, vivid pink and white outline. Do not recenter the print. Do not introduce any other shirt text or flowers. Garment remains black, not blue."
+      }
+    ]
+  },
+  "finalOpticalRevision": "EDIT ONLY THE OPTICAL FRONT ICE LAYER in the supplied image. Preserve exactly the existing block contour, dimensions, edge highlights, clean realistic heavy ice material, camera, framing, transparent exterior, shirt shape, colors, small size and position, and original garment graphic. The client APPROVES the ice outline and clear border; do not redesign them. Correct the physical depth: the shirt must be completely ENCASED BEHIND a substantial 2–3 cm layer of ice across the entire front face, not look exposed or laid on top. Add an optically plausible NEUTRAL TRANSLUCENT FRONT ICE SURFACE: very fine natural frost grain and softly cloudy patches IN FRONT OF ALL the fabric and print, gentle light scattering and subtle refraction that make the shirt and especially its printed artwork moderately diffused and 40–50% less distinct. The print remains recognizable in correct location but cannot be read as a crisp flat graphic. The shirt edges are slightly diffused behind the front ice while the outer ice perimeter and front engraving stay sharp. NO blue color cast, NO painted blue/gray overlay, NO opaque snow covering, no blur of the entire image. It is photographic diffusion from frozen water with depth, not a flat filter. Do NOT invent new cracks or bubbles. Remove decorative star-like sparkles if any. Preserve hot pink/burgundy hues but subdued naturally through the ice layer, not neon at full contrast. Front-face words must be exactly 'Em breve', small understated knife-incised irregular hand scratches centered horizontally and vertically, width exactly about 32% of FRONT face. Keep the carved grooves sharp IN FRONT of the diffuse garment, with tiny inner shadows and sparse chipped ice, not printed or raised lettering, not a generic font. No extra words. Keep full block and true transparent outer background.",
+  "finalInputs": [
+    {
+      "id": "floresIceV6Final",
+      "file": "exec-4dcff941-507a-4bae-8c86-5a065ff744fe.png"
+    },
+    {
+      "id": "yajiIceV6Final",
+      "file": "exec-fcfdf672-153a-4e26-8c87-3e592619896f.png"
+    },
+    {
+      "id": "zxxrIceV6Final",
+      "file": "exec-35e7e874-95fd-4e2c-99ee-51a485376b5f.png"
+    }
+  ],
+  "selectedOutputs": [
+    [
+      "flores",
+      "exec-e1daf6f9-efcf-45b8-81d8-25c58710266f.png"
+    ],
+    [
+      "yaji",
+      "exec-823de235-5706-469a-b5b5-1784477f78b5.png"
+    ],
+    [
+      "zxxr",
+      "exec-e7a75e08-d5f0-4c78-a6fc-7449a05443bd.png"
+    ]
+  ]
+}

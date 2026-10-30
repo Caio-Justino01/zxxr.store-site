@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QA local — movimento reduzido do guia</title>
+  <body>
+    <button
+      id="motion-toggle"
+      style="position: relative; z-index: 10; padding: 14px; background: white"
+    >
+      Ativar movimento reduzido
+    </button>
+    <div id="guide-test-root"></div>
+    <script type="module">
+      import React from "react";
+      import { createRoot } from "react-dom/client";
+      import { DropGuide } from "/src/components/DropGuide.tsx";
+      import "/src/styles.css";
+      import "/src/brand-theme.css";
+
+      // Isolated test of the real hook's media-query listener, outside the app.
+      const nativeMatchMedia = window.matchMedia.bind(window);
+      const preference = Object.assign(new EventTarget(), {
+        matches: false,
+        media: "(prefers-reduced-motion: reduce)",
+      });
+      window.matchMedia = (query) =>
+        query === preference.media ? preference : nativeMatchMedia(query);
+      document
+        .querySelector("#motion-toggle")
+        .addEventListener("click", (event) => {
+          preference.matches = !preference.matches;
+          preference.dispatchEvent(new Event("change"));
+          event.target.textContent = preference.matches
+            ? "Desativar movimento reduzido"
+            : "Ativar movimento reduzido";
+        });
+      createRoot(document.querySelector("#guide-test-root")).render(
+        React.createElement(DropGuide),
+      );
+    </script>
+  </body>
+</html>

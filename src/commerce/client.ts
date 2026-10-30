@@ -47,6 +47,12 @@ export async function api<T>(
       body.error?.code,
       body.error?.fields,
     );
+  if (
+    path === "profile" &&
+    options.method === "PUT" &&
+    typeof window !== "undefined"
+  )
+    window.dispatchEvent(new Event("zxxr:profile-updated"));
   return body as T;
 }
 export const errorMessage = (error: unknown) =>

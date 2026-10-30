@@ -1,3 +1,4 @@
+import { FrozenGarment } from "../components/FrozenGarment";
 import {
   AnimatePresence,
   motion,
@@ -540,9 +541,9 @@ function SupportPanel({
                         {entry.filter === "light"
                           ? "As claras do drop."
                           : entry.filter === "dark"
-                            ? "As pretas estonadas do drop."
-                            : "As cinco camisetas do drop Desejos."}{" "}
-                        Abra a peça para conferir frente, costas e tamanhos.
+                            ? "As pretas marmorizadas do drop."
+                            : "Duas peças disponíveis e três próximos desejos."}{" "}
+                        Conheça as disponíveis ou explore os próximos desejos no gelo.
                       </p>
                       <div className="support-products">
                         {products
@@ -562,18 +563,18 @@ function SupportPanel({
                                   go(`/produto/${p.id}`);
                                 }}
                               >
-                                <img
+                                {p.releaseStatus === "coming-soon" ? <FrozenGarment product={p} effects={false} /> : <img
                                   src={p.front}
                                   alt=""
                                   width="58"
                                   height="70"
                                   loading="lazy"
-                                />
+                                />}
                                 <div>
                                   <strong>{p.name}</strong>
-                                  <small>{p.color}</small>
+                                  {p.releaseStatus === "available" && <small>{p.color}</small>}
                                   <span>
-                                    {state.priceCents !== null
+                                    {p.releaseStatus === "coming-soon" ? "Em breve" : state.priceCents !== null
                                       ? `${state.varied ? "A partir de " : ""}${brl(state.priceCents)}`
                                       : catalog
                                         ? "Indisponível"
@@ -581,11 +582,11 @@ function SupportPanel({
                                           ? "Preço indisponível"
                                           : "Consultando preço…"}
                                   </span>
-                                  {catalog && !state.available && (
+                                  {p.releaseStatus === "available" && catalog && !state.available && (
                                     <small>Encomendas indisponíveis</small>
                                   )}
                                 </div>
-                                <span aria-hidden="true">↗</span>
+                                {p.releaseStatus === "available" && <span aria-hidden="true">↗</span>}
                               </a>
                             );
                           })}

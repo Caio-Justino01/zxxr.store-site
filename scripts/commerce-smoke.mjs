@@ -125,12 +125,12 @@ const body = {
   note: "Pedido fictício. Não cobrar, produzir ou enviar.",
   saveAddress: false,
   items: [
-    { productId: "boca", size: "M", quantity: 2, expectedUnitCents: 10000 },
+    { productId: "boca", size: "M", quantity: 2, expectedUnitCents: 14990 },
     {
       productId: "spiritual-gangsta",
       size: "GG",
       quantity: 1,
-      expectedUnitCents: 10000,
+      expectedUnitCents: 16990,
     },
   ],
 };
@@ -138,7 +138,7 @@ const key = randomUUID();
 let order = await customer.call("orders", body, 201, {
   "Idempotency-Key": key,
 });
-assert.equal(order.subtotal_cents, 30000);
+assert.equal(order.subtotal_cents, 46970);
 assert.equal(order.total_cents, null);
 assert.equal(order.test_mode, true);
 assert.equal(

@@ -1,0 +1,21 @@
+{
+  "method": "Built-in image_gen; shared empty material layers, no generated replacement clothing.",
+  "shell": "Use case: product-mockup. One photorealistic EMPTY smooth ice slab as a reusable compositing layer. True transparent RGBA background. Landscape 4:3 canvas, slab fills94%ofwidth and90%ofheight. Straight-on view with a tiny visible top and right thickness. Flat broad rectangle with gently softened small corners, like an ordinary plain thick pane of glass frozen in a rectangular mould. Extremely simple smooth rim: continuous clean rounded edge, ONE soft white edge highlight, no bevel stack. Quiet neutral pale translucent interior with very soft cloudy diffusion. Completely empty, no shirt, no text, no symbols. Understated realistic water ice photographed with a large softbox. No faceted crystal perimeter, no chrome/silver/metal/foil, no cracks, no scratch mesh, no geometric frost, no stars, no dark perimeter bands, no large bubbles. Transparent outside; partly translucent interior. The emphasis is on plain basic glass-like simplicity and matte diffusion, not detailed ice fantasy. Single image only.",
+  "front": "Use case: product-mockup. Create an isolated FROSTED ICE FRONT FACE layer aligned with this reference slab, landscape4:3canvas and exactsamebounds(top12%,bottom90%,left2%,right98%). No shirt or text. This will be composited using opacity inCSS.\nThe entire rectangular front face must have a consistent dense neutral white-gray frosted diffusion, including its center. NO clear hole, NO transparent central window, NO radial circular clearing. A soft fine natural frozen-water cloudiness, large quiet tonal regions, delicately granular, no geometric/scratch pattern. Matte light neutral gray/white throughout. No rim, no 3D edges: just the continuous diffuse surface, gently soft outline withsmallroundedcorners. Keep outside surface transparentRGBA, but make the central surface dense/opaque so the application can uniformly lower its opacity. Do not make the center transparent. No borderframe, no cracks, no stars, no bubbles, no shirt, no writing, no dark splotch, no blue tint.",
+  "engraving": "Use case: background-extraction / precise-object-edit. Input1 is a reference for the hand-cut inscription ONLY. Isolate and recreate ONLY the exact knife-scratched words \"Em breve\" from the input, with the same irregular simple hand-printed letter construction. Output ONLY those scratches on true transparentRGBA background, landscape4:3canvas. Center the writing on the canvas, overall word width32%ofcanvas.\nIMPORTANT: letters are slender cut-in grooves scratched by hand with a knife tip, uneven heights and short disconnected tool strokes. Non-calligraphic simple handwriting, not elegant cursive, not brush script, not a font. Sparse charcoal inner slits with tiny white ice lips, rough interrupted hairline strokes. Not embossed, not raised chrome, not filled strokes. Preserve the handmade raw look of the input inscription. Remove all ice slab, garment, edges, large flakes and background. No words other than \"Em breve\". Transparent everywhere except the fine engraving marks.",
+  "registration": {
+    "canvas": [
+      1440,
+      1080
+    ],
+    "engravingCanvasScale": 0.36666666666666664,
+    "frontOpacity": 0.48,
+    "garmentMaxWidth": 0.76,
+    "garmentMaxHeight": 0.666,
+    "garmentCenter": [
+      0.5,
+      0.51
+    ],
+    "garmentBlurContainerWidth": 0.0036
+  }
+}

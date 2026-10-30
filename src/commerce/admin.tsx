@@ -152,6 +152,7 @@ function PanelNav() {
       <Link to="/painel/pedidos">Pedidos</Link>
       {session.user?.role === "owner" && (
         <>
+          <Link to="/painel/analytics">Analytics</Link>
           <Link to="/painel/equipe">Equipe</Link>
           <Link to="/painel/configuracoes">Loja e catálogo</Link>
         </>
@@ -1185,7 +1186,7 @@ function Settings() {
                         label: "Preço por peça em reais",
                         type: "number",
                         required: true,
-                        value: String((current?.price_cents ?? 10000) / 100),
+                        value: String(current ? current.price_cents / 100 : p.price ?? ""),
                       },
                     ]}
                     busy={busy}

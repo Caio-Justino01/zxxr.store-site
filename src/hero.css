@@ -1,0 +1,416 @@
+/* The collection is a single editorial scene. The rail is its navigation. */
+.collection-header {
+  background: #edf0e9;
+  border-bottom: 0;
+  height: 88px;
+}
+.collection-hero {
+  padding: 0;
+  background: #8db4d1;
+  overflow: clip;
+  max-width: none;
+  margin: 0;
+}
+.collection-hero .hero-intro {
+  display: block;
+  padding: 22px 4.3% 0;
+  text-align: center;
+  pointer-events: auto;
+  background: transparent;
+  color: #111715;
+  text-shadow: 0 1px 14px #f4f3e14d;
+}
+.drop-edition {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #f8f5e9;
+  font-weight: 600;
+  text-shadow: 0 1px 3px #111c;
+}
+.drop-edition > span:first-child {
+  font-weight: 650;
+}
+.collection-hero .hero-intro h1 {
+  font-size: clamp(48px, 7.1vw, 108px);
+  line-height: 1.06;
+  letter-spacing: -0.065em;
+  margin: 26px 0 0;
+  -webkit-text-stroke: 0.8px #f8f5e9;
+  paint-order: stroke fill;
+  text-shadow: none;
+}
+.hero-authorship {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  margin-top: 12px;
+  font-size: 11px;
+}
+.hero-authorship img {
+  width: 88px;
+  height: 45px;
+  object-fit: contain;
+}
+.collection-hero .rack-wrap {
+  margin: 16px 0 0;
+}
+.collection-hero .collection-stage {
+  height: clamp(445px, 39vw, 640px);
+}
+.studio-canvas {
+  background: transparent;
+}
+.studio-canvas:not(.collection-canvas),
+.product-stage {
+  background: #fff;
+}
+.collection-canvas {
+  mask-image: none;
+}
+.rack-overview {
+  position: absolute;
+  top: 5px;
+  left: 4.3%;
+  right: 4.3%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 4;
+  pointer-events: none;
+  font-size: 10px;
+  color: #18231b;
+  text-shadow: 0 1px 8px #ffffff80;
+}
+.collection-hero .studio-caption {
+  left: 4.3%;
+  right: 4.3%;
+  bottom: 12px;
+  color: #162116;
+  gap: 20px;
+}
+.collection-hero .studio-caption .quiet-button {
+  font-size: 10px;
+}
+.collection-hero .piece-strip {
+  margin: 0;
+  padding: 0 4.3%;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  background: #edf0e9;
+  border-color: #9faaa0;
+}
+.collection-hero .piece-strip-item {
+  padding: 0 16px;
+  border-color: #bcc5b9;
+  min-width: 0;
+}
+.collection-hero .piece-strip-item:first-child {
+  padding-left: 0;
+}
+.collection-hero .piece-strip-item:last-child {
+  padding-right: 0;
+}
+.collection-hero .piece-open {
+  width: 100%;
+  min-height: 73px;
+  transition: opacity 0.2s;
+}
+.collection-hero .piece-open small {
+  font-size: 9px;
+  color: #575551;
+}
+.collection-hero .piece-open strong {
+  font-size: 13px;
+}
+.collection-hero .piece-open svg {
+  width: 16px;
+  height: 16px;
+}
+.collection-hero .piece-strip:has(.hovered) .piece-strip-item:not(.hovered) {
+  opacity: 0.5;
+}
+.mobile-rack-instruction,
+.mobile-explore {
+  display: none;
+}
+.collection-hero .image-fallback,
+.collection-hero .product-photo {
+  background: transparent;
+}
+.collection-hero:has(.collection-stage[data-scene="static"]),
+.collection-hero:has(.collection-stage[data-scene="loading"]) {
+  background: #edf0e9;
+}
+.collection-hero:has(.collection-stage[data-scene="static"]) .drop-edition,
+.collection-hero:has(.collection-stage[data-scene="loading"]) .drop-edition {
+  color: #223024;
+  text-shadow: none;
+}
+.fallback-piece {
+  display: block;
+  width: 20%;
+  height: 90%;
+  pointer-events: auto;
+}
+.fallback-piece > .product-photo {
+  width: 100%;
+  height: 100%;
+}
+.fallback-piece:focus-visible {
+  outline-offset: -5px;
+}
+.collection-hero .rack-fallback > .product-photo {
+  width: 20%;
+  height: 90%;
+  transform: rotate(1deg);
+}
+.collection-hero .scene-loading {
+  background: #edf0e9e8;
+  color: #353431;
+}
+.native-photo {
+  background: #f0efed;
+}
+.native-photo .photo-window {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  max-width: 100%;
+}
+.native-photo .photo-window img,
+.native-photo .photo-window.photo-back img {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  padding: 6%;
+}
+.drop-guide {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1.1fr;
+  gap: 36px;
+  padding: 55px 4.3%;
+  background: #f6f5f2;
+  align-items: start;
+}
+.guide-heading {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.guide-heading img {
+  width: 42px;
+  height: 38px;
+  object-fit: contain;
+}
+.drop-guide h2 {
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  margin: 0;
+}
+.drop-guide h3 {
+  font-size: 12px;
+  font-weight: 650;
+  margin: 0 0 9px;
+}
+.drop-guide p {
+  font-size: 11px;
+  line-height: 1.65;
+  max-width: 230px;
+  color: #68645f;
+  margin: 0;
+}
+.collection-hero .rack-fallback {
+  gap: 2%;
+  padding: 30px 3%;
+}
+.collection-hero .fallback-piece {
+  width: 18.4%;
+}
+.collection-hero .fallback-piece img {
+  padding: 0;
+  filter: drop-shadow(0 10px 7px #0002);
+}
+.endnote {
+  padding: 65px 6%;
+  min-height: 0;
+}
+.chapter-image > .native-photo {
+  background: #e6e4e1;
+}
+.other-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (min-width: 701px) and (max-width: 1000px) {
+  .collection-hero .collection-stage {
+    height: 450px;
+  }
+  .collection-hero .piece-strip-item {
+    padding: 0 9px;
+  }
+  .collection-hero .piece-open strong {
+    font-size: 11px;
+  }
+  .collection-hero .piece-open svg {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .collection-header {
+    height: 78px;
+  }
+  .collection-hero {
+    padding-bottom: 0;
+  }
+  .collection-hero .hero-intro {
+    padding: 20px 6% 0;
+  }
+  .drop-edition {
+    align-items: flex-start;
+    font-size: 9px;
+    gap: 20px;
+  }
+  .drop-edition > span:last-child {
+    max-width: 170px;
+    text-align: right;
+  }
+  .collection-hero .hero-intro h1 {
+    font-size: clamp(40px, 9.2vw, 63px);
+    margin-top: 27px;
+    white-space: nowrap;
+  }
+  .hero-authorship {
+    margin-top: 9px;
+    gap: 9px;
+    font-size: 9px;
+  }
+  .hero-authorship img {
+    width: 72px;
+    height: 37px;
+  }
+  .collection-hero .rack-wrap {
+    margin-top: 17px;
+  }
+  .collection-hero .collection-stage {
+    height: clamp(420px, 55svh, 570px);
+  }
+  .rack-overview {
+    left: 6%;
+    right: 6%;
+    font-size: 8px;
+    top: 0;
+  }
+  .rack-overview > span:first-child {
+    display: none;
+  }
+  .rack-overview > span:last-child {
+    margin-left: auto;
+  }
+  .collection-hero .studio-caption {
+    left: 6%;
+    right: 6%;
+    bottom: 12px;
+    font-size: 9px;
+  }
+  .desktop-rack-instruction {
+    display: none;
+  }
+  .mobile-rack-instruction {
+    display: inline;
+  }
+  .collection-hero .piece-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 0;
+    padding: 0 6%;
+    border-bottom: 1px solid #bcc5b9;
+  }
+  .collection-hero .piece-strip-item {
+    padding: 0;
+    border: 0;
+  }
+  .collection-hero .piece-open,
+  .collection-hero .piece-strip-item.selected .piece-open {
+    display: none;
+  }
+  .collection-hero .mobile-piece-selector {
+    display: block;
+    width: 100%;
+    height: 48px;
+    font-size: 12px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #55514e;
+  }
+  .collection-hero .piece-strip-item.selected .mobile-piece-selector {
+    background: transparent;
+    border: 0;
+    color: #111;
+    box-shadow: inset 0 -2px #111;
+    font-weight: 650;
+  }
+  .mobile-explore {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 6%;
+    margin: 0;
+    position: relative;
+    z-index: 5;
+    background: #edf0e9;
+    min-height: 60px;
+    font-size: 13px;
+  }
+  .mobile-explore svg {
+    width: 20px;
+    height: 20px;
+  }
+  .collection-hero .rack-fallback > .product-photo {
+    display: none;
+  }
+  .collection-hero .rack-fallback > .product-photo.mobile-selected {
+    display: flex;
+    width: 90%;
+    height: 95%;
+  }
+  .fallback-piece {
+    display: none;
+  }
+  .fallback-piece.mobile-selected {
+    display: block;
+    width: 90%;
+    height: 95%;
+  }
+  .collection-hero .fallback-piece.mobile-selected {
+    width: 88%;
+  }
+  .drop-guide {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 36px 6%;
+  }
+  .guide-heading {
+    margin-bottom: 4px;
+  }
+  .drop-guide p {
+    max-width: none;
+  }
+  .drop-guide h3 {
+    margin-bottom: 5px;
+  }
+  .drop-guide h2 {
+    font-size: 18px;
+  }
+  .other-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "source": "IMG_3296 1.jpg",
+  "sourceRole": "Boca original artwork and off-white comparison reference; not the selected geometry pattern",
+  "base": "shared prototype sewn shell selected from the audited black source pattern",
+  "patternSource": "IMG_3281 1.jpg",
+  "selectionRecord": "docs/SHARED-CUT-v4.json",
+  "selectionScript": "scripts/select-shared-cut-v4.py",
+  "activeRuntimeModels": [
+    "public/models/oversized-shared-v4.glb",
+    "public/models/oversized-shared-v4-mobile.glb"
+  ],
+  "editableSharedSource": "model-source/zxxr-shared-oversized-v4.blend",
+  "bocaRetarget": {
+    "artwork": "public/media/artwork-v4/boca-{front,back}.png",
+    "geometrySource": "public/models/oversized-black-v4[-mobile].glb",
+    "geometryIndicesAndPosesChanged": false,
+    "nativeArtworkRGBAndPixelDimensionsPreserved": true,
+    "inspectionSource": "model-source/zxxr-tailored-offwhite-v4.blend"
+  },
+  "previousOffwhiteStudy": {
+    "preserved": true,
+    "loadedByStore": false,
+    "source": "model-source/zxxr-tailored-offwhite-study-v4.blend",
+    "models": [
+      "public/models/oversized-offwhite-study-v4.glb",
+      "public/models/oversized-offwhite-study-v4-mobile.glb"
+    ],
+    "vertices": 28976
+  },
+  "construction": "welded shoulder and side seams, continuous surface-fitted rib collar, actual thickness, invisible torso and upper-arm collision",
+  "openBoundaryLoops": 4,
+  "physicsFrames": 160,
+  "widthMetresAssumedForPhysics": 0.82,
+  "manufacturingMeasurements": false,
+  "analyticInflation": false,
+  "vertices": 20148,
+  "verticesMeaning": "Blender main garment object after high-detail finish; excludes separate rib object and glTF primitive/UV splits",
+  "runtimeVertexAccessorCounts": {
+    "desktop": 35508,
+    "mobile": 4052
+  },
+  "limitations": [
+    "Shared cut is an approximate prototype presentation, not evidence of one industrial pattern for the physical garments.",
+    "Projected torso width comparison against the flat Boca reference: mean absolute error 4.74% at 55-85% height; 6.46% at 85%; larger difference at the lowest hem slice. See SHARED-CUT-COMPARISON.md.",
+    "Source JPEG mockups do not supply missing 4K artwork detail or confirmed manufacturing measurements."
+  ]
+}

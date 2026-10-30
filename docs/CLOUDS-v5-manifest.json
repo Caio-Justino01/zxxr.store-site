@@ -1,0 +1,108 @@
+{
+  "version": 5,
+  "direction": "Three photographic depth layers, sky only; no room/grass/floor, no generative imagery.",
+  "source": {
+    "name": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+    "authors": [
+      "Greg Zaal",
+      "Jarod Guest"
+    ],
+    "url": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+    "download": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/kloofendal_48d_partly_cloudy_puresky_4k.hdr",
+    "license": "CC0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "downloaded": "2026-10-19",
+    "sha256": "3061c00a16ecae748e84fd6c44c04804f539c118bb66325db858bad87b11bf88",
+    "nativeHDRSize": [
+      4096,
+      2048
+    ]
+  },
+  "process": "HDR luminance compression and selective blue grading; photographic perspective projection; blue chroma alpha with subpixel feather; no generated/invented cloud contours. No garment files or filters changed.",
+  "runtimeAssets": [
+    {
+      "id": "distant-sky",
+      "desktop": {
+        "file": "distant-sky.webp",
+        "size": [
+          1920,
+          1280
+        ],
+        "bytes": 102474
+      },
+      "mobile": {
+        "file": "distant-sky-mobile.webp",
+        "size": [
+          960,
+          640
+        ],
+        "bytes": 22694
+      },
+      "alpha": false
+    },
+    {
+      "id": "mid-clouds",
+      "desktop": {
+        "file": "mid-clouds.webp",
+        "size": [
+          1920,
+          1280
+        ],
+        "bytes": 149562
+      },
+      "mobile": {
+        "file": "mid-clouds-mobile.webp",
+        "size": [
+          960,
+          640
+        ],
+        "bytes": 42080
+      },
+      "alpha": true
+    },
+    {
+      "id": "near-left",
+      "desktop": {
+        "file": "near-left.webp",
+        "size": [
+          508,
+          248
+        ],
+        "bytes": 28656
+      },
+      "mobile": {
+        "file": "near-left-mobile.webp",
+        "size": [
+          508,
+          248
+        ],
+        "bytes": 21796
+      },
+      "alpha": true
+    },
+    {
+      "id": "near-right",
+      "desktop": {
+        "file": "near-right.webp",
+        "size": [
+          1815,
+          584
+        ],
+        "bytes": 198734
+      },
+      "mobile": {
+        "file": "near-right-mobile.webp",
+        "size": [
+          640,
+          206
+        ],
+        "bytes": 33798
+      },
+      "alpha": true
+    }
+  ],
+  "sourceFilesNotLoadedByComponent": [
+    "source/"
+  ],
+  "inspectionOnly": "inspection-sheet.jpg"
+}

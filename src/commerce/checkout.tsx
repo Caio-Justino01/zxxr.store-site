@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import type { CartItem } from "../lib/cart";
-import { productById } from "../config/products";
+import { productById, isAvailable } from "../config/products";
 import { api, ApiError, errorMessage, post } from "./client";
 import {
   brl,
@@ -16,6 +16,7 @@ import {
 import { useCommerce } from "./CommerceProvider";
 import { AccountShell, Notice, Protected } from "./ui";
 import { AddressFields, emptyAddress, useCep } from "./address";
+import { analyticsOrderHeaders } from "../analytics/client";
 type Form = {
   name: string;
   phone: string;
@@ -53,6 +54,11 @@ function Checkout({
   const stepHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     stepHeading.current?.focus({ preventScroll: true });
+    window.dispatchEvent(
+      new CustomEvent("zxxr:analytics", {
+        detail: { type: "checkout_step", step, source: "checkout" },
+      }),
+    );
   }, [step]);
   const form = useForm<Form>({
     defaultValues: {
@@ -98,9 +104,11 @@ function Checkout({
   }, [session.user?.id, setValue]);
   const lines = items.map((item) => ({
     ...item,
-    variant: catalog?.variants.find(
-      (v) => v.product_id === item.productId && v.size === item.size,
-    ),
+    variant: isAvailable(productById(item.productId))
+      ? catalog?.variants.find(
+          (v) => v.product_id === item.productId && v.size === item.size,
+        )
+      : undefined,
   }));
   const subtotal = lines.reduce(
     (n, i) => n + (i.variant?.price_cents ?? 0) * i.quantity,
@@ -187,24 +195,41 @@ function Checkout({
       const snapshot = items.map((i) => ({ ...i }));
       const order = await post<Order>("orders", parsed.data, {
         "Idempotency-Key": requestKey.current.key,
+        ...analyticsOrderHeaders(),
       });
       onRegistered(snapshot);
       try {
         sessionStorage.removeItem("zxxr-order-request");
       } catch {}
       navigate(`/conta/pedidos/${order.id}?registrado=1`);
-      if (catalog.contact)
+      if (catalog.contact) {
+        window.dispatchEvent(
+          new CustomEvent("zxxr:analytics", {
+            detail: { type: "whatsapp_click", source: "checkout" },
+          }),
+        );
         window.open(
           `https://wa.me/${catalog.contact}?text=${encodeURIComponent(orderMessage(order, window.location.origin))}`,
           "_blank",
           "noopener,noreferrer",
         );
+      }
     } catch (e) {
       setError(errorMessage(e));
       if (e instanceof ApiError && e.code === "price_changed")
         void refreshCatalog();
     }
   }
+  if (items.some((item) => !isAvailable(productById(item.productId))))
+    return (
+      <AccountShell title="Confira sua sacola">
+        <Notice>
+          Há peças “Em breve” na sua sacola. Remova essas peças antes de
+          continuar.
+        </Notice>
+        <Link to="/sacola">Voltar à sacola</Link>
+      </AccountShell>
+    );
   if (!items.length)
     return (
       <AccountShell title="Vamos escolher sua peça?">

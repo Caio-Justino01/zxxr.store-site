@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "types": ["vite/client"] },
+  "include": [
+    "launch-preview",
+    "vite.launch-preview.config.ts",
+    "server/launch.ts",
+    "functions/api/launch.ts"
+  ]
+}

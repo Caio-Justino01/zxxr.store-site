@@ -1,5 +1,7 @@
 import { AccountShell } from "./ui";
 import { useCommerce } from "./CommerceProvider";
+import { ConsentSettingsButton } from "../privacy/ConsentProvider";
+import { RecoveryPreference } from "../analytics/RecoveryCart";
 export function PrivacyPage() {
   const { catalog } = useCommerce();
   return (
@@ -41,6 +43,17 @@ export function PrivacyPage() {
           para sua sacola. Não há inscrição automática em campanhas de
           marketing. Ao sair da conta, o acesso aos dados privados é encerrado.
         </p>
+        <h2>Estatísticas com sua escolha.</h2>
+        <p>Quando você permite as estatísticas, registramos visitas, origem de campanhas, tipo de dispositivo e interações com peças e seções. Usamos identificadores aleatórios de navegador e sessão; não gravamos sua tela, campos de formulário, senhas ou dados de cartão. Os eventos detalhados são mantidos por até 90 dias. São estimativas: bloqueadores, recusa de coleta e troca de dispositivo reduzem a cobertura.</p>
+        <p>A operação usa Cloudflare para servir o site e Supabase para armazenar os dados. Os relatórios de analytics e recuperação ficam restritos ao proprietário autenticado em duas etapas. Pedidos e pagamentos são apurados pelos registros da loja; o clique no WhatsApp não confirma pagamento.</p>
+        <h2>Spotify e conteúdo externo.</h2>
+        <p>Fotos e capas da apresentação ficam hospedadas na loja. O player só é criado após sua autorização para conteúdo externo. Ao carregar, o Spotify pode receber informações da conexão e usar seus próprios cookies. Retirar a autorização impede novas cargas e remove o player; não podemos apagar cookies que esse serviço já tenha guardado no próprio domínio.</p>
+        <h2>Lembrete de sacola.</h2>
+        <p>Somente com uma autorização separada, associamos a sacola atual à sua conta e ao WhatsApp já cadastrado para ajudar a finalizar sua escolha. Uma sacola pode ser considerada abandonada após 24 horas sem atividade e sem pedido registrado. O lembrete é manual, sem inscrição automática em campanhas. A identificação de recuperação é encerrada após 30 dias sem atividade. Revogar impede novos contatos por essa finalidade; não apaga pedidos que precisam ser preservados.</p>
+        <RecoveryPreference />
+        <h2>Alterar suas escolhas.</h2>
+        <p>Você pode aceitar, recusar ou retirar os opcionais abaixo. Ao retirar estatísticas, interrompemos a coleta e removemos os identificadores opcionais deste navegador. Login, segurança, sacola e pedidos continuam funcionando. Não enviamos retrospectivamente suas interações anteriores ao aceite.</p>
+        <ConsentSettingsButton>Revisar privacidade e cookies</ConsentSettingsButton>
         <h2>Converse com a loja.</h2>
         <p>
           Você pode conferir seus dados na conta e solicitar correções ou

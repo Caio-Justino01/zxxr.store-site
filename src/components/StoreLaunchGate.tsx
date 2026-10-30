@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router";
 import { readLaunchStatus } from "../../launch-preview/launch-state.ts";
+import { isSeoInitialRender } from "../seo/render-environment";
 
 const accountRoute =
   /^\/(?:entrar|cadastro|recuperar-acesso|conta|painel|ajuda|privacidade)(?:\/|$)/;
@@ -8,7 +9,8 @@ export function StoreLaunchGate({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const [checked, setChecked] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
-  const exempt = accountRoute.test(pathname);
+  const [initialPublicHtml] = useState(isSeoInitialRender);
+  const exempt = accountRoute.test(pathname) || import.meta.env.DEV;
   useEffect(() => {
     if (exempt) return;
     const controller = new AbortController();
@@ -40,7 +42,7 @@ export function StoreLaunchGate({ children }: { children: ReactNode }) {
       window.clearTimeout(timer);
     };
   }, [pathname, exempt]);
-  if (exempt || checked === pathname) return children;
+  if (exempt || initialPublicHtml || checked === pathname) return children;
   return (
     <main className="account-page">
       <p role="status">

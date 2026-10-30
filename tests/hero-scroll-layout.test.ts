@@ -11,12 +11,17 @@ test("scroll wrappers reach the stack in world space despite the rotated arc par
       const delta = getLocalScrollDelta(from, target);
       const angle = (from.rotation * Math.PI) / 180;
       const finalX =
-        from.x + delta.x * Math.cos(angle) - delta.y * Math.sin(angle);
+        from.x +
+        (delta.x * Math.cos(angle) - delta.y * Math.sin(angle)) *
+          (from.scale ?? 1);
       const finalY =
-        from.y + delta.x * Math.sin(angle) + delta.y * Math.cos(angle);
+        from.y +
+        (delta.x * Math.sin(angle) + delta.y * Math.cos(angle)) *
+          (from.scale ?? 1);
       assert.ok(Math.abs(finalX - target.x) < 1e-8);
       assert.ok(Math.abs(finalY - target.y) < 1e-8);
       assert.equal(from.rotation + delta.rotation, target.rotation);
+      assert.equal((from.scale ?? 1) * (delta.scale ?? 1), target.scale ?? 1);
     });
   }
 });

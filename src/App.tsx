@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -18,7 +19,12 @@ import {
   useNavigationType,
   useParams,
 } from "react-router";
-import { products, productById, type Size } from "./config/products";
+import {
+  products,
+  productById,
+  isAvailable,
+  type Size,
+} from "./config/products";
 import {
   cartReducer,
   readCart,
@@ -30,6 +36,8 @@ import {
 import { Arrow, BagIcon } from "./components/Icons";
 import { CloudCollection } from "./components/CloudCollection";
 import { GarmentViewer } from "./components/GarmentViewer";
+import { UpcomingProduct } from "./components/UpcomingDrop";
+import { FrozenGarment } from "./components/FrozenGarment";
 import { ProductPhoto } from "./components/ProductPhoto";
 import { ProductSpecifications } from "./components/ProductSpecifications";
 import { ProductSizeSelector } from "./components/ProductSizeSelector";
@@ -47,8 +55,19 @@ import { storefront } from "./config/storefront";
 import { helpContent } from "./config/help-content";
 import { SupportProvider } from "./support/context";
 import { SupportWidget } from "./support/SupportWidget";
+import { RecoveryCart } from "./analytics/RecoveryCart";
+import {
+  isSeoInitialRender,
+  finishSeoHydration,
+} from "./seo/render-environment";
+import { updateDocumentSeo } from "./seo/metadata";
 const HelpPage = lazy(() =>
   import("./components/HelpPage").then((m) => ({ default: m.HelpPage })),
+);
+const AnalyticsPage = lazy(() =>
+  import("./analytics/AnalyticsPage").then((m) => ({
+    default: m.AnalyticsPage,
+  })),
 );
 const CheckoutPage = lazy(() =>
   import("./commerce/checkout").then((m) => ({ default: m.CheckoutPage })),
@@ -88,6 +107,7 @@ const BagContext = createContext<{
 
 function RouteEffects() {
   const { pathname, hash, key } = useLocation();
+  const { catalog } = useCommerce();
   const navigationType = useNavigationType();
   const positions = useRef(new Map<string, { left: number; top: number }>());
 
@@ -174,31 +194,31 @@ function RouteEffects() {
   }, [key, pathname, hash, navigationType]);
 
   useEffect(() => {
-    document.title = pathname.startsWith("/produto/")
-      ? `${productById(pathname.split("/")[2])?.name ?? "Peça"} · ZXXR Store`
-      : pathname === "/sacola"
-        ? "Sua sacola · ZXXR Store"
-        : pathname === "/encomenda"
-          ? "Seu pedido · ZXXR Store"
-          : pathname.startsWith("/painel")
-            ? "Painel da equipe · ZXXR Store"
-            : pathname.startsWith("/conta")
-              ? "Minha conta · ZXXR Store"
-              : pathname === "/ajuda"
-                ? "Central de ajuda · ZXXR Store"
-                : pathname === "/entrar" || pathname === "/cadastro"
-                  ? "Sua conta · ZXXR Store"
-                  : "Desejos · New Drop ZXXR · Razz";
-    const robots = document.querySelector('meta[name="robots"]');
-    robots?.setAttribute(
-      "content",
-      /^\/(?:conta|painel|encomenda|entrar|cadastro|recuperar-acesso)(?:\/|$)/.test(
-        pathname,
-      )
-        ? "noindex, nofollow"
-        : "index, follow",
+    const product = pathname.startsWith("/produto/")
+      ? productById(pathname.split("/")[2])
+      : undefined;
+    const variants =
+      catalog?.variants.filter(
+        (variant) => variant.product_id === product?.id,
+      ) ?? [];
+    const verified =
+      isAvailable(product) &&
+      catalog?.testMode === false &&
+      variants.length === 4 &&
+      variants.every(
+        (variant) => variant.price_cents === variants[0].price_cents,
+      );
+    updateDocumentSeo(
+      pathname,
+      verified
+        ? {
+            priceCents: variants[0].price_cents,
+            available:
+              !!catalog?.open && variants.some((variant) => variant.active),
+          }
+        : undefined,
     );
-  }, [pathname]);
+  }, [pathname, catalog]);
   return null;
 }
 function Collection() {
@@ -255,6 +275,7 @@ function ProductPage() {
     return () => clearTimeout(t);
   }, [added]);
   if (!product) return <NotFound />;
+  if (!isAvailable(product)) return <UpcomingProduct product={product} />;
   const add = () => {
     if (!preorder.open) return;
     if (!size) {
@@ -349,14 +370,16 @@ function ProductPage() {
             .map((p) => (
               <Link to={"/produto/" + p.id} key={p.id}>
                 <div>
-                  <ProductPhoto product={p} />
+                  <ProductPhoto product={p} effects={false} />
                 </div>
                 <span>
                   <strong>{p.name}</strong>
-                  <Arrow />
+                  {isAvailable(p) && <Arrow />}
                 </span>
                 <small>
-                  {p.color} / {formatPrice(p.price)}
+                  {isAvailable(p)
+                    ? `${p.color} / ${formatPrice(p.price)}`
+                    : "Em breve"}
                 </small>
               </Link>
             ))}
@@ -375,6 +398,9 @@ function ProductPage() {
 function Bag() {
   const { items, dispatch } = useContext(BagContext),
     count = items.reduce((n, i) => n + i.quantity, 0);
+  const hasUpcoming = items.some(
+    (item) => !isAvailable(productById(item.productId)),
+  );
   return (
     <main id="top" className="bag-page">
       <Link to={storefront.camisetas} className="back-link">
@@ -396,23 +422,31 @@ function Bag() {
               return (
                 <article className="bag-item" key={itemKey(item)}>
                   <Link to={"/produto/" + p.id}>
-                    <ProductPhoto product={p} eager />
+                    <ProductPhoto product={p} eager effects={false} />
                   </Link>
                   <div>
                     <Link to={"/produto/" + p.id}>
                       <h2>{p.name}</h2>
                     </Link>
                     <p>
-                      {p.color} / Tamanho {item.size}
+                      {isAvailable(p)
+                        ? `${p.color} / Tamanho ${item.size}`
+                        : "Em breve · próximo lançamento"}
                     </p>
                     <strong>
-                      {formatPrice(p.price)} <small>cada</small>
+                      {isAvailable(p) ? (
+                        <>
+                          {formatPrice(p.price)} <small>cada</small>
+                        </>
+                      ) : (
+                        "Retire esta peça para continuar com as disponíveis."
+                      )}
                     </strong>
                     <div className="quantity-row">
                       <div className="quantity-control liquid-glass">
                         <button
                           aria-label={`Diminuir quantidade de ${p.name}, ${item.size}`}
-                          disabled={item.quantity === 1}
+                          disabled={item.quantity === 1 || !isAvailable(p)}
                           onClick={() =>
                             dispatch({
                               type: "quantity",
@@ -426,7 +460,7 @@ function Bag() {
                         <span aria-live="polite">{item.quantity}</span>
                         <button
                           aria-label={`Aumentar quantidade de ${p.name}, ${item.size}`}
-                          disabled={item.quantity === 10}
+                          disabled={item.quantity === 10 || !isAvailable(p)}
                           onClick={() =>
                             dispatch({
                               type: "quantity",
@@ -463,7 +497,7 @@ function Bag() {
                 <dd>{count}</dd>
               </div>
               <div>
-                <dt>Subtotal das camisetas</dt>
+                <dt>Subtotal das peças disponíveis</dt>
                 <dd>{formatPrice(cartSubtotal(items))}</dd>
               </div>
               <div>
@@ -475,9 +509,16 @@ function Bag() {
                 <dd>Após atendimento</dd>
               </div>
             </dl>
-            <Link to="/encomenda" className="add-button">
-              Continuar para o pedido <Arrow />
-            </Link>
+            {hasUpcoming ? (
+              <p className="bag-upcoming-note" role="status">
+                Algumas peças ficam para o próximo lançamento. Remova as peças
+                “Em breve” para continuar. Elas não entram no subtotal.
+              </p>
+            ) : (
+              <Link to="/encomenda" className="add-button">
+                Continuar para o pedido <Arrow />
+              </Link>
+            )}
             <p className="bag-checkout-note">
               {storefront.deliveryNote} A finalização do atendimento é pelo
               WhatsApp.
@@ -491,7 +532,9 @@ function Bag() {
         <div className="empty-bag">
           <img src="/brand/logo-black.svg" alt="" width="230" height="100" />
           <h2>Sua sacola está vazia</h2>
-          <p>Escolha uma das cinco peças da edição Razz.</p>
+          <p>
+            Conheça Emoção e Spiritual Gangsta, disponíveis nesta edição Razz.
+          </p>
           <Link to={storefront.camisetas} className="add-button">
             Ver camisetas <Arrow />
           </Link>
@@ -511,23 +554,74 @@ function NotFound() {
     </main>
   );
 }
+function RouteHydrationReady() {
+  useEffect(() => {
+    finishSeoHydration();
+  }, []);
+  return null;
+}
 
 export default function App() {
   useCommerce(); // Re-render editorial prices after a verified catalog refresh.
-  const [items, dispatch] = useReducer(cartReducer, undefined, () => {
-    try {
-      return readCart(localStorage.getItem(CART_KEY));
-    } catch {
-      return [];
+  const [activityVersion, setActivityVersion] = useState(0);
+  const [bagLoaded, setBagLoaded] = useState(() => !isSeoInitialRender());
+  const [items, reduce] = useReducer(
+    (
+      state: CartItem[],
+      action: CartAction | { type: "restore"; items: CartItem[] },
+    ) =>
+      action.type === "restore" ? action.items : cartReducer(state, action),
+    undefined,
+    () => {
+      if (isSeoInitialRender()) return [];
+      try {
+        return readCart(localStorage.getItem(CART_KEY));
+      } catch {
+        return [];
+      }
+    },
+  );
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
+  const dispatch = useCallback((action: CartAction) => {
+    const before = itemsRef.current;
+    const next = cartReducer(before, action);
+    if (JSON.stringify(next) === JSON.stringify(before)) return;
+    itemsRef.current = next;
+    reduce(action);
+    if (action.type !== "ordered") {
+      setActivityVersion((value) => value + 1);
+      const previous =
+        before.find((line) => itemKey(line) === itemKey(action))?.quantity ?? 0;
+      const current =
+        next.find((line) => itemKey(line) === itemKey(action))?.quantity ?? 0;
+      window.dispatchEvent(
+        new CustomEvent("zxxr:cart-action", {
+          detail: { ...action, delta: current - previous, items: next },
+        }),
+      );
     }
-  });
+  }, []);
   useEffect(() => {
+    if (bagLoaded) return;
+    try {
+      reduce({
+        type: "restore",
+        items: readCart(localStorage.getItem(CART_KEY)),
+      });
+    } catch {
+      /* optional storage */
+    }
+    setBagLoaded(true);
+  }, [bagLoaded]);
+  useEffect(() => {
+    if (!bagLoaded) return;
     try {
       localStorage.setItem(CART_KEY, JSON.stringify(items));
     } catch {
       /* Bag remains usable in memory when browser storage is unavailable. */
     }
-  }, [items]);
+  }, [items, bagLoaded]);
   return (
     <BagContext.Provider value={{ items, dispatch }}>
       <SupportProvider>
@@ -571,6 +665,7 @@ export default function App() {
                 />
                 <Route path="/conta/dados" element={<ProfilePage />} />
                 <Route path="/painel/pedidos" element={<AdminListPage />} />
+                <Route path="/painel/analytics" element={<AnalyticsPage />} />
                 <Route
                   path="/painel/pedidos/:id"
                   element={<AdminDetailPage />}
@@ -584,7 +679,9 @@ export default function App() {
                 <Route path="/ajuda" element={<HelpPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <RouteHydrationReady />
             </Suspense>
+            <RecoveryCart items={items} activityVersion={activityVersion} />
           </div>
           <StoreFooter />
           <SupportWidget

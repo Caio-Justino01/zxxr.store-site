@@ -1,0 +1,227 @@
+[
+  {
+    "id": "boca",
+    "source": "media/source/IMG_3296.PNG",
+    "color": [
+      232,
+      228,
+      211
+    ],
+    "atlas": "1536x1024",
+    "sourceViews": [
+      {
+        "box": [
+          104,
+          165,
+          920,
+          696
+        ],
+        "regions": [
+          [
+            544,
+            338,
+            82,
+            40
+          ]
+        ]
+      },
+      {
+        "box": [
+          103,
+          963,
+          920,
+          697
+        ],
+        "regions": [
+          [
+            390,
+            1125,
+            335,
+            410
+          ]
+        ]
+      }
+    ],
+    "method": "Original ink sampled into native UV atlas; provisional art from reference mockups. No generative redraw of prints."
+  },
+  {
+    "id": "flores",
+    "source": "media/source/IMG_3282.PNG",
+    "color": [
+      232,
+      228,
+      211
+    ],
+    "atlas": "1536x1024",
+    "sourceViews": [
+      {
+        "box": [
+          104,
+          165,
+          920,
+          696
+        ],
+        "regions": [
+          [
+            456,
+            337,
+            253,
+            247
+          ]
+        ]
+      },
+      {
+        "box": [
+          103,
+          963,
+          920,
+          697
+        ],
+        "regions": [
+          [
+            535,
+            1007,
+            61,
+            34
+          ]
+        ]
+      }
+    ],
+    "method": "Original ink sampled into native UV atlas; provisional art from reference mockups. No generative redraw of prints."
+  },
+  {
+    "id": "me-preservando",
+    "source": "media/source/IMG_3283.PNG",
+    "color": [
+      232,
+      228,
+      211
+    ],
+    "atlas": "1536x1024",
+    "sourceViews": [
+      {
+        "box": [
+          104,
+          165,
+          920,
+          696
+        ],
+        "regions": [
+          [
+            687,
+            334,
+            54,
+            52
+          ]
+        ]
+      },
+      {
+        "box": [
+          103,
+          963,
+          920,
+          697
+        ],
+        "regions": [
+          [
+            270,
+            1076,
+            590,
+            89
+          ]
+        ]
+      }
+    ],
+    "method": "Original ink sampled into native UV atlas; provisional art from reference mockups. No generative redraw of prints."
+  },
+  {
+    "id": "spiritual-gangsta",
+    "source": "media/source/IMG_3281.PNG",
+    "color": [
+      40,
+      40,
+      42
+    ],
+    "atlas": "1536x1024",
+    "sourceViews": [
+      {
+        "box": [
+          160,
+          56,
+          768,
+          574
+        ],
+        "regions": [
+          [
+            486,
+            185,
+            121,
+            51
+          ]
+        ]
+      },
+      {
+        "box": [
+          160,
+          720,
+          768,
+          574
+        ],
+        "regions": [
+          [
+            298,
+            783,
+            500,
+            124
+          ]
+        ]
+      }
+    ],
+    "method": "Original ink sampled into native UV atlas; provisional art from reference mockups. No generative redraw of prints."
+  },
+  {
+    "id": "zxxr-rosa",
+    "source": "media/source/IMG_3271.PNG",
+    "color": [
+      40,
+      40,
+      42
+    ],
+    "atlas": "1536x1024",
+    "sourceViews": [
+      {
+        "box": [
+          160,
+          56,
+          768,
+          574
+        ],
+        "regions": [
+          [
+            452,
+            185,
+            166,
+            70
+          ]
+        ]
+      },
+      {
+        "box": [
+          160,
+          720,
+          768,
+          574
+        ],
+        "regions": [
+          [
+            310,
+            935,
+            390,
+            345
+          ]
+        ]
+      }
+    ],
+    "method": "Original ink sampled into native UV atlas; provisional art from reference mockups. No generative redraw of prints."
+  }
+]

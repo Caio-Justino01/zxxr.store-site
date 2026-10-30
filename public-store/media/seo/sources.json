@@ -1,0 +1,64 @@
+{
+  "description": "Static export of the existing v8/v11 shared CSS ice composition; no generated imagery or added detail.",
+  "sourceHashes": {
+    "media/reference-v3/boca-front.png": "69b9e09a1d55bf29396273469dc9bc05f94ad6079ec41002d0e3ab883fcc85d4",
+    "media/reference-v3/boca-back.png": "e187e886efa05a0131032f14a7f09443f07d8a95f204c66c9f809f9cfcbc3834",
+    "media/reference-v3/spiritual-gangsta-front.png": "cf74dc07c00651d301ce26c694d2787530bf6393d72da6f3d74b6acfab5941e0",
+    "media/reference-v3/spiritual-gangsta-back.png": "ebea9b8e9a5f97187567d112384d96bd95a85c2e8f8f7c7550976c2cb34d66f4",
+    "media/ice-v8/shell-1440.webp": "05c7316f29928ecf3eac84ad30af1d1a991ed042c02eb93ac0046248b9f9453c",
+    "media/ice-v8/front-1440.webp": "bac872eafbe01e9bc96cf733ceee36785654b43a370f8ac6aacd683f23dfdf7d",
+    "media/ice-v8/engraving-1440.webp": "c6f7c31adf30d088ad199168bbec0c26f2a0dc5a220dd839197e7852dfd203e8",
+    "media/reference-v3/flores-front.png": "c816c5be0bbb04586d48dea4e36bd5ddd33750e5b507997fadab4ea1b65e4662",
+    "media/ice-v11-masks/flores-clear-mask.webp": "a0f91a1cc64906d655fb9f488b772b526bb4e9ac5f431a150016ad5ed588dcc7",
+    "media/ice-v11-masks/flores-print-mask.webp": "f2587135580ca9a693a16b972b417da71f64ca6aa2f1d7d65da6c46f59cf197b",
+    "media/ice-v11-masks/flores-contact-mask.webp": "f91f8bef8897b6af43ae16a5cc3f878e482ece9107ddaeba62b61f14ccdd0c95",
+    "media/reference-v3/me-preservando-back.png": "885cb06fbce6e9c32d30e26c1bc6c3a08317a6510cee317f582defa9cb178613",
+    "media/ice-v11-masks/me-preservando-clear-mask.webp": "883aa0ffdde86326d98aab32f74cee71dce9fc01c72c3cb8995758ed2ef62524",
+    "media/ice-v11-masks/me-preservando-print-mask.webp": "b682ea878f7e34718ae9577d4a8f27fcafca44587b56ab24f6b772e4602204ca",
+    "media/ice-v11-masks/me-preservando-contact-mask.webp": "27e86bc396becda0ec672058ea7287b191cb1dcd3a0283453f05236111465d26",
+    "media/reference-v3/zxxr-rosa-back.png": "9783b493ad8ce95d3e87c09a5cbb99f9bccd9a3a079135d2a13a8c4b6aa21eb4",
+    "media/ice-v11-masks/zxxr-rosa-clear-mask.webp": "d95fe38f8e2bd3eaf1f8b24f7998693c1673a2394c40613e67ae50824152d930",
+    "media/ice-v11-masks/zxxr-rosa-print-mask.webp": "8057011131d4db10d3bc8c73f590fe2669d4832205d9929d3e693a2d8aa0eb0c",
+    "media/ice-v11-masks/zxxr-rosa-contact-mask.webp": "a82723a51a914dbd08351dfbb2765b1d89ced4362f44c45be3d0a0f7f6c998d7"
+  },
+  "products": {
+    "boca-front": {
+      "width": 921,
+      "height": 691,
+      "source": "media/reference-v3/boca-front.png"
+    },
+    "boca-back": {
+      "width": 917,
+      "height": 701,
+      "source": "media/reference-v3/boca-back.png"
+    },
+    "spiritual-gangsta-front": {
+      "width": 761,
+      "height": 573,
+      "source": "media/reference-v3/spiritual-gangsta-front.png"
+    },
+    "spiritual-gangsta-back": {
+      "width": 761,
+      "height": 573,
+      "source": "media/reference-v3/spiritual-gangsta-back.png"
+    },
+    "flores": {
+      "width": 1440,
+      "height": 1800,
+      "view": "front",
+      "src": "/media/seo/flores-congelada.webp"
+    },
+    "me-preservando": {
+      "width": 1440,
+      "height": 1800,
+      "view": "back",
+      "src": "/media/seo/me-preservando-congelada.webp"
+    },
+    "zxxr-rosa": {
+      "width": 1440,
+      "height": 1800,
+      "view": "back",
+      "src": "/media/seo/zxxr-rosa-congelada.webp"
+    }
+  }
+}

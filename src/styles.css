@@ -1,13 +1,13 @@
 @import "tailwindcss";
 @font-face {
   font-family: Archivo;
-  src: url("/fonts/ArchivoBlack-Regular.ttf") format("truetype");
+  src: url("/fonts/ArchivoBlack-Regular.woff2") format("woff2");
   font-display: swap;
   font-weight: 900;
 }
 @font-face {
   font-family: Inter;
-  src: url("/fonts/Inter-Variavel.ttf") format("truetype");
+  src: url("/fonts/Inter-Variavel.woff2") format("woff2");
   font-display: swap;
   font-weight: 100 900;
 }
@@ -850,7 +850,7 @@ svg {
   display: block;
   margin-top: 6px;
   font-size: 10px;
-  color: #777;
+  color: #666;
 }
 .other-pieces > button {
   margin-top: 35px;

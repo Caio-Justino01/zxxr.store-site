@@ -55,11 +55,11 @@ export const dropStories: DropStory[] = [
   {
     productId: "spiritual-gangsta",
     description:
-      "Preto estonado com inscrições em vermelho. Nas costas, Spiritual Gangsta e a assinatura de Razz.",
+      "Preto marmorizado com inscrições em vermelho. Nas costas, Spiritual Gangsta e a assinatura de Razz.",
   },
   {
     productId: "zxxr-rosa",
     description:
-      "A marca ZXXR em rosa sobre preto estonado. Nas costas, as letras aparecem em diagonal, com contorno branco.",
+      "A marca ZXXR em rosa sobre preto marmorizado. Nas costas, as letras aparecem em diagonal, com contorno branco.",
   },
 ];

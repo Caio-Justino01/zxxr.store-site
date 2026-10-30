@@ -1,0 +1,11 @@
+{
+  "source": "IMG_3281 1.jpg",
+  "base": "own source-derived sewn shell",
+  "construction": "welded shoulder and side seams, continuous surface-fitted rib collar, actual thickness, invisible torso and upper-arm collision",
+  "openBoundaryLoops": 4,
+  "physicsFrames": 160,
+  "widthMetresAssumedForPhysics": 0.82,
+  "manufacturingMeasurements": false,
+  "analyticInflation": false,
+  "vertices": 20148
+}

@@ -1,0 +1,7 @@
+{
+  "method": "ImageGen edits from user-supplied mockups. Oversized boxy cut, front/back studio contact sheets. Illustrative photographic visualization, not a photograph of a manufactured sample.",
+  "sourceVersion": "v2",
+  "sourceDirectory": "assets-originals/studio-photos",
+  "runtimeFormat": "WebP quality 94; no crop/color manipulation. Front/back framed by CSS.",
+  "artwork": "Based on original source mockups; 3D UV maps use original ink samples. Generated photographic artwork may differ in small details. Check against physical production files before sales."
+}

@@ -20,6 +20,8 @@ import {
   type ViewerSize,
 } from "../lib/viewer";
 import "../viewer-v5.css";
+import { useSeoInitialRender } from "../seo/render-environment";
+import { productPicture } from "../seo/images";
 
 type Side = string;
 type ImageStatus = "loading" | "ready" | "error";
@@ -35,7 +37,19 @@ export function GarmentViewer({
   initialView?: Side;
   compact?: boolean;
 }) {
-  const gallery = useMemo(() => getProductGallery(product), [product]);
+  const seoInitialRender = useSeoInitialRender();
+  const gallery = useMemo(
+    () =>
+      getProductGallery(product).map((image) => {
+        if (
+          product.releaseStatus !== "available" ||
+          (image.id !== "front" && image.id !== "back")
+        )
+          return image;
+        return { ...image, ...productPicture(product, image.id) };
+      }),
+    [product],
+  );
   const sides = useMemo(() => gallery.map((image) => image.id), [gallery]);
   const startingView =
     initialView && sides.includes(initialView) ? initialView : sides[0];
@@ -56,7 +70,7 @@ export function GarmentViewer({
   });
   const [reduced, setReduced] = useState(
     () =>
-      typeof window !== "undefined" &&
+      !seoInitialRender &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
   const viewport = useRef<HTMLDivElement>(null);

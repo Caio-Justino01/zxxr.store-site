@@ -4,6 +4,7 @@ import { useCommerce } from "./CommerceProvider";
 import { errorMessage } from "./client";
 import { MfaPage } from "./auth";
 import { SupportInlineButton } from "../support/context";
+import { LocalDevelopmentNotice } from "./LocalDevelopmentNotice";
 
 export function Notice({
   children,
@@ -65,6 +66,12 @@ export function AccountShell({
         )}
         {intro && <p>{intro}</p>}
       </header>
+      {import.meta.env.DEV &&
+        typeof window !== "undefined" &&
+        !window.location.pathname.startsWith("/work/") &&
+        /^\/(?:painel|entrar|cadastro|recuperar-acesso)(?:\/|$)/.test(
+          location.pathname,
+        ) && <LocalDevelopmentNotice />}
       {session.user && (
         <nav className="account-nav" aria-label="Sua conta">
           <NavLink to="/conta/pedidos">Meus pedidos</NavLink>
@@ -140,8 +147,18 @@ export function Protected({
     return (
       <AccountShell title="Acesso reservado.">
         <Notice error>
-          Esta área está disponível apenas para a equipe autorizada.
+          {owner
+            ? "Esta conta não tem acesso ao painel de proprietário. Entre com a conta autorizada da ZXXR."
+            : "Esta área está disponível apenas para a equipe autorizada."}
         </Notice>
+        {owner && (
+          <Link
+            className="account-button primary"
+            to={`/entrar?returnTo=${encodeURIComponent(location.pathname)}`}
+          >
+            Entrar com a conta de proprietário
+          </Link>
+        )}
         <Link to="/conta/pedidos">Voltar aos meus pedidos</Link>
       </AccountShell>
     );

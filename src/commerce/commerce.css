@@ -5,6 +5,30 @@
   padding: 62px 5vw 112px;
   color: #171715;
 }
+.local-development-notice {
+  margin: 0 0 28px;
+  padding: 18px 22px;
+  border: 1px solid #b8cfe2;
+  border-radius: 18px;
+  background: #edf6ff;
+  color: #193b56;
+  font-size: 13px;
+  max-width: 850px;
+  overflow-wrap: anywhere;
+}
+.local-development-notice > strong {
+  font-size: 14px;
+}
+.local-development-notice > p {
+  margin: 8px 0;
+}
+.local-development-notice > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: inherit;
+  font-weight: 600;
+}
 .account-heading {
   max-width: 760px;
   margin-bottom: 32px;

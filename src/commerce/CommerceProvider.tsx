@@ -70,7 +70,7 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
       // Existing editorial components share these five records. Only commercial fields change.
       for (const p of products) {
         const variant = value.variants.find((v) => v.product_id === p.id);
-        if (variant) p.price = variant.price_cents / 100;
+        if (variant && p.releaseStatus === "available") p.price = variant.price_cents / 100;
       }
       preorder.open = value.open;
       setCatalog(value);

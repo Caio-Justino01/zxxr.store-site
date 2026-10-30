@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { products, type Product } from "../config/products";
+import { products, isAvailable, type Product } from "../config/products";
 import { formatPrice } from "../lib/pricing";
 import { Arrow } from "./Icons";
 import "../product-stories.css";
@@ -18,9 +18,9 @@ const descriptions: Record<string, string> = {
   "me-preservando":
     "Frente minimalista. Nas costas, “Me preservando, não me encontre”, acompanhada da assinatura de Razz.",
   "spiritual-gangsta":
-    "Preto estonado com inscrições em vermelho. Nas costas, Spiritual Gangsta e a assinatura de Razz.",
+    "Preto marmorizado com inscrições em vermelho. Nas costas, Spiritual Gangsta e a assinatura de Razz.",
   "zxxr-rosa":
-    "A marca ZXXR em rosa sobre preto estonado. Nas costas, as letras aparecem em diagonal, com contorno branco.",
+    "A marca ZXXR em rosa sobre preto marmorizado. Nas costas, as letras aparecem em diagonal, com contorno branco.",
 };
 
 // Native PNG crop dimensions; these are image metadata, not garment measures.
@@ -92,7 +92,7 @@ export function ProductStories({ onExplore, onOrder }: ProductStoriesProps) {
           </h2>
           <div className="ps-intro">
             <p className="ps-intro-copy">
-              Cinco camisetas. Uma edição criada por Razz.
+              Duas camisetas disponíveis. Uma edição criada por Razz.
             </p>
             <p className="ps-edition-note">
               Peças limitadas, feitas sob encomenda.
@@ -100,7 +100,7 @@ export function ProductStories({ onExplore, onOrder }: ProductStoriesProps) {
           </div>
         </header>
         <div className="ps-stories">
-          {products.map((product, index) => (
+          {products.filter(isAvailable).map((product, index) => (
             <article
               key={product.id}
               className={`ps-story ${index % 2 ? "ps-story-reverse" : ""}`}
@@ -122,7 +122,7 @@ export function ProductStories({ onExplore, onOrder }: ProductStoriesProps) {
                 <p className="ps-meta">
                   {product.color}
                   <span aria-hidden="true"> · </span>
-                  Oversized
+                  {product.fit}
                 </p>
                 <h3 id={`ps-title-${product.id}`} className="ps-product-title">
                   {product.name}

@@ -24,9 +24,9 @@ test("preorder uses catalog prices, integer cents and separates size variants", 
   ];
   const result = summarizePreorder(input);
   assert.equal(result.quantity, 4);
-  assert.equal(result.subtotalCents, 40_000);
+  assert.equal(result.subtotalCents, 61_960);
   assert.equal(result.lines.length, 3);
-  assert.equal(result.lines[0].totalCents, 20_000);
+  assert.equal(result.lines[0].totalCents, 29_980);
   assert.deepEqual(input, [
     ...items,
     { productId: "boca", size: "P", quantity: 1 },
@@ -38,6 +38,9 @@ test("preorder uses catalog prices, integer cents and separates size variants", 
 
 test("invalid cart data cannot become a WhatsApp order", () => {
   assert.throws(() => summarizePreorder([]));
+  for (const productId of ["flores", "me-preservando", "zxxr-rosa"]) {
+    assert.throws(() => summarizePreorder([{ productId, size: "M", quantity: 1 }]));
+  }
   for (const bad of [
     { ...items[0], productId: "fake" },
     { ...items[0], size: "XXX" },
@@ -83,8 +86,8 @@ test("message includes each piece and requires freight, deadline and payment con
     false,
   );
   assert.match(message, /2 × Emoção · Off-white · M/);
-  assert.match(message, /1 × Spiritual Gangsta · Preto estonado · GG/);
-  assert.match(message, /Subtotal das peças: R\$\s300,00/);
+  assert.match(message, /1 × Spiritual Gangsta · Preto marmorizado · GG/);
+  assert.match(message, /Subtotal das peças: R\$\s469,70/);
   assert.match(message, /Frete: a confirmar com a loja/);
   assert.match(message, /Total com frete: a confirmar/);
   assert.match(message, /prazo de produção/);

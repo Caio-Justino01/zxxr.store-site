@@ -21,8 +21,11 @@ export const previewProducts: Product[] = [
   { id: "zxxr-rosa", number: "05", dark: true },
 ].map((piece) => ({
   ...piece,
+  releaseStatus: "coming-soon" as const,
   name: `Peça ${piece.number}`,
   color: "",
+  fit: "",
+  material: "",
   description: "",
   line: "",
   note: "",

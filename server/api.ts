@@ -12,6 +12,7 @@ import {
 } from "../src/commerce/contracts.ts";
 import { dbError, HttpError, readBody, requireSameOrigin } from "./http.ts";
 import { storeModesMatch } from "./store-mode.ts";
+import { handleAnalytics, recordAnalyticsOrder } from "./analytics.ts";
 
 export type Env = {
   SUPABASE_URL?: string;
@@ -23,6 +24,7 @@ export type Env = {
   APP_ORIGIN?: string;
   EMAIL_LOGIN_ENABLED?: string;
   GOOGLE_LOGIN_ENABLED?: string;
+  ANALYTICS_TEST_ENABLED?: string;
 };
 export async function handleApi(request: Request, env: Env): Promise<Response> {
   const headers = new Headers({
@@ -141,6 +143,30 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
         );
       return access;
     };
+    const analyticsContext = {
+      rpc,
+      getUser,
+      getAccess,
+      requireOwner,
+      json,
+      service: () => {
+        if (!env.SUPABASE_SERVICE_ROLE_KEY)
+          throw new HttpError(
+            503,
+            "A coleta de métricas ainda não foi configurada.",
+            "analytics_not_configured",
+          );
+        return createClient(env.SUPABASE_URL!, env.SUPABASE_SERVICE_ROLE_KEY, {
+          auth: { persistSession: false, autoRefreshToken: false },
+        });
+      },
+    };
+    const analyticsResponse = await handleAnalytics(
+      request,
+      env,
+      analyticsContext,
+    );
+    if (analyticsResponse) return analyticsResponse;
     const authFailure = (error: { code?: string } | null) => {
       if (error)
         throw new HttpError(
@@ -372,10 +398,18 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
         throw new HttpError(503, "O atendimento de pedidos está indisponível.");
       const key = z.uuid().parse(request.headers.get("Idempotency-Key"));
       const body = orderInputSchema.parse(await readBody(request));
-      return json(
-        await rpc("create_order", { p_request: body, p_key: key }),
-        201,
+      const order = await rpc<{ id: string }>("create_order", {
+        p_request: body,
+        p_key: key,
+      });
+      await recordAnalyticsOrder(
+        analyticsContext,
+        order.id,
+        request.headers.get("X-ZXXR-Session"),
+        request.headers.get("X-ZXXR-Visitor"),
+        env.STORE_MODE !== "live",
       );
+      return json(order, 201);
     }
     if (route === "orders" && request.method === "GET")
       return json(await rpc("list_orders"));

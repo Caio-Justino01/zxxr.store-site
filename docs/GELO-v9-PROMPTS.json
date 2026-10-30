@@ -1,0 +1,18 @@
+{
+  "version": "v9",
+  "date": "2026-10-29",
+  "method": "Built-in imagegen edit. Shared generated shell used below the original cutout and at low opacity above it. Sharp only registers and encodes the raster; does not paint material or replace garments.",
+  "source": "assets-originals/ice-v8/shell.png",
+  "generatedSource": "C:/Users/caiom/.codex/generated_images/01a1548c-b3a1-7e73-995e-6f45f8b8ec2a/exec-48d45542-da94-46b6-9231-a4f6f88abe94.png",
+  "prompt": "Use case: precise-object-edit. Edit target: the supplied empty ice block raster. This is the shared shell material layer for three frozen-shirt composites on a streetwear website. Change only the outer ice boundary and simplify the material: replace the perfectly straight manufactured rectangle and identical rounded corners with a naturally frozen, subtly abstract, asymmetrical portrait slab. Gently undulating sides, different softly eroded corners, a few broad shallow irregularities, rounded natural melt contours. The actual ice silhouette MUST remain vertical with width/height approximately 4:5 and cover about 94% of canvas height and width, centered with transparent margin on every side, whole object visible. Keep the photographic restrained clear neutral ice, soft blue-grey thickness at the perimeter, subtle edge refraction, simple continuous material. Center should be relatively transparent and visually quiet, NOT a milky opaque panel. No geometric facets, no chrome, no jagged shattered crystals, no heavy cracks, no decorative bubbles, no particles, no shirt, no text, no logos. Smooth irregular outline should be visible at small web sizes, but not look like a wild crystal or carved frame. True transparent background, preserve alpha; no checkerboard baked into pixels. Straight-on front view, same framing and light direction as supplied. High quality photographic product material, not an illustration.",
+  "registration": {
+    "width": 1440,
+    "height": 1800,
+    "fit": "contain",
+    "frontOpacity": 0.28,
+    "garmentBlurCqw": 0.22,
+    "engravingOpacity": 0.95,
+    "engravingSource": "assets-originals/ice-v8/engraving.png"
+  },
+  "notes": "Original product cutouts and engraving unchanged; no commercial or deployment changes."
+}

@@ -1,4 +1,4 @@
-import { productById, sizes, type Size } from "../config/products.ts";
+import { productById, isAvailable, sizes, type Size } from "../config/products.ts";
 export type CartItem = { productId: string; size: Size; quantity: number };
 export type CartAction =
   | { type: "ordered"; lines: CartItem[] }
@@ -44,6 +44,7 @@ export function cartReducer(cart: CartItem[], action: CartAction): CartItem[] {
     });
   if (!productById(action.productId) || !sizes.includes(action.size))
     return cart;
+  if (action.type !== "remove" && !isAvailable(productById(action.productId))) return cart;
   const key = itemKey(action),
     found = cart.find((c) => itemKey(c) === key);
   if (action.type === "remove") return cart.filter((c) => itemKey(c) !== key);

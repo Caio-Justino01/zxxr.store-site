@@ -1,0 +1,179 @@
+{
+  "name": "Ceu de aluguel - physical painted photography set",
+  "version": 4,
+  "triangles": 24552,
+  "glb": "public/models/sky-studio-v4.glb",
+  "coordinateSystem": {
+    "GLB": "Three.js Y up, front +Z",
+    "source": "Blender Z up, front -Y"
+  },
+  "boundsThree": {
+    "x": [
+      -12,
+      12
+    ],
+    "y": [
+      -0.055,
+      7
+    ],
+    "z": [
+      -3.3,
+      10
+    ]
+  },
+  "paintedRoomThree": {
+    "x": [
+      -9,
+      9
+    ],
+    "y": [
+      0,
+      7
+    ],
+    "z": [
+      -3,
+      5
+    ]
+  },
+  "garmentSpaceThree": {
+    "x": [
+      -6.3,
+      6.3
+    ],
+    "y": [
+      0.7,
+      3.6
+    ],
+    "z": [
+      -0.4,
+      1.5
+    ]
+  },
+  "grassMatThree": {
+    "x": [
+      -7.8,
+      7.8
+    ],
+    "y": [
+      -0.05,
+      0.17
+    ],
+    "z": [
+      -2.7,
+      0.4
+    ]
+  },
+  "sources": [
+    {
+      "kind": "user visual direction only",
+      "path": "C:/Users/caiom/Downloads/36cbe2c17eec7de85928cffbf3c05684.jpg",
+      "usedAsTexture": false
+    },
+    {
+      "kind": "original procedural authored plaster/cement maps",
+      "script": "scripts/make-rental-sky-textures.py",
+      "externalAssets": false
+    },
+    {
+      "kind": "photographed pure sky projected as bounded painted-wall albedo",
+      "name": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+      "authors": [
+        "Greg Zaal",
+        "Jarod Guest"
+      ],
+      "provider": "Poly Haven",
+      "url": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+      "license": "CC0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "downloaded": "2026-10-19",
+      "script": "scripts/project-photographic-sky.py",
+      "usedAsEnvironment": false
+    },
+    {
+      "kind": "photographed grass albedo and normal",
+      "name": "Leafy Grass",
+      "author": "Charlotte Baglioni",
+      "provider": "Poly Haven",
+      "url": "https://polyhaven.com/a/leafy_grass",
+      "license": "CC0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "downloaded": "2026-10-19",
+      "changes": "JPEG compression; original pixels preserved; material tinted dark green for the turf mat; UV repeats every 2 scene units (source capture spans 2 metres)"
+    },
+    {
+      "kind": "original Blender geometry",
+      "script": "scripts/build-rental-sky-studio.py",
+      "externalAssets": false
+    }
+  ],
+  "license": "Original geometry/plaster/cement authored for ZXXR. Grass by Charlotte Baglioni and pure-sky photograph by Greg Zaal/Jarod Guest via Poly Haven, CC0. Attribution recorded although not required by CC0.",
+  "integration": [
+    "Load GLB at identity transform; it is already Y-up after glTF export.",
+    "Remove or hide prior flat backdrop/floor before insertion; retain the application-owned clothing rack.",
+    "Set mesh.receiveShadow=true for all meshes, grass castShadow=false on mobile; walls and turf mat may castShadow=true.",
+    "Use existing neutral front lights and neutral RoomEnvironment. Do not use the blue mural as an environment map: it would stain off-white cotton.",
+    "Floor has real roughness and height normal maps; wall mural joins use shared source coordinates across corners.",
+    "A ceiling and side walls remain outside a tightly cropped camera; fit camera to see rear/corner cues when desired.",
+    "No lights, cameras, rail or garments are included in GLB. The .blend study includes a scale rack for proof only."
+  ],
+  "suggestedThreeLighting": {
+    "exposure": 1.0,
+    "neutralHemisphereIntensity": 0.75,
+    "keyDirectional": {
+      "position": [
+        -5,
+        6.2,
+        6
+      ],
+      "intensity": 2.1,
+      "castShadow": true,
+      "shadowMapSize": 2048,
+      "shadowRadius": 3
+    },
+    "fillDirectional": {
+      "position": [
+        6,
+        4,
+        4
+      ],
+      "intensity": 0.7
+    },
+    "topDirectional": {
+      "position": [
+        0,
+        6.6,
+        -0.8
+      ],
+      "intensity": 0.8
+    }
+  },
+  "grassColorFactorLinear": [
+    0.04,
+    0.145,
+    0.016,
+    1
+  ],
+  "limitations": [
+    "Procedural painted mural and cut grass are a modeled set, not a photograph of a built installation.",
+    "No lightmap is baked; browser must provide neutral lighting and contact shadows."
+  ],
+  "bytes": 6704712,
+  "mobile": {
+    "glb": "public/models/sky-studio-mobile-v4.glb",
+    "triangles": 3552,
+    "bytes": 2160892,
+    "textureMax": 1024,
+    "grassBlades": 1000
+  },
+  "study": {
+    "path": "docs/previews/sky-studio-v4-study.png",
+    "runtimeFallback": "public/media/sky-studio-v4/sky-studio-v4-study.webp",
+    "size": [
+      1920,
+      1080
+    ],
+    "grassMedianHex": "#3b6527",
+    "grassTargetHex": "#426b26",
+    "note": "Original Cycles render of the physical set with a scale rack, not a photograph of a built installation."
+  }
+}

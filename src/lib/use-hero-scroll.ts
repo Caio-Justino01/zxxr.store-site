@@ -28,8 +28,8 @@ export function useHeroScroll(
   const layoutKey = [
     layout.pieceWidth,
     layout.stageHeight,
-    ...layout.positions.flatMap(({ x, y, rotation }) => [x, y, rotation]),
-    ...layout.stackPositions.flatMap(({ x, y, rotation }) => [x, y, rotation]),
+    ...layout.positions.flatMap(({ x, y, rotation, scale }) => [x, y, rotation, scale]),
+    ...layout.stackPositions.flatMap(({ x, y, rotation, scale }) => [x, y, rotation, scale]),
   ].join(",");
 
   useLayoutEffect(() => {
@@ -109,7 +109,7 @@ export function useHeroScroll(
             );
             timeline!.fromTo(
               piece,
-              { x: 0, y: 0, rotation: 0, autoAlpha: 1 },
+              { x: 0, y: 0, rotation: 0, scale: 1, autoAlpha: 1 },
               { ...delta, autoAlpha: 0 },
               0,
             );

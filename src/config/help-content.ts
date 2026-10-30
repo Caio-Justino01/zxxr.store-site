@@ -3,11 +3,11 @@ import { storefront } from "./storefront.ts";
 // One source for the help page and the interactive guide.
 export const helpContent = {
   sizes:
-    "O drop tem modelagem oversized, com corte amplo. As opções são P, M, G e GG; confira a disponibilidade de cada camiseta antes de adicionar à sacola.",
+    "Emoção e Spiritual Gangsta estão disponíveis; Flores, Yaji e ZXXR ficam para o próximo lançamento, sem data definida. O drop tem modelagem oversized boxy, com corte amplo, corpo mais quadrado e ombros deslocados. As opções são P, M, G e GG; confira a disponibilidade de cada camiseta antes de adicionar à sacola.",
   sizeAdvice:
     "Veja as fotos em uso e o guia de caimento na página da camiseta. Se tiver dúvida sobre o tamanho, fale com a loja antes de registrar seu pedido.",
   fabric:
-    "Você encontra a modelagem, a cor e o acabamento na página da camiseta. Para confirmar composição da malha ou medidas exatas, fale com a loja antes de comprar.",
+    "As camisetas off-white são de algodão Madri. As pretas são de 100% algodão, fio 30.1, com acabamento marmorizado. Todas têm modelagem oversized boxy. Confira a ficha da peça e fale com a loja se precisar de medidas exatas.",
   care: "Lave a peça do avesso e evite passar o ferro diretamente sobre a estampa. Siga as instruções da etiqueta para conservar a malha e as cores.",
   payment: storefront.paymentNote,
   paymentTotal:

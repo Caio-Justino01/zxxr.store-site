@@ -17,6 +17,7 @@ import {
   wrapRouletteIndex,
 } from "../lib/roulette-layout";
 import "../touch-roulette.css";
+import { FrozenGarment } from "./FrozenGarment";
 
 type Props = {
   products: Product[];
@@ -145,24 +146,30 @@ export function TouchRoulette({
       tween.current = null;
       base.current = target.current;
       progress.current.value = 0;
+      const introHeight = element.closest(".desejos-hero")?.querySelector(".dh-scroll-intro")?.getBoundingClientRect().height ?? 0;
+      const headerHeight = document.querySelector(".site-header")?.getBoundingClientRect().height ?? 88;
+      const heightLimitedWidth = Math.max(140, (window.innerHeight - introHeight - headerHeight - 140) / 0.75);
       const pieceWidth = Math.min(
         window.innerWidth * 0.74,
         480,
         element.clientWidth * 0.88,
+        heightLimitedWidth,
       );
       step.current = pieceWidth * 0.78;
       element.style.setProperty("--tr-piece-width", `${pieceWidth}px`);
       element.style.setProperty(
         "--tr-stage-height",
-        `${(pieceWidth * 700) / 923 + 66}px`,
+        `${pieceWidth * 0.75 + 66}px`,
       );
       paint();
     };
     resize();
     const observer = new ResizeObserver(resize);
     observer.observe(element);
+    window.addEventListener("resize", resize);
     return () => {
       observer.disconnect();
+      window.removeEventListener("resize", resize);
       tween.current?.kill();
       releaseCapture();
     };
@@ -345,7 +352,7 @@ export function TouchRoulette({
                   aria-current="true"
                   onClick={(event) => onOpen(event, index)}
                 >
-                  <ShirtImage product={product} />
+                  {product.releaseStatus === "coming-soon" && product.source ? <FrozenGarment product={product} active={index === activeIndex} /> : <span className="tr-shirt-frame"><ShirtImage product={product} /></span>}
                 </Link>
               ) : (
                 <button
@@ -357,7 +364,7 @@ export function TouchRoulette({
                   disabled={!visible}
                   onClick={() => onSelect(index)}
                 >
-                  <ShirtImage product={product} />
+                  {product.releaseStatus === "coming-soon" && product.source ? <FrozenGarment product={product} active={index === activeIndex} /> : <span className="tr-shirt-frame"><ShirtImage product={product} /></span>}
                 </button>
               )}
             </div>

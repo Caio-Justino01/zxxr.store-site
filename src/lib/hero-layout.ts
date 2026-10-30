@@ -2,6 +2,7 @@ export type HeroPiecePosition = {
   x: number;
   y: number;
   rotation: number;
+  scale?: number;
 };
 
 export type HeroLayout = {
@@ -12,59 +13,46 @@ export type HeroLayout = {
   stackPositions: HeroPiecePosition[];
 };
 
-const IMAGE_HEIGHT_RATIO = 700 / 923;
-const ROTATIONS = [-6, -3, 0, 3, 6];
-
-/** Horizontal envelope of one uniformly scaled, rotated original image. */
-function widthFactor(rotation: number) {
-  const radians = (Math.abs(rotation) * Math.PI) / 180;
-  return Math.cos(radians) + IMAGE_HEIGHT_RATIO * Math.sin(radians);
-}
-
 /**
  * Positions describe image CENTERS. Place the origin horizontally at 50% and
  * vertically at (stageHeight - arcDepth) / 2, then center each image on it.
- * Positive y moves downward, so the center at y=0 is the top of the arch.
+ * Positive y moves downward. The larger available pair shares y=0.
  * The complete rotated rectangles fit, not just the narrower shirt silhouettes.
  */
 export function getHeroLayout(width: number): HeroLayout {
   const availableWidth = Number.isFinite(width) && width > 0 ? width : 320;
   const padding = Math.min(24, availableWidth * 0.025);
-  const gap = availableWidth >= 1024 ? 12 : 4;
-  const totalWidthFactor = ROTATIONS.reduce(
-    (total, rotation) => total + widthFactor(rotation),
-    0,
-  );
   const pieceWidth = Math.min(
-    300,
-    Math.max(1, (availableWidth - padding * 2 - gap * 4) / totalWidthFactor),
+    340,
+    Math.max(1, (availableWidth - padding * 2) / 5.1),
   );
-  const envelopes = ROTATIONS.map(
-    (rotation) => pieceWidth * widthFactor(rotation),
-  );
-  const innerX = (envelopes[2] + envelopes[3]) / 2 + gap;
-  const outerX = innerX + (envelopes[3] + envelopes[4]) / 2 + gap;
-  const arcDepth = pieceWidth * 0.48;
-  const maxRotatedHeight =
-    pieceWidth *
-    (IMAGE_HEIGHT_RATIO * Math.cos(Math.PI / 30) + Math.sin(Math.PI / 30));
-  const stageHeight = Math.ceil(maxRotatedHeight + arcDepth + padding * 2);
-  const xCoordinates = [-outerX, -innerX, 0, innerX, outerX];
+  // Product order: Flores, Yaji, Emoção, Spiritual Gangsta, ZXXR.
+  // The available pair straddles the exact center; ice is grouped on the flanks.
+  const composition = [
+    { x: -2.08, y: -0.22, rotation: -4, scale: 0.68 },
+    { x: -1.8, y: 0.27, rotation: 3, scale: 0.68 },
+    { x: -0.56, y: 0, rotation: -2, scale: 1 },
+    { x: 0.56, y: 0, rotation: 2, scale: 1 },
+    { x: 1.96, y: 0.1, rotation: 3, scale: 0.85 },
+  ];
+  const arcDepth = 0;
+  const stageHeight = Math.ceil(pieceWidth * 1.2 + padding * 2);
 
   return {
     pieceWidth,
     stageHeight,
     arcDepth,
-    positions: ROTATIONS.map((rotation, index) => ({
-      x: xCoordinates[index],
-      y: arcDepth * ((index - 2) / 2) ** 2,
-      rotation,
+    positions: composition.map(({ x, y, ...pose }) => ({
+      ...pose,
+      x: x * pieceWidth,
+      y: y * pieceWidth,
     })),
-    // Adjacent unrotated image widths overlap by 35% in the opening stack.
-    stackPositions: ROTATIONS.map((_, index) => ({
-      x: (index - 2) * pieceWidth * 0.65,
-      y: arcDepth * 0.45,
+    // A compact lateral stack unfolds to the available pair and ice clusters.
+    stackPositions: composition.map((_, index) => ({
+      x: (index - 2) * pieceWidth * 0.46,
+      y: 0,
       rotation: index - 2,
+      scale: 0.7,
     })),
   };
 }

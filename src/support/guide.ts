@@ -1,3 +1,4 @@
+import { productById, isAvailable } from "../config/products.ts";
 import type { Catalog } from "../commerce/contracts.ts";
 import { helpContent } from "../config/help-content.ts";
 
@@ -350,6 +351,7 @@ export function supportProductState(
   productId: string,
   catalog: Catalog | null,
 ) {
+  if (!isAvailable(productById(productId))) return { priceCents: null, varied: false, available: false };
   const variants =
     catalog?.variants.filter(
       (v) =>

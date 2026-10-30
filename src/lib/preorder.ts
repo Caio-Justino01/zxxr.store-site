@@ -1,4 +1,4 @@
-import { productById, sizes, type Size } from "../config/products.ts";
+import { productById, isAvailable, sizes, type Size } from "../config/products.ts";
 import type { CartItem } from "./cart.ts";
 import { formatPrice, validPrice } from "./format-price.ts";
 
@@ -46,7 +46,7 @@ export function summarizePreorder(items: readonly CartItem[]): PreorderSummary {
   const grouped = new Map<string, PreorderLine>();
   for (const item of items) {
     const product = productById(item.productId);
-    if (!product || !sizes.includes(item.size as Size) ||
+    if (!isAvailable(product) || !sizes.includes(item.size as Size) ||
       !Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 10 ||
       !validPrice(product.price)) throw new Error("Uma peça da sacola precisa ser revisada.");
     const unitCents = Math.round(product.price * 100);

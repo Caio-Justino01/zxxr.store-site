@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useConsent } from "../privacy/ConsentProvider";
 import {
   artist,
   releases,
@@ -35,6 +36,7 @@ function PlayIcon() {
 }
 
 export function MusicSection() {
+  const { preferences, savePreferences } = useConsent();
   const [selected, setSelected] = useState<MusicRelease | null>(null);
   const [playerFailed, setPlayerFailed] = useState(false);
   const playerHeading = useRef<HTMLHeadingElement>(null);
@@ -227,7 +229,11 @@ export function MusicSection() {
                   Fechar <span aria-hidden="true">×</span>
                 </button>
               </div>
-              {!playerFailed && (
+              {!preferences?.external && <div className="privacy-embed-gate">
+                <p>Para ouvir aqui, permita carregar conteúdo do Spotify. O serviço pode receber dados e usar cookies próprios. Sua escolha de estatísticas não será alterada.</p>
+                <div className="privacy-actions"><button type="button" onClick={() => savePreferences({ analytics: preferences?.analytics ?? false, external: true })}>Permitir player do Spotify</button></div>
+              </div>}
+              {preferences?.external && !playerFailed && (
                 <iframe
                   key={selected.id}
                   title={`Player oficial de ${selected.title} no Spotify`}

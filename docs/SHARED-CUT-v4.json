@@ -1,0 +1,24 @@
+{
+  "selection": "audited black source pattern used as common prototype cut after silhouette/gola comparison",
+  "geometryUnchanged": true,
+  "models": [
+    {
+      "file": "oversized-shared-v4.glb",
+      "geometryBufferSha256": "cbaaf4ffd79b0a10998151996b69f02afe6fc77a1b3210c4af533ffe465b1f8b",
+      "sourceGeometry": "oversized-black-v4.glb",
+      "geometryChanged": false,
+      "bytes": 5212056,
+      "compatibilityAlias": "oversized-offwhite-v4.glb"
+    },
+    {
+      "file": "oversized-shared-v4-mobile.glb",
+      "geometryBufferSha256": "2e33cfc051a821d7fa9f0ef0705313bde361b2f6300da91646d4687982f19275",
+      "sourceGeometry": "oversized-black-v4-mobile.glb",
+      "geometryChanged": false,
+      "bytes": 1737824,
+      "compatibilityAlias": "oversized-offwhite-v4-mobile.glb"
+    }
+  ],
+  "comparison": "docs/previews/audit-v4-contact/SHARED-CUT-COMPARISON.md",
+  "previousWhiteStudyPreserved": true
+}

@@ -1,0 +1,22 @@
+{
+  "asset": "Kloofendal 48d Partly Cloudy (Pure Sky)",
+  "url": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+  "authors": [
+    "Greg Zaal",
+    "Jarod Guest"
+  ],
+  "license": "CC0",
+  "licenseUrl": "https://polyhaven.com/license",
+  "downloaded": "2026-10-19",
+  "source": "public/media/sky-studio-v4/kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+  "usage": "Tone-mapped bounded albedo photograph projected onto painted physical walls/ceiling; not an illumination/environment map.",
+  "atlasMax": 2048,
+  "worldOriginBlender": [
+    0,
+    -12,
+    -1.5
+  ],
+  "rotationDegrees": 112,
+  "projection": "Shared equirectangular direction projection; exact same source coordinates on shared room edges.",
+  "changes": "HDR exposure/luminance compression, SRGB encoding, subtle paint tooth/mortar overlay, web JPEG compression."
+}

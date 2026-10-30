@@ -1,0 +1,32 @@
+{
+  "simulation": "Blender Cloth, gravity, shoulder supports, hanger collision and self collision",
+  "frames": 160,
+  "vertices": 3154,
+  "sourcePattern": "build-garment.py original mockup outline and UV",
+  "bounds": {
+    "rest": [
+      [
+        -1.6399999856948853,
+        -0.1175968274474144,
+        -1.3792500495910645
+      ],
+      [
+        1.6399999856948853,
+        0.11505865305662155,
+        1.133958339691162
+      ]
+    ],
+    "draped": [
+      [
+        -1.3741493225097656,
+        -0.23448947072029114,
+        -1.3869900703430176
+      ],
+      [
+        1.300185203552246,
+        0.37965822219848633,
+        1.1253193616867065
+      ]
+    ]
+  }
+}

@@ -1,6 +1,8 @@
 import { Link } from "react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { useCommerce } from "../commerce/CommerceProvider";
+import { ConsentSettingsButton } from "../privacy/ConsentProvider";
+import { useSeoInitialRender } from "../seo/render-environment";
 import {
   accountDestination,
   helpTopics,
@@ -19,12 +21,14 @@ function FooterGroup({
   title: string;
   children: ReactNode;
 }) {
+  const seoInitialRender = useSeoInitialRender();
   const [mobile, setMobile] = useState(
-    () => matchMedia("(max-width: 767px)").matches,
+    () => !seoInitialRender && matchMedia("(max-width: 767px)").matches,
   );
   useEffect(() => {
     const media = matchMedia("(max-width: 767px)");
     const update = () => setMobile(media.matches);
+    update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
@@ -124,6 +128,7 @@ export function StoreFooter() {
               </Link>
             ))}
           <Link to={storefront.privacidade}>Privacidade</Link>
+          <ConsentSettingsButton />
         </FooterGroup>
       </div>
       <div className="store-footer-bottom">

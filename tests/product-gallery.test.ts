@@ -52,6 +52,7 @@ test("gallery frames use actual source dimensions and preserve original front/ba
 
 test("Emoção keeps its selected Mercedes photograph and original product views", () => {
   const product = products.find((product) => product.id === "boca")!;
+  assert.match(getProductGallery(product)[0].src, /ensaiodrop1zxxrfoto07-v3-1086\.webp$/);
   assert.deepEqual(
     getProductGallery(product).map((image) => image.id),
     ["ensaio-07", "front", "back"],

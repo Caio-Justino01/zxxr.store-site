@@ -72,6 +72,14 @@ export function dbError(error: { message: string; code?: string } | null) {
       "Você já registrou vários pedidos recentemente. Aguarde ou fale com a loja antes de criar outro.",
     ],
     invalid_data: [400, "Confira os dados e as condições desta ação."],
+    recovery_consent_required: [
+      409,
+      "Autorize o lembrete de sacola para continuar.",
+    ],
+    recovery_not_eligible: [
+      409,
+      "Esta sacola não está mais disponível para contato. Atualize a lista.",
+    ],
     idempotency_conflict: [
       409,
       "Este pedido já foi registrado com outros dados. Confira seu histórico.",

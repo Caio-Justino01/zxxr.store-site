@@ -1,0 +1,58 @@
+[
+  {
+    "id": "court",
+    "source": "public-store/media/ensaio-drop/ensaiodrop1zxxrfoto06-banner-v1-1920.webp",
+    "width": 1920,
+    "height": 800,
+    "sha256": "124346840c20f82c0fb804ad4e320f9553bac01c87a8c4ee411b7ebb703526ab"
+  },
+  {
+    "id": "beach",
+    "source": "work/drop-collage/assets/collage-beach-v1.png",
+    "width": 1045,
+    "height": 1505,
+    "sha256": "2f0cb4ab604bab2b39e18dd5fa882b161d805039febbb60cb6a224e069f804c4"
+  },
+  {
+    "id": "chairs",
+    "source": "work/drop-collage/assets/collage-chairs-v1.png",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "488c9d1a9d19304b6f2d6043f65296b64764e33d16061a56484f03fb643d9451"
+  },
+  {
+    "id": "garden",
+    "source": "work/drop-collage/assets/collage-garden-v1.png",
+    "width": 1122,
+    "height": 1402,
+    "sha256": "a67d8ff05ec5d85d11cd7d3c91ac2154b7492147ad3ba2840456ccf7840d0828"
+  },
+  {
+    "id": "pier",
+    "source": "public-store/media/ensaio-drop/ensaiodrop1zxxrfoto01-1680.webp",
+    "width": 1680,
+    "height": 2094,
+    "sha256": "f65bc653c2064fa58507e0bba087be9fb1b9b9de7e9fc11485836b8ba8fcb9db"
+  },
+  {
+    "id": "mercedes",
+    "source": "../work/publish-zxxr-store/assets-originals/campaign/ensaiodrop1zxxrfoto07-v3-usuario.jpg",
+    "width": 1086,
+    "height": 1448,
+    "sha256": "66974dc0f6afcdb76ac9880a200bd6c14d3c73fb70aa997da82f90e17f6144a6"
+  },
+  {
+    "id": "pool",
+    "source": "public-store/media/ensaio-drop/ensaiodrop1zxxrfoto08-v2-1122.webp",
+    "width": 1122,
+    "height": 1402,
+    "sha256": "f8caff3c63c3f3bf70d7b81330c9c129ef18d7fa26404cf70f96bb4d401df19c"
+  },
+  {
+    "id": "billiards",
+    "source": "public-store/media/ensaio-drop/ensaiodrop1zxxrfoto10-v4-1086.webp",
+    "width": 1086,
+    "height": 1448,
+    "sha256": "3e0d3822c89d02463e7acc741b33b90a97baf839f2e43f73e093830a7afc4484"
+  }
+]

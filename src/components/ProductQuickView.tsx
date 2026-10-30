@@ -1,3 +1,4 @@
+import { FrozenGarment, comingSoonCopy } from "./FrozenGarment";
 import { useEffect, useId, useRef, useState } from "react";
 import { Link } from "react-router";
 import { type Product, type Size } from "../config/products";
@@ -25,6 +26,7 @@ export function ProductQuickView({
   onAdd,
 }: ProductQuickViewProps) {
   if (!selection) return null;
+  if (selection.product.releaseStatus === "coming-soon") return <UpcomingQuickView product={selection.product} onClose={onClose} />;
   return (
     <QuickViewDialog
       key={selection.product.id}
@@ -171,7 +173,7 @@ function QuickViewDialog({
           <GarmentViewer product={product} initialView={side} />
         </div>
         <div className="pqv-details">
-          <p className="pqv-color">Oversized · {product.color}</p>
+          <p className="pqv-color">{product.fit} · {product.color}</p>
           <h2 id={titleId}>{product.name}</h2>
           <p className="pqv-price">{formatPrice(product.price)}</p>
           <p className="pqv-description">{product.description}</p>
@@ -218,4 +220,20 @@ function QuickViewDialog({
       </div>
     </dialog>
   );
+}
+
+function UpcomingQuickView({ product, onClose }: { product: Product; onClose: () => void }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const node = dialog.current;
+    const previous = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    node?.showModal();
+    return () => { node?.close(); document.body.style.overflow = previousOverflow; if (previous instanceof HTMLElement) previous.focus({ preventScroll: true }); };
+  }, []);
+  return <dialog ref={dialog} className="pqv-dialog pqv-upcoming" aria-label={`${product.name} · Em breve`} onCancel={onClose}>
+    <button className="pqv-close" onClick={onClose} aria-label="Fechar detalhes da peça">×</button>
+    <FrozenGarment product={product} active /><h2>{product.name}</h2><p>{comingSoonCopy}</p>
+  </dialog>;
 }

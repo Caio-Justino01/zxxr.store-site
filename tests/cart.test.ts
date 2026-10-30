@@ -53,3 +53,13 @@ test("quantity bounds and remove do not affect a second size", () => {
     [c[1]],
   );
 });
+
+test("upcoming pieces cannot be added but old bag lines remain removable", () => {
+  const old = [{ productId: "flores", size: "M" as const, quantity: 1 }];
+  assert.deepEqual(readCart(JSON.stringify(old)), old);
+  for (const productId of ["flores", "me-preservando", "zxxr-rosa"]) {
+    assert.deepEqual(cartReducer([], { type: "add", productId, size: "M" }), []);
+  }
+  assert.deepEqual(cartReducer(old, { type: "quantity", productId: "flores", size: "M", quantity: 2 }), old);
+  assert.deepEqual(cartReducer(old, { type: "remove", productId: "flores", size: "M" }), []);
+});

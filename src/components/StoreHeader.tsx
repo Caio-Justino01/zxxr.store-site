@@ -178,7 +178,7 @@ export function StoreHeader({ count }: { count: number }) {
           <NavLink
             to={account}
             className="header-account-link"
-            aria-label={session.user ? "Minha conta" : "Entrar"}
+            aria-label={session.user ? "Conta — Minha conta" : "Conta — Entrar"}
           >
             <span className="store-account-compact">Conta</span>
             <span className="store-account-wide">

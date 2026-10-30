@@ -1,0 +1,381 @@
+{
+  "version": 4,
+  "process": "Native UV print extraction. All visible RGB samples preserved byte-for-byte. Alpha only; no upscale, font redraw, recolor, generative fill or invented print detail. Display proof sheets are resized only for inspection.",
+  "alphaRules": {
+    "red": "Red minus max(green,blue), opaque at >=32, transparent at <=15; faint transitions restricted to two native pixels from core ink.",
+    "pink": "Magenta core plus neutral bright pixels within six native pixels, including original white outline; one pixel transition.",
+    "mouth": "Fill only holes enclosed by original dark silhouette to preserve teeth, ring and R; alpha-weight one native exterior edge pixel."
+  },
+  "sourceManifest": "docs/REFERENCE-MANIFEST-v3.json",
+  "entries": [
+    {
+      "id": "boca",
+      "side": "front",
+      "source": "IMG_3296 1.jpg",
+      "sourceCrop": [
+        108,
+        167,
+        921,
+        691
+      ],
+      "nativeUVSize": [
+        921,
+        691
+      ],
+      "region": [
+        435,
+        170,
+        518,
+        211
+      ],
+      "artworkBounds": [
+        442,
+        181,
+        508,
+        201
+      ],
+      "method": "red-and-black-logo",
+      "alphaPixels": 745,
+      "opaqueWhitePixels": 0,
+      "opaquePinkPixels": 0,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/boca-front.png"
+    },
+    {
+      "id": "boca",
+      "side": "back",
+      "source": "IMG_3296 1.jpg",
+      "sourceCrop": [
+        106,
+        959,
+        917,
+        701
+      ],
+      "nativeUVSize": [
+        917,
+        701
+      ],
+      "region": [
+        286,
+        163,
+        620,
+        568
+      ],
+      "artworkBounds": [
+        296,
+        173,
+        608,
+        559
+      ],
+      "method": "black-silhouette-with-white-interior",
+      "alphaPixels": 99538,
+      "opaqueWhitePixels": 20677,
+      "opaquePinkPixels": 0,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/boca-back.png"
+    },
+    {
+      "id": "flores",
+      "side": "front",
+      "source": "IMG_3282 1.jpg",
+      "sourceCrop": [
+        107,
+        166,
+        923,
+        694
+      ],
+      "nativeUVSize": [
+        923,
+        694
+      ],
+      "region": [
+        348,
+        174,
+        586,
+        416
+      ],
+      "artworkBounds": [
+        358,
+        186,
+        575,
+        405
+      ],
+      "method": "red",
+      "alphaPixels": 8554,
+      "opaqueWhitePixels": 1,
+      "opaquePinkPixels": 0,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/flores-front.png"
+    },
+    {
+      "id": "flores",
+      "side": "back",
+      "source": "IMG_3282 1.jpg",
+      "sourceCrop": [
+        106,
+        958,
+        917,
+        702
+      ],
+      "nativeUVSize": [
+        917,
+        702
+      ],
+      "region": [
+        425,
+        49,
+        485,
+        83
+      ],
+      "artworkBounds": [
+        441,
+        62,
+        465,
+        74
+      ],
+      "method": "red",
+      "alphaPixels": 209,
+      "opaqueWhitePixels": 0,
+      "opaquePinkPixels": 0,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/flores-back.png"
+    },
+    {
+      "id": "me-preservando",
+      "side": "front",
+      "source": "IMG_3283 1.jpg",
+      "sourceCrop": [
+        107,
+        166,
+        923,
+        694
+      ],
+      "nativeUVSize": [
+        923,
+        694
+      ],
+      "region": [
+        575,
+        167,
+        633,
+        218
+      ],
+      "artworkBounds": [
+        588,
+        177,
+        623,
+        209
+      ],
+      "method": "red",
+      "alphaPixels": 612,
+      "opaqueWhitePixels": 0,
+      "opaquePinkPixels": 0,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/me-preservando-front.png"
+    },
+    {
+      "id": "me-preservando",
+      "side": "back",
+      "source": "IMG_3283 1.jpg",
+      "sourceCrop": [
+        106,
+        959,
+        917,
+        701
+      ],
+      "nativeUVSize": [
+        917,
+        701
+      ],
+      "region": [
+        164,
+        108,
+        753,
+        202
+      ],
+      "artworkBounds": [
+        173,
+        120,
+        742,
+        186
+      ],
+      "method": "red",
+      "alphaPixels": 9086,
+      "opaqueWhitePixels": 2,
+      "opaquePinkPixels": 0,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/me-preservando-back.png"
+    },
+    {
+      "id": "spiritual-gangsta",
+      "side": "front",
+      "source": "IMG_3281 1.jpg",
+      "sourceCrop": [
+        162,
+        56,
+        761,
+        573
+      ],
+      "nativeUVSize": [
+        761,
+        573
+      ],
+      "region": [
+        326,
+        132,
+        444,
+        178
+      ],
+      "artworkBounds": [
+        333,
+        140,
+        434,
+        172
+      ],
+      "method": "red",
+      "alphaPixels": 2243,
+      "opaqueWhitePixels": 0,
+      "opaquePinkPixels": 12,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/spiritual-gangsta-front.png"
+    },
+    {
+      "id": "spiritual-gangsta",
+      "side": "back",
+      "source": "IMG_3281 1.jpg",
+      "sourceCrop": [
+        164,
+        720,
+        761,
+        573
+      ],
+      "nativeUVSize": [
+        761,
+        573
+      ],
+      "region": [
+        127,
+        64,
+        602,
+        181
+      ],
+      "artworkBounds": [
+        140,
+        77,
+        594,
+        177
+      ],
+      "method": "red",
+      "alphaPixels": 13471,
+      "opaqueWhitePixels": 0,
+      "opaquePinkPixels": 321,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/spiritual-gangsta-back.png"
+    },
+    {
+      "id": "zxxr-rosa",
+      "side": "front",
+      "source": "IMG_3271 1.jpg",
+      "sourceCrop": [
+        162,
+        56,
+        761,
+        573
+      ],
+      "nativeUVSize": [
+        761,
+        573
+      ],
+      "region": [
+        296,
+        130,
+        455,
+        198
+      ],
+      "artworkBounds": [
+        303,
+        143,
+        446,
+        189
+      ],
+      "method": "pink-and-white-outline",
+      "alphaPixels": 4532,
+      "opaqueWhitePixels": 618,
+      "opaquePinkPixels": 2298,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/zxxr-rosa-front.png"
+    },
+    {
+      "id": "zxxr-rosa",
+      "side": "back",
+      "source": "IMG_3271 1.jpg",
+      "sourceCrop": [
+        164,
+        720,
+        761,
+        573
+      ],
+      "nativeUVSize": [
+        761,
+        573
+      ],
+      "region": [
+        155,
+        217,
+        526,
+        553
+      ],
+      "artworkBounds": [
+        164,
+        226,
+        516,
+        544
+      ],
+      "method": "pink-and-white-outline",
+      "alphaPixels": 25756,
+      "opaqueWhitePixels": 7963,
+      "opaquePinkPixels": 13610,
+      "nonzeroRGBMatchesSource": true,
+      "output": "public/media/artwork-v4/zxxr-rosa-back.png"
+    }
+  ],
+  "cottonPatches": [
+    {
+      "tone": "offwhite",
+      "source": "public/media/reference-v3/boca-front.png",
+      "box": [
+        260,
+        370,
+        516,
+        626
+      ],
+      "nativeSize": [
+        256,
+        256
+      ],
+      "output": "public/media/artwork-v4/cotton-patch-offwhite.png",
+      "process": "Native unprinted cotton crop, no synthesis, scale change, sharpening or seam removal; not seamless."
+    },
+    {
+      "tone": "black",
+      "source": "public/media/reference-v3/zxxr-rosa-front.png",
+      "box": [
+        250,
+        270,
+        506,
+        526
+      ],
+      "nativeSize": [
+        256,
+        256
+      ],
+      "output": "public/media/artwork-v4/cotton-patch-black.png",
+      "process": "Native unprinted cotton crop, no synthesis, scale change, sharpening or seam removal; not seamless."
+    }
+  ],
+  "limitations": [
+    "Sources are composite JPEG mockups, not separate production artwork. Antialias samples contain the original cotton color at ink edges.",
+    "Mouth exterior extraction includes one native pixel of edge bleed; white details enclosed in the silhouette stay opaque.",
+    "Cotton patches are native crops and are not seamless; use sparingly for material tone/detail, not stretched as photographic folds."
+  ]
+}
