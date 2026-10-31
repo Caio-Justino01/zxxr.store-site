@@ -6,10 +6,12 @@ import { brl } from "../commerce/contracts";
 import { productById } from "../config/products";
 import type {
   AnalyticsOverview,
+  AnalyticsMetricKey,
   RecoveryLead,
   RecoveryOverview,
 } from "./contracts";
 import "./analytics.css";
+import { InsightsChart } from "./InsightsChart";
 
 const names: Record<string, string> = {
   hero: "Apresentação",
@@ -66,8 +68,10 @@ export function AnalyticsPage() {
 }
 function AnalyticsDashboard() {
   const [period, setPeriod] = useState("7");
+  const [metric, setMetric] = useState<AnalyticsMetricKey>("visitors");
+  const [compare, setCompare] = useState(true);
   const [dates, setDates] = useState(() => range(7));
-  const [data, setData] = useState<AnalyticsOverview | null>(null);
+  const [report, setData] = useState<AnalyticsOverview | null>(null);
   const [recovery, setRecovery] = useState<RecoveryOverview | null>(null);
   const [error, setError] = useState("");
   const [recoveryError, setRecoveryError] = useState("");
@@ -75,14 +79,29 @@ function AnalyticsDashboard() {
   const [actionId, setActionId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const generation = useRef(0);
-  const pending = useRef(false);
+  const pending = useRef<{ key: string; controller: AbortController } | null>(
+    null,
+  );
   const valid =
     dates.from <= dates.to &&
     dates.from.length === 10 &&
-    dates.to.length === 10;
+    dates.to.length === 10 &&
+    dates.to <= dateInput(new Date()) &&
+    Number.isFinite(Date.parse(dates.from)) &&
+    Number.isFinite(Date.parse(dates.to)) &&
+    (Date.parse(dates.to) - Date.parse(dates.from)) / 86_400_000 <= 89;
+  // A delayed result for another range must never appear under the new dates.
+  const data =
+    report?.period.from === dates.from && report.period.to === dates.to
+      ? report
+      : null;
   const load = useCallback(async () => {
-    if (!valid || pending.current) return;
-    pending.current = true;
+    if (!valid) return;
+    const requestKey = `${dates.from}:${dates.to}`;
+    if (pending.current?.key === requestKey) return;
+    pending.current?.controller.abort();
+    const controller = new AbortController();
+    pending.current = { key: requestKey, controller };
     setBusy(true);
     const token = ++generation.current;
     const query = new URLSearchParams({
@@ -90,10 +109,12 @@ function AnalyticsDashboard() {
       to: dates.to,
     }).toString();
     const results = await Promise.allSettled([
-      api<AnalyticsOverview>(`admin/analytics?${query}`),
-      api<RecoveryOverview>("admin/recovery"),
+      api<AnalyticsOverview>(`admin/analytics?${query}`, {
+        signal: controller.signal,
+      }),
+      api<RecoveryOverview>("admin/recovery", { signal: controller.signal }),
     ]);
-    if (token === generation.current) {
+    if (token === generation.current && !controller.signal.aborted) {
       if (results[0].status === "fulfilled") {
         setData(results[0].value);
         setError("");
@@ -104,9 +125,13 @@ function AnalyticsDashboard() {
       } else setRecoveryError(errorMessage(results[1].reason));
       setBusy(false);
     }
-    pending.current = false;
+    if (pending.current?.controller === controller) pending.current = null;
   }, [dates.from, dates.to, valid]);
   useEffect(() => {
+    if (!valid) {
+      setBusy(false);
+      return;
+    }
     void load();
     const timer = setInterval(() => {
       if (document.visibilityState === "visible") void load();
@@ -114,9 +139,10 @@ function AnalyticsDashboard() {
     return () => {
       clearInterval(timer);
       generation.current++;
-      pending.current = false;
+      pending.current?.controller.abort();
+      pending.current = null;
     };
-  }, [load]);
+  }, [load, valid]);
   async function contact(lead: RecoveryLead, contacted: boolean) {
     setActionId(lead.id);
     setMessage("");
@@ -156,10 +182,6 @@ function AnalyticsDashboard() {
     }
   }
   const totals = data?.totals;
-  const topDaily = Math.max(
-    1,
-    ...(data?.daily.map((day) => day.sessions) ?? []),
-  );
   return (
     <AccountShell
       title="O movimento da ZXXR."
@@ -196,6 +218,7 @@ function AnalyticsDashboard() {
               De
               <input
                 type="date"
+                max={dates.to}
                 value={dates.from}
                 onChange={(e) =>
                   setDates((v) => ({ ...v, from: e.target.value }))
@@ -206,6 +229,8 @@ function AnalyticsDashboard() {
               Até
               <input
                 type="date"
+                min={dates.from}
+                max={dateInput(new Date())}
                 value={dates.to}
                 onChange={(e) =>
                   setDates((v) => ({ ...v, to: e.target.value }))
@@ -227,7 +252,7 @@ function AnalyticsDashboard() {
           estiver visível.
         </p>
       </section>
-      {!valid && <Notice error>Escolha um período válido.</Notice>}
+      {!valid && <Notice error>Escolha até 90 dias, sem datas futuras.</Notice>}
       {error && (
         <Notice error>
           {error} Os números anteriores, quando presentes, não foram
@@ -235,7 +260,7 @@ function AnalyticsDashboard() {
         </Notice>
       )}
       {!data && busy && <Busy />}
-      {totals && (
+      {totals && data && (
         <>
           <div className="analytics-metrics">
             <article className="analytics-now">
@@ -264,6 +289,13 @@ function AnalyticsDashboard() {
               "As estatísticas dependem de autorização e podem ser reduzidas por bloqueadores ou troca de dispositivo."}{" "}
             Atualizado em {time(data.generatedAt)}.
           </p>
+          <InsightsChart
+            data={data}
+            metric={metric}
+            onMetricChange={setMetric}
+            compare={compare}
+            onCompareChange={setCompare}
+          />
           <section className="analytics-section">
             <h2>Da descoberta ao pedido</h2>
             <p>
@@ -298,30 +330,6 @@ function AnalyticsDashboard() {
                 confirmados
               </p>
             </div>
-          </section>
-          <section className="analytics-section">
-            <h2>Acessos ao longo dos dias</h2>
-            {data.daily.length ? (
-              <div className="analytics-bars" role="list">
-                {data.daily.map((day) => (
-                  <div role="listitem" key={day.date}>
-                    <span>
-                      {day.date.slice(5).split("-").reverse().join("/")}
-                    </span>
-                    <div className="analytics-bar-track">
-                      <i
-                        style={{
-                          width: `${Math.max(1, (day.sessions / topDaily) * 100)}%`,
-                        }}
-                      />
-                    </div>
-                    <strong>{number(day.sessions)} sessões</strong>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>Ainda não há acessos medidos neste período.</p>
-            )}
           </section>
           <div className="analytics-columns">
             <section className="analytics-section">

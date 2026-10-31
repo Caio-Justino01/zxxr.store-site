@@ -208,6 +208,32 @@ export type RecoveryOverview = {
   totals: { eligible: number; contacted: number };
   generatedAt: string;
 };
+export const analyticsMetricKeys = [
+  "visitors",
+  "sessions",
+  "pageViews",
+  "productClicks",
+  "addToCart",
+  "checkoutStarts",
+  "whatsappClicks",
+  "registeredOrders",
+  "paidOrders",
+  "paidRevenueCents",
+] as const;
+export type AnalyticsMetricKey = (typeof analyticsMetricKeys)[number];
+export type AnalyticsMetricTotals = Record<AnalyticsMetricKey, number>;
+export type AnalyticsTimeline = {
+  granularity: "hour" | "day";
+  through: string;
+  points: (AnalyticsMetricTotals & { at: string })[];
+};
+export type AnalyticsComparison = {
+  available: boolean;
+  reason: "outside_retention" | null;
+  period: { from: string; to: string; timeZone: "America/Sao_Paulo" };
+  totals: AnalyticsMetricTotals | null;
+  timeline: AnalyticsTimeline | null;
+};
 export type AnalyticsOverview = {
   period: { from: string; to: string; timeZone: "America/Sao_Paulo" };
   generatedAt: string;
@@ -220,6 +246,7 @@ export type AnalyticsOverview = {
     productClicks: number;
     addToCart: number;
     checkoutStarts: number;
+    whatsappClicks?: number;
     registeredOrders: number;
     paidOrders: number;
     paidRevenueCents: number;
@@ -249,4 +276,7 @@ export type AnalyticsOverview = {
   }[];
   devices: { device: string; sessions: number }[];
   daily: { date: string; sessions: number; pageViews: number }[];
+  // Additive so the current dashboard keeps working while the RPC is upgraded.
+  timeline?: AnalyticsTimeline;
+  comparison?: AnalyticsComparison;
 };
