@@ -134,7 +134,15 @@ function AnalyticsDashboard() {
     }
     void load();
     const timer = setInterval(() => {
-      if (document.visibilityState === "visible") void load();
+      if (document.visibilityState !== "visible") return;
+      if (period !== "custom") {
+        const next = range(Number(period));
+        if (next.from !== dates.from || next.to !== dates.to) {
+          setDates(next);
+          return;
+        }
+      }
+      void load();
     }, 15_000);
     return () => {
       clearInterval(timer);
@@ -142,7 +150,7 @@ function AnalyticsDashboard() {
       pending.current?.controller.abort();
       pending.current = null;
     };
-  }, [load, valid]);
+  }, [load, valid, period, dates.from, dates.to]);
   async function contact(lead: RecoveryLead, contacted: boolean) {
     setActionId(lead.id);
     setMessage("");
