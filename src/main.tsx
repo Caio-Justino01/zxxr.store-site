@@ -6,6 +6,7 @@ import { CommerceProvider } from "./commerce/CommerceProvider";
 import { ConsentProvider } from "./privacy/ConsentProvider";
 import { Analytics } from "./analytics/Analytics";
 import { StoreLaunchGate } from "./components/StoreLaunchGate";
+import { initHomeDiagnostics, reportHomeFault } from "./lib/home-diagnostics";
 import "./commerce/commerce.css";
 import "./styles.css";
 import "./hero-v6.css";
@@ -35,6 +36,13 @@ const application = (
   </React.StrictMode>
 );
 const root = document.getElementById("root")!;
+initHomeDiagnostics();
+const rootOptions = {
+  onUncaughtError: (error: unknown) => {
+    reportHomeFault("runtime", error);
+    console.error(error);
+  },
+};
 if (document.documentElement.dataset.seoPrerendered === "true")
-  hydrateRoot(root, application);
-else createRoot(root).render(application);
+  hydrateRoot(root, application, rootOptions);
+else createRoot(root, rootOptions).render(application);

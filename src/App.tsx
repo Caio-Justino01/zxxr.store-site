@@ -100,6 +100,9 @@ const PrivacyPage = lazy(() =>
   import("./commerce/privacy").then((m) => ({ default: m.PrivacyPage })),
 );
 import { preorder } from "./config/preorder";
+import { HomeEffectsBoundary } from "./components/HomeEffectsBoundary";
+import { HomeFallback } from "./components/HomeFallback";
+import "./home-resilience.css";
 const BagContext = createContext<{
   items: CartItem[];
   dispatch: React.Dispatch<CartAction>;
@@ -225,32 +228,61 @@ function Collection() {
   const { dispatch } = useContext(BagContext);
   return (
     <main id="top">
-      <div className="collection-world">
-        <div className="collection-sky">
-          <GradientBackdrop />
+      <HomeEffectsBoundary
+        stage="home"
+        fallback={<HomeFallback hero anchor="o-drop" />}
+      >
+        <div className="collection-world">
+          <div className="collection-sky">
+            <HomeEffectsBoundary
+              stage="background"
+              fallback={
+                <div className="gradient-backdrop" aria-hidden="true" />
+              }
+            >
+              <GradientBackdrop />
+            </HomeEffectsBoundary>
+          </div>
+          <HomeEffectsBoundary stage="hero" fallback={<HomeFallback hero />}>
+            <CloudCollection products={products} priceLabel={formatPrice} />
+          </HomeEffectsBoundary>
         </div>
-        <CloudCollection products={products} priceLabel={formatPrice} />
-      </div>
-      <DropEditorial
-        onAdd={(product, size) =>
-          dispatch({ type: "add", productId: product.id, size })
-        }
-      />
-      <DropGuide />
-      <MusicSection />
-      <section className="endnote">
-        <p>EDIÇÃO RAZZ. SOB ENCOMENDA.</p>
-        <img
-          className="endnote-mascot"
-          src="/brand/mascot-black.svg"
-          alt="Bonequinho ZXXR com carinha"
-          width="150"
-          height="126"
-        />
-        <a className="text-link" href="#o-drop">
-          Ver camisetas <span>↑</span>
-        </a>
-      </section>
+        <HomeEffectsBoundary stage="editorial" fallback={<HomeFallback />}>
+          <DropEditorial
+            onAdd={(product, size) =>
+              dispatch({ type: "add", productId: product.id, size })
+            }
+          />
+        </HomeEffectsBoundary>
+        <HomeEffectsBoundary
+          stage="guide"
+          fallback={
+            <section className="home-recovery">
+              <h2>A peça que faltava.</h2>
+              <p>
+                Escolha sua camiseta, selecione o tamanho e monte sua sacola.
+              </p>
+              <Link to="/ajuda#como-comprar">Como comprar ↗</Link>
+            </section>
+          }
+        >
+          <DropGuide />
+        </HomeEffectsBoundary>
+        <MusicSection />
+        <section className="endnote">
+          <p>EDIÇÃO RAZZ. SOB ENCOMENDA.</p>
+          <img
+            className="endnote-mascot"
+            src="/brand/mascot-black.svg"
+            alt="Bonequinho ZXXR com carinha"
+            width="150"
+            height="126"
+          />
+          <a className="text-link" href="#o-drop">
+            Ver camisetas <span>↑</span>
+          </a>
+        </section>
+      </HomeEffectsBoundary>
     </main>
   );
 }

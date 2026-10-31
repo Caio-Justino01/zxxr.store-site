@@ -1,0 +1,96 @@
+.home-diagnostics {
+  position: fixed;
+  z-index: 2147483000;
+  left: 12px;
+  bottom: 12px;
+  max-width: min(520px, calc(100vw - 24px));
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #a4bfd3;
+  border-radius: 10px;
+  background: #f5fafff5;
+  color: #101010;
+  font:
+    12px/1.45 system-ui,
+    sans-serif;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+.home-diagnostics[hidden] {
+  display: none;
+}
+.home-diagnostics strong {
+  display: block;
+  margin-bottom: 3px;
+}
+.home-diagnostics [role="status"] {
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.home-diagnostics button {
+  pointer-events: auto;
+  min-height: 44px;
+  margin-top: 6px;
+  padding: 5px 8px;
+  border: 1px solid #a4bfd3;
+  border-radius: 6px;
+  background: #fff;
+  color: #101010;
+  font: inherit;
+}
+
+.home-recovery {
+  padding: 42px var(--store-gutter, 24px);
+  color: #101010;
+  text-align: center;
+}
+.home-recovery-hero {
+  min-height: calc(100svh - var(--site-header-height, 88px));
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #f5faff, #8fcaff 46%, #3a83f7);
+}
+.home-recovery .home-recovery-title {
+  font-size: 28px;
+  font-weight: 900;
+  margin: 16px 0 0;
+}
+.home-recovery p {
+  font-size: 13px;
+}
+.home-recovery-products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 28px auto;
+  max-width: 900px;
+}
+.home-recovery-products > a {
+  flex: 1 1 220px;
+  max-width: 400px;
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+.home-recovery-products img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+.home-recovery-products span {
+  font-size: 13px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #ffffff85;
+}
+.home-recovery-help {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: inherit;
+}

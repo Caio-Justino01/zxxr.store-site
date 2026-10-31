@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
-import {
-  createGradientRenderer,
-  type GradientRenderer,
-} from "../lib/gradient-renderer";
+import { createGradientRenderer } from "../lib/gradient-renderer";
+import { createGradientLifecycle } from "../lib/gradient-lifecycle";
+import { reportHomeFault, reportHomeStage } from "../lib/home-diagnostics";
 import "../gradient-v6.css";
 
 /** A decorative background only: the product photographs remain ordinary HTML. */
@@ -17,7 +16,6 @@ export function GradientBackdrop({ className }: { className?: string }) {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const mobile = window.matchMedia("(max-width: 699px)");
-    let renderer: GradientRenderer | null = null;
     let frame: number | null = null;
     let previous: number | null = null;
     let elapsed = 0;
@@ -26,16 +24,27 @@ export function GradientBackdrop({ className }: { className?: string }) {
     let disposed = false;
 
     function stop() {
-      if (frame !== null) window.cancelAnimationFrame(frame);
+      const pending = frame;
       frame = null;
       previous = null;
+      if (pending !== null) window.cancelAnimationFrame(pending);
     }
+
+    const lifecycle = createGradientLifecycle({
+      stop,
+      fallback() {
+        canvas!.hidden = true;
+        element!.dataset.backgroundMode = "css";
+        element!.dataset.backgroundState = "fallback";
+      },
+      report: (error) => reportHomeFault("background", error),
+    });
 
     function active() {
       return (
         !disposed &&
         !lost &&
-        Boolean(renderer) &&
+        Boolean(lifecycle.renderer) &&
         onscreen &&
         document.visibilityState !== "hidden" &&
         !reduced.matches
@@ -44,53 +53,59 @@ export function GradientBackdrop({ className }: { className?: string }) {
 
     function draw(time: number) {
       frame = null;
-      if (!active()) return;
-      if (previous !== null)
-        elapsed += Math.min(0.05, Math.max(0, (time - previous) / 1000));
-      previous = time;
-      renderer!.render(elapsed);
-      frame = window.requestAnimationFrame(draw);
+      lifecycle.run(() => {
+        if (!active()) return;
+        if (previous !== null)
+          elapsed += Math.min(0.05, Math.max(0, (time - previous) / 1000));
+        previous = time;
+        lifecycle.renderer!.render(elapsed);
+        frame = window.requestAnimationFrame(draw);
+      });
     }
 
     function sync() {
       if (disposed) return;
-      stop();
-      canvas!.hidden = !renderer || lost;
-      element!.dataset.backgroundMode = renderer?.mode ?? "css";
-      if (lost) {
-        element!.dataset.backgroundState = "context-lost";
-      } else if (!renderer) {
-        element!.dataset.backgroundState = "fallback";
-      } else if (reduced.matches) {
-        elapsed = 0;
-        renderer.render(0);
-        element!.dataset.backgroundState = "static";
-      } else if (active()) {
-        element!.dataset.backgroundState = "running";
-        frame = window.requestAnimationFrame(draw);
-      } else {
-        element!.dataset.backgroundState = "paused";
-      }
+      lifecycle.run(() => {
+        stop();
+        const renderer = lifecycle.renderer;
+        canvas!.hidden = !renderer || lost;
+        element!.dataset.backgroundMode = renderer?.mode ?? "css";
+        if (lost) {
+          element!.dataset.backgroundState = "context-lost";
+        } else if (!renderer) {
+          element!.dataset.backgroundState = "fallback";
+        } else if (reduced.matches) {
+          elapsed = 0;
+          renderer.render(0);
+          element!.dataset.backgroundState = "static";
+        } else if (active()) {
+          element!.dataset.backgroundState = "running";
+          frame = window.requestAnimationFrame(draw);
+        } else {
+          element!.dataset.backgroundState = "paused";
+        }
+      });
     }
 
     function resize() {
-      if (!renderer || lost || disposed) return;
-      const bounds = element!.getBoundingClientRect();
-      if (bounds.width <= 0 || bounds.height <= 0) return;
-      const dpr = Math.min(
-        window.devicePixelRatio || 1,
-        mobile.matches ? 1.5 : 2,
-      );
-      renderer.resize(bounds.width, bounds.height, dpr);
-      renderer.render(reduced.matches ? 0 : elapsed);
+      lifecycle.run(() => {
+        const renderer = lifecycle.renderer;
+        if (!renderer || lost || disposed) return;
+        const bounds = element!.getBoundingClientRect();
+        if (bounds.width <= 0 || bounds.height <= 0) return;
+        const dpr = Math.min(
+          window.devicePixelRatio || 1,
+          mobile.matches ? 1.5 : 2,
+        );
+        renderer.resize(bounds.width, bounds.height, dpr);
+        renderer.render(reduced.matches ? 0 : elapsed);
+      });
     }
 
     function initialize() {
-      try {
-        renderer = createGradientRenderer(canvas!);
-      } catch {
-        renderer = null;
-      }
+      if (disposed || lifecycle.failed) return;
+      reportHomeStage("background");
+      lifecycle.initialize(() => createGradientRenderer(canvas!));
       resize();
       sync();
     }
@@ -99,13 +114,12 @@ export function GradientBackdrop({ className }: { className?: string }) {
       event.preventDefault();
       lost = true;
       stop();
-      // The browser has released these GPU resources along with the context.
-      renderer = null;
+      lifecycle.release();
       sync();
     }
 
     function contextRestored() {
-      if (disposed) return;
+      if (disposed || lifecycle.failed) return;
       lost = false;
       initialize();
     }
@@ -137,7 +151,7 @@ export function GradientBackdrop({ className }: { className?: string }) {
 
     return () => {
       disposed = true;
-      stop();
+      lifecycle.dispose();
       observer?.disconnect();
       size?.disconnect();
       document.removeEventListener("visibilitychange", visibility);
@@ -146,7 +160,6 @@ export function GradientBackdrop({ className }: { className?: string }) {
       mobile.removeEventListener("change", preference);
       canvas.removeEventListener("webglcontextlost", contextLost);
       canvas.removeEventListener("webglcontextrestored", contextRestored);
-      renderer?.dispose();
     };
   }, []);
 
