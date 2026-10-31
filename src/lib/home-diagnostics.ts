@@ -29,6 +29,7 @@ const errorNames = new Set([
   "EvalError",
   "DOMException",
   "AggregateError",
+  "InvalidCharacterError",
 ]);
 const stageOf = (value: HomeStage): HomeStage =>
   homeStages.includes(value) ? value : "runtime";

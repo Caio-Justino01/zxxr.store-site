@@ -29,6 +29,7 @@ import { FrozenSurface } from "./FrozenSurface";
 import "../arc-carousel.css";
 import { useSeoInitialRender } from "../seo/render-environment";
 import { productPicture } from "../seo/images";
+import { createCarouselScaleSetter } from "../lib/carousel-scale";
 
 /** Pointer hardware may emit several events per frame; only the latest matters. */
 function usePointerFrame<T>(apply: (value: T) => void) {
@@ -241,8 +242,11 @@ type SlotSetters = {
   accessible?: boolean;
 };
 
-const numberSetter = (node: HTMLElement, property: string, unit?: string) =>
-  gsap.quickSetter(node, property, unit) as (value: number) => void;
+const numberSetter = (
+  node: HTMLElement,
+  property: "x" | "y" | "rotation" | "opacity",
+  unit?: string,
+) => gsap.quickSetter(node, property, unit) as (value: number) => void;
 
 type GlassMotion = Record<"x" | "y" | "light", ReturnType<typeof gsap.quickTo>>;
 
@@ -420,7 +424,7 @@ export function ArcCarousel({
         details,
         x: numberSetter(node, "x", "px"),
         y: numberSetter(node, "y", "px"),
-        scale: numberSetter(node, "scale"),
+        scale: createCarouselScaleSetter(node),
         opacity: numberSetter(node, "opacity"),
         rotation: numberSetter(tilt, "rotation", "deg"),
         infoOpacity: numberSetter(details, "opacity"),

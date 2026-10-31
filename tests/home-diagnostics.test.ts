@@ -122,6 +122,14 @@ test("reports retain only an approved class and own compiled asset frame", () =>
 });
 
 test("source URLs with queries, fragments or private routes are excluded", () => {
+  assert.equal(
+    describeHomeFault(
+      "hero",
+      new DOMException("Private details", "InvalidCharacterError"),
+      "https://www.zxxr.store",
+    ).name,
+    "InvalidCharacterError",
+  );
   for (const frame of [
     "https://www.zxxr.store/assets/store.js?token=secret:1:2",
     "https://www.zxxr.store/assets/store.js#customer:1:2",
