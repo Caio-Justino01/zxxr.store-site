@@ -41,6 +41,8 @@
 }
 
 .home-recovery {
+  position: relative;
+  z-index: 1;
   padding: 42px var(--store-gutter, 24px);
   color: #101010;
   text-align: center;
